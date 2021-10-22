@@ -1,8 +1,14 @@
 import React from 'react'
 
-const Search = () => {
+//componennt
+
+
+//classes
+import classes from "./Search.css";
+
+const Search = (props) => {
     return (
-        <div>
+        <div className={classes.Search}>
             <h1>Search Page</h1>
         </div>
     )

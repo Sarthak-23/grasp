@@ -1,11 +1,16 @@
 import React from 'react'
 
-const login = () => {
+//component
+
+//classes
+import classes from "./Login.css"
+
+const Login = () => {
     return (
-        <div>
+        <div className={classes.Login}>
             <h1>Login Page</h1>
         </div>
     )
 }
 
-export default login
+export default Login

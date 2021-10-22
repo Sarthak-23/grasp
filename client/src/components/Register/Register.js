@@ -1,8 +1,14 @@
 import React from 'react'
 
-const Register = () => {
+//componennt
+
+
+//classes
+import classes from "./Register.css";
+
+const Register = (props) => {
     return (
-        <div>
+        <div className={classes.Register}>
             <h1>Register Page</h1>
         </div>
     )

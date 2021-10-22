@@ -5,8 +5,8 @@ import Register from '../src/components/Register/Register';
 import Home from '../src/components/Home/Home';
 import Search from '../src/components/Search/Search'
 
+//classes
 import classes from './App.css';
-import Panel from "./Component/Panel/Panel";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Login />
       </Route>
       <Route exact path="/register">
-          <Register/>
+          <Register />
       </Route>
       <Route path="/">
           <Home />

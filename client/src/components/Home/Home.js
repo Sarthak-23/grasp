@@ -1,8 +1,13 @@
 import React from 'react'
 
-const Home = () => {
+//componene
+
+//classes
+import classes from "./Home.css"
+
+const Home = (props) => {
     return (
-        <div>
+        <div className={classes.Home}>
             <h1>Home Page</h1>
         </div>
     )
