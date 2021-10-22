@@ -27,7 +27,7 @@ app.use(
         resave: true,
         saveUninitialized: true,
         cookie: {
-            expires: new Date(Date.now() + 24 * 60 * 1000),
+            expires: new Date(Date.now() + 3 * 24 * 60 * 1000),
         },
     })
 );
@@ -35,9 +35,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routing
-app.use('/profile/:username', profileRoutes);
+app.use('/profile', profileRoutes);
 app.use('/auth', authRoutes);
-app.use('/:username/roadmaps', roadRoutes);
+app.use('/roadmaps', roadRoutes);
 
 // Listen at PORT
 app.listen(PORT, () => {

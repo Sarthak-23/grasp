@@ -5,7 +5,7 @@ const RoadmapSchema = mongoose.Schema({
     description: String,
     start: Date,
     user: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'User' },
-    parent: { type: mongoose.Schema.Types.ObjectId }, // if cloned from other roadmap
+    parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
     path: [
         {
             subpath: [
@@ -14,11 +14,11 @@ const RoadmapSchema = mongoose.Schema({
                     topic: { type: String, require: true },
                     description: String,
                     materials: [String],
-                    notes: [String],
                 },
             ],
         },
     ],
+    private: { type: Boolean, default: false },
 });
 
 const Roadmap = mongoose.model('Roadmap', RoadmapSchema);
