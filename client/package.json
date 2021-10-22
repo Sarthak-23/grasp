@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.12.3",
+    "@mui/icons-material": "^5.0.4",
     "@mui/material": "^5.0.4",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
