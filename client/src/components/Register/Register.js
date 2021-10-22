@@ -39,7 +39,7 @@ const Register = (props) => {
     const btnstyle = { margin: '8px 0' };
     return(
         <Grid className={classes.container}>
-            <Paper elevation={20} style={classes.form}>
+            <Paper elevation={20} className={classes.form}>
                 <div
                     style={{
                         display: 'flex',
