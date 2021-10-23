@@ -14,6 +14,7 @@ const RoadmapSchema = mongoose.Schema(
         path: [
             {
                 index: { type: Number, require: true }, //  sort order
+                topic: { type: String, require: true },
                 subpath: [
                     {
                         index: { type: Number, require: true }, // sort order
