@@ -63,7 +63,43 @@ const Search = () => {
     const [category, setCategory] = React.useState(categoryOptions[0]);
     const [type, setType] = React.useState(profileOptions[0]);
     const [keyword, setKeyword] = React.useState('');
+    const [user, setUser] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+
+    const fetchUserByProfile = async () => {
+        try {
+            const res = await fetch(
+                '/profile/search?type=type&keyword=keyword',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const data = await res.json();
+            if (data.error) throw data.error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchRoadmap = async () => {
+        try {
+            const res = await fetch('/roadmaps/all/search?q=keyword', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await res.json();
+            if (data.error) throw data.error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const handleCategory = (e) => {
         setCategory(e.target.value);
@@ -84,6 +120,19 @@ const Search = () => {
         setTimeout(() => {
             setLoading(false);
         }, 2000);
+        if (category === 'Profile') {
+            fetchUserByProfile().then((res) => {
+                if (res) {
+                    setUser(res);
+                }
+            });
+        } else {
+            fetchRoadmap().then((res) => {
+                if (res) {
+                    setUser(res);
+                }
+            });
+        }
     };
 
     const renderProfileTypes = () => {
