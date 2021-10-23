@@ -11,6 +11,7 @@ import Checkbox from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import classes from './Login.css';
+import { UserContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+    const [user, setUser] = React.useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
@@ -41,14 +43,26 @@ const Login = () => {
     const avatarStyle = { backgroundColor: '#1bbd7e', margin: 'auto 0.5rem' };
     const btnstyle = { margin: '8px 0' };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!username || !password) {
             setErrors('Please Fill all the Fields');
             return;
         }
-        setErrors('');
         // Submit the details...
+        let res = await fetch('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            'Content-type': 'application/json',
+        });
+
+        res = await res.json();
+        if (res.id) {
+            setUser(res);
+            setErrors('');
+        } else {
+            setErrors(res || res.error);
+        }
     };
 
     return (

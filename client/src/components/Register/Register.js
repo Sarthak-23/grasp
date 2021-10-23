@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Grid from '@mui/material/Grid'
+import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
@@ -9,9 +9,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Checkbox from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { makeStyles } from '@mui/styles'; 
-import classes from "./Register.css";
-
+import { makeStyles } from '@mui/styles';
+import classes from './Register.css';
+import { UserContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -35,26 +35,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
-    const [name,setName] = useState('');
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
-    const [errors,setErrors] = useState('');
+    const [user, setUser] = React.useContext(UserContext);
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState('');
 
     const classes = useStyles();
     const avatarStyle = { backgroundColor: '#1bbd7e', margin: 'auto 0.5rem' };
     const btnstyle = { margin: '8px 0' };
 
-    const handleSubmit = e =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!name || !username || !password){
+        if (!name || !username || !password) {
             setErrors('Please Fill all the fields');
             return;
         }
         setErrors('');
         //Submit the Register Form
-    }
+        let res = await fetch('/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ username, password, name }),
+            'Content-type': 'application/json',
+        });
 
-    return(
+        res = await res.json();
+        if (res.id) {
+            setUser(res);
+            setErrors('');
+        } else {
+            setErrors(res || res.error);
+        }
+    };
+
+    return (
         <Grid className={classes.container}>
             <Paper elevation={20} className={classes.form}>
                 <div
@@ -64,7 +78,7 @@ const Register = (props) => {
                     }}
                 >
                     <Avatar style={avatarStyle}>
-                        <LockOutlinedIcon  className={classes.lock}/>
+                        <LockOutlinedIcon className={classes.lock} />
                     </Avatar>
                     <h2>Register</h2>
                 </div>
@@ -78,7 +92,7 @@ const Register = (props) => {
                     name="name"
                     id="name"
                     value={name}
-                    onChange={(e)=>setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
                     label="Username"
@@ -90,7 +104,7 @@ const Register = (props) => {
                     name="username"
                     id="username"
                     value={username}
-                    onChange={(e)=>setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                     label="Password"
@@ -102,15 +116,11 @@ const Register = (props) => {
                     name="password"
                     id="password"
                     value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
-                {
-                    errors?
-                    <Typography style={{color:"red"}}>
-                        {errors}
-                    </Typography>
-                :null
-                }
+                {errors ? (
+                    <Typography style={{ color: 'red' }}>{errors}</Typography>
+                ) : null}
                 <Button
                     type="submit"
                     color="primary"
@@ -118,7 +128,7 @@ const Register = (props) => {
                     style={btnstyle}
                     fullWidth
                     onClick={handleSubmit}
-                    style={{marginTop:"20px",marginBottom:"15px"}}
+                    style={{ marginTop: '20px', marginBottom: '15px' }}
                 >
                     Register
                 </Button>
@@ -132,7 +142,7 @@ const Register = (props) => {
                 </Typography>
             </Paper>
         </Grid>
-    )
-}
+    );
+};
 
-export default Register
+export default Register;
