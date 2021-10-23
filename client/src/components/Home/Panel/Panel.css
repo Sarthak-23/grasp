@@ -5,7 +5,7 @@
     padding: 10px;
     border: 1px solid #707070;
     border-radius: 10px;
-    height: 100vh;
+    height: 100%;
 }
 .Profile{
     display: flex;
