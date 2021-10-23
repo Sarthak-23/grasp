@@ -61,7 +61,7 @@ const roadmap = [{
   tags: ["tag", "tag", "tag"],
   // private: { type: Boolean, default: false },
 }]
-
+const date = new Date()
 
 const Roadmap =(props)=> {
 
@@ -71,13 +71,29 @@ const Roadmap =(props)=> {
     <div className={classes.Roadmap}>
 
         <div className={classes.Header}>
+          <div className={classes.top}>
           <p className={classes.title}>Placement</p>
+          <div className={classes.date}>
+            <label>start</label>
+            <p>21-May-2020</p>
+            </div>
+          </div>
+          <p className={classes.description}>This is the discription of the roadmap!</p>
+        </div>
+
+        <div className={classes.tags}>
+          <li>Tag1</li>
+          <li>Tag2</li>
+          <li>Tag3</li>
         </div>
 
         <div className={classes.Main}>
+          
           <div className={classes.StartDiv}>
             Starting Placement Roadmap
           </div>
+
+        <>
           <div className={classes.path}/>
           <div className={classes.Topics}>
 
@@ -94,8 +110,46 @@ const Roadmap =(props)=> {
             </div>
           
           </div>
+        </>
+        <>
+          <div className={classes.path}/>
+          <div className={classes.Topics}>
+
+            <p className={classes.title}>Data Structrue</p>
+            
+            <div className={classes.Box}>
+              <Stepper activeStep={1} alternativeLabel>
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel style={{width: "100px"}}>{label}</StepLabel>
+                    </Step>
+                  ))}
+              </Stepper>
+            </div>
+          
+          </div>
+        </>
+        <>
+          <div className={classes.path}/>
+          <div className={classes.Topics}>
+
+            <p className={classes.title}>Data Structrue</p>
+            
+            <div className={classes.Box}>
+              <Stepper activeStep={1} alternativeLabel>
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel style={{width: "100px"}}>{label}</StepLabel>
+                    </Step>
+                  ))}
+              </Stepper>
+            </div>
+          
+          </div>
+        </>
 
         </div>
+
     </div>
   );
 }
