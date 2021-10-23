@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {NavLink} from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
@@ -34,9 +35,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+    const [username,setUsername] = useState('');
+    const [password,setPassword] = useState('');
+    const [errors,setErrors] = useState('');
     const classes = useStyles();
     const avatarStyle = { backgroundColor: '#1bbd7e', margin: 'auto 0.5rem' };
     const btnstyle = { margin: '8px 0' };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        if(!username || !password)
+        {
+            setErrors('Please Fill all the Fields');
+            return;
+        }
+        setErrors('');
+        // Submit the details...
+    }
+
+
     return (
         <Grid className={classes.container}>
             <Paper elevation={20} className={classes.form}>
@@ -58,6 +75,10 @@ const Login = () => {
                     fullWidth
                     required
                     style={{ marginTop: '20px' }}
+                    name="username"
+                    id="username"
+                    value={username}
+                    onChange={(e)=> setUsername(e.target.value)}
                 />
                 <TextField
                     label="Password"
@@ -66,23 +87,35 @@ const Login = () => {
                     fullWidth
                     required
                     style={{ marginTop: '20px' }}
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={(e)=> setPassword(e.target.value)}
                 />
+                {errors? 
+                    <Typography style={{color:"red"}}>
+                        {errors}
+                    </Typography>                    
+                    :null
+                }
                 <Button
                     type="submit"
                     color="primary"
                     variant="contained"
                     style={btnstyle}
                     fullWidth
+                    onClick={handleSubmit}
+                    style={{marginTop:"20px",marginBottom:"15px"}}
                 >
                     Sign in
                 </Button>
                 <Typography>
-                    <Link
-                        href="#"
+                    <NavLink
+                        to="/register"
                         style={{ textDecoration: 'none', color: 'black' }}
                     >
                         Do you have an account?
-                    </Link>
+                    </NavLink>
                 </Typography>
             </Paper>
         </Grid>
