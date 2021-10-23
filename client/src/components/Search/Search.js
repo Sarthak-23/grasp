@@ -120,41 +120,49 @@ const Search = () => {
     return (
         <Box>
             <Navbar />
-            <Box className={classes.boxer}>
-                <Select
-                    className={classes.boxerElements}
-                    id="category-select"
-                    value={category}
-                    label="Category"
-                    onChange={handleCategory}
-                >
-                    {categoryOptions.map((cat) => {
-                        return <MenuItem value={cat}>{cat}</MenuItem>;
-                    })}
-                </Select>
-                {category === categoryOptions[0]
-                    ? renderProfileTypes()
-                    : renderRoadmapTypes()}
-                <TextField
-                    style={{ margin: '1rem' }}
-                    id="outlined-basic"
-                    label="Search Keyword"
-                    variant="outlined"
-                    value={keyword}
-                    onChange={handleKeyword}
-                />
-                {loading ? (
-                    <CircularProgress />
-                ) : (
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleSearch}
+            <Grid container className={classes.boxer}>
+                <Grid item>
+                    <Select
+                        className={classes.boxerElements}
+                        id="category-select"
+                        value={category}
+                        label="Category"
+                        onChange={handleCategory}
                     >
-                        <Icon style={{ color: 'white' }}>search</Icon>
-                    </Button>
-                )}
-            </Box>
+                        {categoryOptions.map((cat) => {
+                            return <MenuItem value={cat}>{cat}</MenuItem>;
+                        })}
+                    </Select>
+                </Grid>
+                <Grid item>
+                    {category === categoryOptions[0]
+                        ? renderProfileTypes()
+                        : renderRoadmapTypes()}
+                </Grid>
+                <Grid item>
+                    <TextField
+                        style={{ margin: '1rem' }}
+                        id="outlined-basic"
+                        label="Search Keyword"
+                        variant="outlined"
+                        value={keyword}
+                        onChange={handleKeyword}
+                    />
+                </Grid>
+                <Grid item>
+                    {loading ? (
+                        <CircularProgress />
+                    ) : (
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={handleSearch}
+                        >
+                            <Icon style={{ color: 'white' }}>search</Icon>
+                        </Button>
+                    )}
+                </Grid>
+            </Grid>
             <Grid container className={classes.container}>
                 <Grid item xs={12} md={9}>
                     <Typography
