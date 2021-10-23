@@ -1,7 +1,7 @@
 import React from 'react';
 
 //componene
-import Panel from './Panel/Panel';
+import Panel from './Dashboard/Dashboard';
 import Roadmap from './Roadmap/Roadmap';
 import RightPanel from './RightPanel/RightPanel';
 import Navbar from '../Navbar/Navbar';
@@ -16,8 +16,8 @@ const Home = (props) => {
             <Navbar />
             <Box className={classes.Box}>
                 <Panel />
-                <Roadmap />
-                <RightPanel />
+                {/* <Roadmap /> */}
+                {/* <RightPanel /> */}
             </Box>
         </div>
     );

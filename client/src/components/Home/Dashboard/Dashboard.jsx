@@ -13,8 +13,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 //classes
-import classes from './Panel.css';
-import './Panel.css';
+import classes from './Dashboard.css';
+import './Dashboard.css';
+import { Box } from '@mui/system';
 
 const Panel = (props) => {
     const [value, onChange] = useState(new Date());
@@ -24,12 +25,10 @@ const Panel = (props) => {
         setSelectedDate(dateArray);
     };
 
-    const handleListItemClick = () => {
-
-    }
+    const handleListItemClick = () => {};
 
     return (
-        <div className={classes.Panel}>
+        <Box className={classes.Panel}>
             {/* profile  */}
             <div className={classes.Profile}>
                 <div
@@ -56,24 +55,16 @@ const Panel = (props) => {
                     <TextField size="small" label="Roadmap" id="Roadmap" />
                 </div>
                 <List component="nav" aria-label="secondary mailbox folder">
-                    <ListItemButton
-                    selected={1}
-                    onClick={handleListItemClick}
-                    >
+                    <ListItemButton selected={1} onClick={handleListItemClick}>
                         <ListItemText primary="Trash" />
                     </ListItemButton>
-                    
-                    <ListItemButton
-                    selected={0}
-                    onClick={handleListItemClick}
-                    >
+
+                    <ListItemButton selected={0} onClick={handleListItemClick}>
                         <ListItemText primary="Spam" />
                     </ListItemButton>
-                
                 </List>
-
             </div>
-        </div>
+        </Box>
     );
 };
 
