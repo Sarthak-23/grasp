@@ -16,8 +16,15 @@ const style = {
 };
 
 const RightPanel = () => {
-    const [des_disable, setDesdisable] = useState(true);
-    const [mat_disable, setMatdisable] = useState(true);
+    const [des_disable, setDesdisable] = useState(false);
+    const [mat_disable, setMatdisable] = useState(false);
+    const [description, setDescription] = useState('');
+    const [material, setMaterial] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(description, material);
+    };
 
     return (
         <div className={classes.Container}>
@@ -28,6 +35,10 @@ const RightPanel = () => {
                 placeholder="Description"
                 className={classes.textArea}
                 disabled={des_disable}
+                name="description"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
             />
             <TextareaAutosize
                 aria-label="minimum height"
@@ -35,11 +46,16 @@ const RightPanel = () => {
                 placeholder="Materials"
                 className={classes.textArea}
                 disabled={mat_disable}
+                name="material"
+                id="material"
+                value={material}
+                onChange={(e) => setMaterial(e.target.value)}
             />
             <Button
                 variant="contained"
                 color="success"
                 className={classes.Button}
+                onClick={handleSubmit}
             >
                 Update
             </Button>
