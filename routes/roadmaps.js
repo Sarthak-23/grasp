@@ -15,8 +15,12 @@ router.post(
     roadmapController.createRoadmap
 );
 
-// Search a roadmap
-router.get('/search', roadmapController.searchRoadmap);
+// Update a roadmap
+router.patch(
+    '/:id',
+    authController.isAuthenticated,
+    roadmapController.updateRoadmap
+);
 
 // Fork a roadmap
 router.post(
@@ -25,21 +29,35 @@ router.post(
     roadmapController.forkRoadmap
 );
 
+// Search a roadmap
+router.get('/all/search', roadmapController.searchRoadmap);
+
 // Create note for a roadmap
 router.post(
-    '/:id/note/create',
+    '/:id/notes/create',
     authController.isAuthenticated,
     roadmapController.createNote
 );
 
 // Get all notes of a roadmap
 router.get(
-    '/note/all',
+    '/:id/notes/all',
     authController.isAuthenticated,
     roadmapController.getNotes
 );
 
 // Get a note by noteID
-router.get('/note', authController.isAuthenticated, roadmapController.getNote);
+router.get(
+    '/notes/:noteid',
+    authController.isAuthenticated,
+    roadmapController.getNote
+);
+
+// Update a note by noteID
+router.patch(
+    '/notes/:noteid',
+    authController.isAuthenticated,
+    roadmapController.updateNote
+);
 
 module.exports = router;

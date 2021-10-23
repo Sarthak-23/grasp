@@ -59,6 +59,7 @@ exports.createRoadmap = async (req, res) => {
             start: req.body.start,
             user: req.user._id,
             path: req.body.path,
+            tags: req.body.tags,
             private: req.body.private,
         });
         await roadmap.save();
@@ -68,10 +69,49 @@ exports.createRoadmap = async (req, res) => {
     }
 };
 
+// Update a roadmap
+exports.updateRoadmap = async (req, res) => {
+    try {
+        const roadmap = await Roadmap.findOneAndUpdate(
+            { _id: req.params.id, user: req.user._id },
+            {
+                title: req.body.title,
+                description: req.body.description,
+                start: req.body.start,
+                user: req.user._id,
+                path: req.body.path,
+                tags: req.body.tags,
+                private: req.body.private,
+            }
+        );
+        if (!roadmap) {
+            return res.status(404).json({ error: 'Roadmap unavailable' });
+        }
+        res.json({ success: 'Roadmap updated successfully' });
+    } catch (e) {
+        res.status(500).json({ error: e });
+    }
+};
+
 // Search a roadmap
-// Options to search include : tag, name
+// Options to search include : tag
 exports.searchRoadmap = async (req, res) => {
-    const { type, keyword } = req.query;
+    try {
+        const { q } = req.query;
+        let roadmaps = await Roadmap.find({ tags: q, private: false });
+        if (req.user) {
+            roadmaps.push(
+                await Roadmap.find({
+                    tags: q,
+                    user: req.user._id,
+                    private: true,
+                })
+            );
+        }
+        res.json(roadmaps);
+    } catch (e) {
+        res.status(500).json({ error: e });
+    }
 };
 
 // Fork a roadmap
@@ -102,13 +142,14 @@ exports.forkRoadmap = async (req, res) => {
 exports.createNote = async (req, res) => {
     try {
         const roadmap = await Roadmap.findById(req.params.id);
-        if (roadmap.user !== req.user._id) {
+        if (!roadmap.user.equals(req.user._id)) {
             return res.status(401).json({ error: 'Roadmap unavailable' });
         }
         const note = new Note({
             title: req.body.title,
             content: req.body.content,
             roadmap: req.params.id,
+            user: roadmap.user,
         });
         await note.save();
         res.json({ success: 'Note created successfully' });
@@ -120,14 +161,16 @@ exports.createNote = async (req, res) => {
 // Get all notes title and date by roadmapID
 exports.getNotes = async (req, res) => {
     try {
-        const roadmap = await Roadmap.findById(req.query.id);
-        if (roadmap.user !== req.user._id) {
+        const roadmap = await Roadmap.findById(req.params.id);
+        if (!roadmap.user.equals(req.user._id)) {
             return res.status(401).json({ error: 'Invalid operation' });
         }
         const notes = await Note.find({
             roadmap: roadmap._id,
             user: req.user._id,
-        }).select('-content');
+        })
+            .select('-content')
+            .sort({ createdAt: -1 });
         res.json(notes);
     } catch (e) {
         res.status(501).json({ error: e });
@@ -138,10 +181,29 @@ exports.getNotes = async (req, res) => {
 exports.getNote = async (req, res) => {
     try {
         const note = await Note.findOne({
-            _id: req.query.id,
+            _id: req.params.noteid,
             user: req.user._id,
         });
         res.json(note);
+    } catch (e) {
+        res.status(501).json({ error: e });
+    }
+};
+
+// Update a note
+exports.updateNote = async (req, res) => {
+    try {
+        const note = await Note.findOneAndUpdate(
+            { _id: req.params.noteid, user: req.user._id },
+            {
+                title: req.body.title,
+                content: req.body.content,
+            }
+        );
+        if (!note) {
+            return res.status(404).json({ error: 'Note unavilable' });
+        }
+        res.json({ success: 'Note updated successfully' });
     } catch (e) {
         res.status(501).json({ error: e });
     }

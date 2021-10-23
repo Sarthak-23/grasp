@@ -1,25 +1,33 @@
 const mongoose = require('mongoose');
 
-const RoadmapSchema = mongoose.Schema({
-    title: { type: String, require: true },
-    description: String,
-    start: Date,
-    user: { type: mongoose.Schema.Types.ObjectId, require: true, ref: 'User' },
-    parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
-    path: [
-        {
-            subpath: [
-                {
-                    index: { type: Number, require: true }, // sort order
-                    topic: { type: String, require: true },
-                    description: String,
-                    materials: [String],
-                },
-            ],
+const RoadmapSchema = mongoose.Schema(
+    {
+        title: { type: String, require: true },
+        description: String,
+        start: Date,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            require: true,
+            ref: 'User',
         },
-    ],
-    private: { type: Boolean, default: false },
-});
+        parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
+        path: [
+            {
+                subpath: [
+                    {
+                        index: { type: Number, require: true }, // sort order
+                        topic: { type: String, require: true },
+                        description: String,
+                        materials: [String],
+                    },
+                ],
+            },
+        ],
+        tags: [String],
+        private: { type: Boolean, default: false },
+    },
+    { timestamps: true }
+);
 
 const Roadmap = mongoose.model('Roadmap', RoadmapSchema);
 
