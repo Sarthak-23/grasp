@@ -12,28 +12,30 @@ import { Box } from '@mui/system';
 import { UserContext } from '../../context/UserContext';
 
 const Home = (props) => {
-    const [details, setDetails] = React.useState({
-        user: props.user,
-        roadmaps: [],
+    const [user, setUser] = React.useState({
+        id: props.user.id,
+        username: props.user.username,
+        name: props.user.name,
     });
+    const [roadmaps, setRoadmaps] = React.useState([]);
+
     useEffect(() => {
-        console.log('home useeffect');
-        // const fetchUser = async () => {
-        //     let result = await fetch(`/profile/${user.username}`);
-        //     result = await result.json();
-        //     return result;
-        // };
-        // fetchUser().then((res) => {
-        //     console.log(res);
-        //     setDetails(res);
-        // });
+        const fetchUser = async () => {
+            let result = await fetch(`/profile/${user.username}`);
+            result = await result.json();
+            return result;
+        };
+        fetchUser().then((res) => {
+            setUser(res.user);
+            setRoadmaps(res.roadmaps);
+        });
     }, []);
 
     return (
         <div className={classes.Home}>
             <Navbar />
             <Box className={classes.Box}>
-                <Panel user={details.user} roadmaps={details.roadmaps} />
+                <Panel user={user} roadmaps={roadmaps} />
                 {/* <Roadmap /> */}
                 {/* <RightPanel /> */}
             </Box>
