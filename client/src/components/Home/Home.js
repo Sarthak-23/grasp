@@ -17,7 +17,7 @@ const Home = (props) => {
             <Box className={classes.Box}>
                 {/* <Panel /> */}
                 <Roadmap />
-                <RightPanel />
+                {/* <RightPanel /> */}
             </Box>
         </div>
     );

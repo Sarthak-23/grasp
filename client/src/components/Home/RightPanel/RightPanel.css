@@ -4,11 +4,14 @@
     width: 400px;
     padding: 10px;
     box-shadow: 0 0 8px #3e3e3e;
-    background-color: #3b8ad969;
-    border-radius: 8px;
+    background-color: #b8d5f1;
+    border-radius: 5px;
     min-height: 100vh;
     z-index: 1;
     align-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .Description {
@@ -34,7 +37,7 @@
     padding: 20px;
     background-color: white;
     box-shadow: 0 0 4px grey;
-    border-radius: 10px;
+    border-radius: 5px;
     min-height: 15vh;
     margin-top: 20px;
 }
@@ -45,7 +48,7 @@
     padding: 10px;
     background-color: white;
     box-shadow: 0 0 4px grey;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-top: 40px;
 }
 
