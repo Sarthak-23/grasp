@@ -123,7 +123,6 @@ const Search = () => {
         if (category === 'Profile') {
             setResultType(categoryOptions[0]);
             fetchUserByProfile().then((res) => {
-                console.log(res);
                 if (res) {
                     setResult(res.profiles);
                 }
@@ -132,7 +131,6 @@ const Search = () => {
         } else {
             setResultType(categoryOptions[1]);
             fetchRoadmap().then((res) => {
-                console.log(res);
                 if (res) {
                     setResult(res);
                 }

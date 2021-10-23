@@ -9,6 +9,7 @@ import { UserProvider } from './context/UserContext';
 
 //classes
 import classes from './App.css';
+import Profile from './components/Profile/Profile';
 
 function App() {
     return (
@@ -25,6 +26,9 @@ function App() {
                 </Route>
                 <Route exact path="/roadmap/:id">
                     <Roadmap />
+                </Route>
+                <Route exact path="/profile/:username">
+                    <Profile />
                 </Route>
                 <Route exact path="/">
                     <Home />
