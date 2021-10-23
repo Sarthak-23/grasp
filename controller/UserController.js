@@ -20,8 +20,9 @@ exports.getProfile = async (req, res) => {
 // Connect to a profile
 exports.connectProfile = async (req, res) => {
     try {
-        if (!req.params.username)
+        if (!req.params.username || req.params.username === req.user.username) {
             return res.json({ error: 'Username invalid!' });
+        }
         // Append to received of other
         const otherUser = await User.findOneAndUpdate(
             { username: req.params.username },
@@ -30,7 +31,7 @@ exports.connectProfile = async (req, res) => {
         if (!otherUser) return res.json({ error: 'Username invalid!' });
         // Append to sent of user
         const user = await User.findOneAndUpdate(
-            { username: username },
+            { _id: req.user._id },
             { $push: { sent: otherUser._id } }
         );
         return res.json({ success: 'Request sent!' });
@@ -42,31 +43,44 @@ exports.connectProfile = async (req, res) => {
 // Search a profile
 // Option to search include : username, name, goal
 exports.searchProfile = async (req, res) => {
-    const { type, keyword } = req.query;
-    console.log(req.query);
-    res.json({ success: true });
+    const option = ['username', 'name', 'goal'];
+    try {
+        const { type, keyword } = req.query;
+        if (option.includes(type)) {
+            let query = {};
+            query[type] = keyword;
+            const profiles = await User.find(query);
+            res.json({ profiles });
+        } else {
+            res.status(401).json({ error: 'Invalid type' });
+        }
+    } catch (e) {}
 };
 
 // Accept invite
 exports.acceptInvite = async (req, res) => {
     try {
-        const username = req.query.username;
+        const username = req.params.username;
+        if (!username || req.user.username === username) {
+            return res.json({ error: 'Invalid username' });
+        }
         // Update other user
         const otherUser = await User.findOneAndUpdate(
-            { username: username },
+            { username: username, pending: req.user._id },
             {
-                $pull: { pending: req.user._id },
+                $pull: { sent: req.user._id },
                 $push: { connections: req.user._id },
             }
         );
         // Update my user
         await User.findOneAndUpdate(
-            { username: req.user.username },
+            { username: req.user.username, send: otherUser._id },
             {
-                $pull: { sent: otherUser._id },
+                $pull: { received: otherUser._id },
                 $push: { connections: otherUser._id },
             }
         );
+        res.json({ success: 'Accepted invite' });
     } catch (e) {
         res.json(501).json({ error: e });
     }
@@ -75,21 +89,82 @@ exports.acceptInvite = async (req, res) => {
 // Reject invite
 exports.rejectInvite = async (req, res) => {
     try {
-        const username = req.query.username;
+        const username = req.params.username;
+        if (!username || req.user.username === username) {
+            return res.json({ error: 'Invalid username' });
+        }
         // Update other user
         const otherUser = await User.findOneAndUpdate(
             { username: username },
             {
-                $pull: { pending: req.user._id },
+                $pull: { sent: req.user._id },
             }
         );
         // Update my user
         await User.findOneAndUpdate(
-            { username: req.user.username },
+            { _id: req.user._id },
             {
-                $pull: { sent: otherUser._id },
+                $pull: { received: otherUser._id },
             }
         );
+        res.json({ success: 'Rejected invite' });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+// Get all connections
+exports.getAllConnections = async (req, res) => {
+    try {
+        const connections = await User.findById(req.user._id).select(
+            'connections'
+        );
+        const profiles = await User.find({
+            _id: { $in: connections.connections },
+        }).select('-password');
+        res.json({ profiles });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+// Get pending
+exports.getPendingRequests = async (req, res) => {
+    try {
+        const pending = await User.findById(req.user._id).select('sent');
+        const profiles = await User.find({ _id: { $in: pending.sent } }).select(
+            '-password'
+        );
+        res.json({ profiles });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+// Get sent
+exports.getReceivedRequests = async (req, res) => {
+    try {
+        const received = await User.findById(req.user._id).select('received');
+        const profiles = await User.find({
+            _id: { $in: received.received },
+        }).select('-password');
+        res.json({ profiles });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+// Update profile
+exports.updateProfile = async (req, res) => {
+    try {
+        const profile = await User.findByIdAndUpdate(req.user._id, {
+            name: req.body.name || req.user.name,
+            goals: req.body.goals || req.user.goals,
+        });
+        if (!profile) {
+            return res.status(404).json({ error: 'Profile unavailable' });
+        }
+        res.json({ success: 'Profile updated successfully' });
     } catch (e) {
         res.json(501).json({ error: e });
     }

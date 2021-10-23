@@ -5,6 +5,37 @@ const userController = require('../controller/UserController');
 const Roadmap = require('../models/Roadmap');
 const User = require('../models/User');
 
+// Search a profile
+router.get('/search', userController.searchProfile);
+
+// Update profile
+router.patch(
+    '/update',
+    authController.isAuthenticated,
+    userController.updateProfile
+);
+
+// Pending requests
+router.get(
+    '/pending',
+    authController.isAuthenticated,
+    userController.getPendingRequests
+);
+
+// Received requests
+router.get(
+    '/received',
+    authController.isAuthenticated,
+    userController.getReceivedRequests
+);
+
+// Connections
+router.get(
+    '/connections',
+    authController.isAuthenticated,
+    userController.getAllConnections
+);
+
 // Profile
 router.get('/:username', userController.getProfile);
 
@@ -15,7 +46,18 @@ router.post(
     userController.connectProfile
 );
 
-// Search a profile
-router.get('/search', userController.searchProfile);
+// Accept to a user
+router.post(
+    '/:username/accept',
+    authController.isAuthenticated,
+    userController.acceptInvite
+);
+
+// Reject to a user
+router.post(
+    '/:username/reject',
+    authController.isAuthenticated,
+    userController.rejectInvite
+);
 
 module.exports = router;
