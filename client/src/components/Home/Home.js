@@ -14,7 +14,7 @@ const Home = (props) => {
         <div className={classes.Home}>
             <Navbar />
             <Panel />
-            <Roadmap />
+            {/* <Roadmap /> */}
             {/* <RightPanel/> */}
         </div>
     );

@@ -67,30 +67,10 @@ const Container = styled('div')(({ theme }) => ({
 
 const Navbar = (props) => {
     return (
-        <Container>
+        <Container >
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        sx={{ mr: 2 }}
-                    >
-                        <Icon style={{ color: 'white' }}>menu</Icon>
-                    </IconButton>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        color="white"
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'none', sm: 'block' },
-                        }}
-                    >
-                        Grasp
-                    </Typography>
+                <Toolbar style={{display: "flex", justifyContent: "flex-end"}}>
+                    
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -100,6 +80,7 @@ const Navbar = (props) => {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
+                    
                 </Toolbar>
             </AppBar>
         </Container>

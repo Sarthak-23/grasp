@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 //component
 import {GET_FULL_MONTH} from "../MainCalendar" 
@@ -7,6 +7,14 @@ import {GET_FULL_MONTH} from "../MainCalendar"
 import classes from "./DayBox.css"
 
 const DayBox = (props) => {
+
+    const [width, setWidth] = useState(window.innerWidth)
+
+    useEffect(()=>{
+        window.addEventListener("resize", ()=>{
+            setWidth(window.innerWidth);
+        })
+    }, [])
 
     let DayBoxClassList = [classes.DayBox]
     if(props.selected){
@@ -35,20 +43,20 @@ const DayBox = (props) => {
     }
 
     let boxStyle = {
-        height: "40px",
-        width: "40px"
+        height: width>350 ? "40px" : "30px",
+        width: width>350 ? "40px" : "30px"
     }
     if(props.Month){
         boxStyle = {
-            height: "70px",
-            width: "70px",
-            fontSize: "0.8rem"
+            height: width>350 ? "70px" : "55px" ,
+            width: width>350 ? "70px" : "55px" ,
+            fontSize: width>350 ? "0.8rem" : "0.7rem"
         }
     }
     else if(props.Year){
         boxStyle = {
-            height: "70px",
-            width: "70px"
+            height: width>350 ? "70px" : "50px" ,
+            width: width>350 ? "70px" : "50px" 
         }
     }
     // console.log(props.fade)
