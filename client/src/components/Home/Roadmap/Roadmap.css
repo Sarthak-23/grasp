@@ -31,6 +31,9 @@
 }
 .Sec ul li{
     margin-right: 5px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 2px;
 }
 .Main{
     height: 100%;
@@ -64,3 +67,59 @@
     padding-top: 20px;
     overflow-x: scroll;
 }
+
+/* // ----------Create Modal----------  */
+.Modal{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #404040a3;
+    z-index: 3;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.Backdrop{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+.CreateModal{
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 3px grey;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.CreateModal .head label{
+    color: #b4b4b4;
+}
+.CreateModal .head p{
+    color: black;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    align-items: center;
+}
+.box li{
+    padding: 4px;
+    border-radius: 5px;
+    color: #5c5cd7;
+    cursor: pointer;
+    background-color: #5c5cd721;
+    width: 100%;
+    margin: 2px 0;
+}
+.box li:hover{
+    background-color: #5c5cd74b;
+}
+
+
+
