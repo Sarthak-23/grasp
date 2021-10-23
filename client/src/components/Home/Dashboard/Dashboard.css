@@ -1,9 +1,15 @@
-.Panel {
+.Container {
     display: flex;
     flex-direction: column;
 }
+.Calendar {
+    width: 350px;
+    max-width: 100%;
+}
 .Profile {
     display: flex;
+    width: 350px;
+    max-width: 100%;
     flex-direction: column;
     box-shadow: 0 0 4px grey;
     border-radius: 10px;
