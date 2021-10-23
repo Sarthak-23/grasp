@@ -12,19 +12,21 @@ import { Box } from '@mui/system';
 import { UserContext } from '../../context/UserContext';
 
 const Home = (props) => {
-    const [user, setUser] = React.useContext(UserContext);
-    const [details, setDetails] = React.useState({});
+    const [details, setDetails] = React.useState({
+        user: props.user,
+        roadmaps: [],
+    });
     useEffect(() => {
-        console.log(user);
-        const fetchUser = async () => {
-            let result = await fetch(`/profile/${user.username}`);
-            result = await result.json();
-            return result;
-        };
-        fetchUser().then((res) => {
-            console.log(res);
-            setDetails(res);
-        });
+        console.log('home useeffect');
+        // const fetchUser = async () => {
+        //     let result = await fetch(`/profile/${user.username}`);
+        //     result = await result.json();
+        //     return result;
+        // };
+        // fetchUser().then((res) => {
+        //     console.log(res);
+        //     setDetails(res);
+        // });
     }, []);
 
     return (

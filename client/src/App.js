@@ -31,7 +31,11 @@ function Routes() {
                 <Profile />
             </Route>
             <Route exact path="/">
-                {!user || !user.id ? <Redirect to="/login" /> : <Home />}
+                {!user || !user.id ? (
+                    <Redirect to="/login" />
+                ) : (
+                    <Home user={user} setUser={setUser} />
+                )}
             </Route>
         </Switch>
     );
