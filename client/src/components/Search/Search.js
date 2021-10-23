@@ -128,16 +128,16 @@ const Search = () => {
                     setResult(res.profiles);
                     // console.log(res.profiles);
                 }
+                setLoading(false);
             });
-            setLoading(false);
         } else {
             setResultType(categoryOptions[1]);
             fetchRoadmap().then((res) => {
                 if (res) {
                     setResult(res);
                 }
+                setLoading(false);
             });
-            setLoading(false);
         }
     };
 
@@ -219,13 +219,11 @@ const Search = () => {
                 </Grid>
             </Grid>
             {result && resultType === categoryOptions[0] ? (
-                <NavLink to={`/profile/${result ? result[0].username : 2}`}>
-                    <UserList
-                        title="Search Result"
-                        users={result}
-                        emptyText={'Try a valid search'}
-                    />
-                </NavLink>
+                <UserList
+                    title="Search Result"
+                    users={result}
+                    emptyText={'Try a valid search'}
+                />
             ) : (
                 <RoadmapList
                     title="Search Result"

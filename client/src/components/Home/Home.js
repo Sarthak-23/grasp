@@ -35,8 +35,8 @@ const Home = (props) => {
         <div className={classes.Home}>
             <Navbar />
             <Box className={classes.Box}>
-                <Panel user={user} roadmaps={roadmaps} />
-                {/* <Roadmap /> */}
+                {/* <Panel user={user} roadmaps={roadmaps} /> */}
+                <Roadmap />
                 {/* <RightPanel /> */}
             </Box>
         </div>

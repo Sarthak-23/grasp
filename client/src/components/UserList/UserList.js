@@ -50,7 +50,7 @@ const UserList = (props) => {
                                 return (
                                     <Link
                                         style={{ textDecoration: 'none' }}
-                                        to="/"
+                                        to={`/profile/${user.username}`}
                                     >
                                         <ListItem>
                                             <ListItemIcon>
