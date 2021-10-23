@@ -1,53 +1,47 @@
 .Roadmap{
-    min-height: 90vh;
-    position: relative;
-    margin-left: 10px;
-    width: 100%;
     background-color: #E4E4E4;
     border-radius: 5px;
-    padding: 20px;
-    box-shadow: 2px 2px 5px #eee;
-}
-.Header{
-
-}
-.Header .top{
     display: flex;
-    /* align-items: center; */
-    justify-content: space-between;
-    margin: 5px 0;
+    width: 90%;
+    margin: auto;
+    height: 100%;
 }
-.Header .title{
+.Info{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 30px;
+}
+.Info h3{
     font-size: 2rem;
 }
-.date label{
+.Sec{
+    margin: 10px 0;
+}
+.Sec label{
     font-size: 0.7rem;
+    color: #A7A7A7;
 }
-.Header .description{
-    font-size: 0.8rem;
-    color: #3c3c3c;
+.Sec p{
+    color: #404040;
 }
-.tags{
-    list-style: none;
+.Sec ul{
     display: flex;
+    list-style: none;
 }
-.tags li{
-    margin: 5px;
-    font-size: 0.8rem;
-    background-color: white;
-    padding: 5px;
-    border-radius: 5px;
+.Sec ul li{
+    margin-right: 5px;
 }
 .Main{
-    width: 700px;
-    margin: auto;
-    margin-top: 20px;
-    border: 1px solid #000;
+    height: 100%;
     padding: 30px;
     border-radius: 5px;
     background: #9ccca5;
     overflow-y: scroll;
-    height: 80%;
+    transition: 0.3s;
+}
+.Main:hover{
+    transform: scale(1.1);
 }
 .Main::-webkit-scrollbar{
     width: 10px;

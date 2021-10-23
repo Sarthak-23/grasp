@@ -3,6 +3,6 @@
     flex-direction: column;
 }
 .Box {
-    display: flex;
-    height: 100vh;
+    padding: 50px;
+    height: 90vh;
 }

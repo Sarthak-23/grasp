@@ -68,26 +68,33 @@ const Roadmap =(props)=> {
 
 
   return (
+    
     <div className={classes.Roadmap}>
 
-        <div className={classes.Header}>
-          <div className={classes.top}>
-          <p className={classes.title}>Placement</p>
-          <div className={classes.date}>
-            <label>start</label>
-            <p>21-May-2020</p>
-            </div>
-          </div>
-          <p className={classes.description}>This is the discription of the roadmap!</p>
+      <div className={classes.Info}>
+        
+        <h3>Title</h3>
+        <div className={classes.Sec}>
+          <label>description</label>
+          <p>This is the discription of the roadmap</p>
+        </div>
+        <div className={classes.Sec}>
+          <label>Start</label>
+          <p>21 March, 2020</p>
+        </div>
+        <div className={classes.Sec}>
+          <label>Tags</label>
+          <ul>
+            <li>Tag1</li>
+            <li>Tag2</li>
+            <li>Tag3</li>
+            <li>Tag4</li>
+          </ul>
         </div>
 
-        <div className={classes.tags}>
-          <li>Tag1</li>
-          <li>Tag2</li>
-          <li>Tag3</li>
-        </div>
-
-        <div className={classes.Main}>
+      </div>
+      
+      <div className={classes.Main}>
           
           <div className={classes.StartDiv}>
             Starting Placement Roadmap

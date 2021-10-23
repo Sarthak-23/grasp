@@ -13,6 +13,7 @@
     font-weight: 700;
     transition: 0.2s;
     transition-property: border;
+    
 }
 .DayBox_default{
     border: 0.5px solid #e8e8e8;
