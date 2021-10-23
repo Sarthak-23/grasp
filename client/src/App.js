@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Login from '../src/components/Login/Login';
 import Register from '../src/components/Register/Register';
@@ -13,6 +13,20 @@ import Profile from './components/Profile/Profile';
 
 function Routes() {
     const [user, setUser] = React.useContext(UserContext);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            let res = await fetch('/auth/user');
+            res = await res.json();
+            return res;
+        };
+        fetchUser().then((res) => {
+            if (!res.error) {
+                setUser(res);
+            }
+        });
+    }, []);
+
     return (
         <Switch>
             <Route exact path="/login">
@@ -34,7 +48,7 @@ function Routes() {
                 {!user || !user.id ? (
                     <Redirect to="/login" />
                 ) : (
-                    <Home user={user} setUser={setUser} />
+                    <Home user={user} />
                 )}
             </Route>
         </Switch>

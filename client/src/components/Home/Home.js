@@ -12,11 +12,7 @@ import { Box } from '@mui/system';
 import { UserContext } from '../../context/UserContext';
 
 const Home = (props) => {
-    const [user, setUser] = React.useState({
-        id: props.user.id,
-        username: props.user.username,
-        name: props.user.name,
-    });
+    const [user, setUser] = React.useState(props.user);
     const [roadmaps, setRoadmaps] = React.useState([]);
 
     useEffect(() => {
@@ -26,7 +22,6 @@ const Home = (props) => {
             return result;
         };
         fetchUser().then((res) => {
-            setUser(res.user);
             setRoadmaps(res.roadmaps);
         });
     }, []);
@@ -35,8 +30,13 @@ const Home = (props) => {
         <div className={classes.Home}>
             <Navbar />
             <Box className={classes.Box}>
-                {/* <Panel user={user} roadmaps={roadmaps} /> */}
-                <Roadmap />
+                <Panel
+                    user={user}
+                    roadmaps={roadmaps}
+                    setUser={setUser}
+                    setRoadmaps={setRoadmaps}
+                />
+                {/* <Roadmap /> */}
                 {/* <RightPanel /> */}
             </Box>
         </div>
