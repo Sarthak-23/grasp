@@ -1,36 +1,40 @@
-.Container{
+.Container {
     display: flex;
     flex-direction: column;
     width: 400px;
     padding: 10px;
-    border: 1px solid black;
+    box-shadow: 0 0 8px #3e3e3e;
+    background-color: #3b8ad969;
     border-radius: 8px;
     min-height: 100vh;
+    z-index: 1;
     align-items: center;
 }
 
-.Description{
+.Description {
     width: 350px;
     padding: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 4px grey;
+    border-radius: 10px;
     min-height: 30vh;
     margin-top: 20px;
 }
 
-.Edit{
+.Edit {
     font-size: 10px;
     float: right;
     cursor: pointer;
 }
 
-.Materials{
+.Materials {
     display: flex;
     flex-direction: row;
     width: 350px;
     padding: 20px;
-    border: 1px solid black;
-    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 4px grey;
+    border-radius: 10px;
     min-height: 15vh;
     margin-top: 20px;
 }
