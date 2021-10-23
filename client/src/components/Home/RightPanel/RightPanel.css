@@ -13,7 +13,7 @@
     width: 350px;
     padding: 10px;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 5px;
     min-height: 30vh;
     margin-top: 20px;
 }
@@ -30,7 +30,7 @@
     width: 350px;
     padding: 20px;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 5px;
     min-height: 15vh;
     margin-top: 20px;
 }

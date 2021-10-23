@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import classes from './RightPanel.css';
 import Backdrop from '@mui/material/Backdrop';
+import TextField from '@mui/material/TextField';
 
 const style = {
     position: 'absolute',
@@ -21,11 +22,12 @@ const style = {
 
 const RightPanel = () => {
     const [open, setOpen] = React.useState(false);
+    const [description,setDescription] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     return (
         <div className={classes.Container}>
-            <h1>Right Panel</h1>
+            <h1>Topic Name</h1>
             <div className={classes.Description}>
                 <BorderColorIcon className={classes.Edit} onClick={handleOpen}/><br/><br/>
                 <div style={{textAlign:"center"}}>
@@ -48,10 +50,21 @@ const RightPanel = () => {
             >
                 <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Description
+                    Topic
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    List Of Items
+                    <TextField
+                        label="Description"
+                        variant="outlined"
+                        placeholder="Enter Description"
+                        fullWidth
+                        required
+                        style={{ marginTop: '20px' }}
+                        name="description"
+                        id="description"
+                        value={description}
+                        onChange={(e)=>setDescription(e.target.value)}
+                    />
                 </Typography>
                 </Box>
             </Modal>
