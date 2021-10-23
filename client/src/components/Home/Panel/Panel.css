@@ -1,14 +1,18 @@
 .Panel {
+    position: absolute;
+    left: 0;
+    top: 0;
     display: flex;
-    flex-direction: column;
     width: 350px;
+    max-width: 100%;
+    flex-direction: column;
     padding: 10px;
     box-shadow: 0 0 8px #3e3e3e;
-    background-color: #3b8ad969;
+    background-color: #7a7e83c5;
     border-radius: 5px;
-    /* height: 100%; */
+    height: 100%;
+    overflow-y: auto;
     z-index: 1;
-    position: absolute;
 }
 .Profile {
     display: flex;
