@@ -18,6 +18,7 @@ import { Box } from '@mui/system';
 import { Button, CircularProgress, Icon } from '@mui/material';
 import RoadmapList from '../RoadmapList/RoadmapList';
 import UserList from '../UserList/UserList';
+import { NavLink } from 'react-router-dom';
 
 // function generate(element) {
 //     return [0, 1, 2].map((value) =>
@@ -125,6 +126,7 @@ const Search = () => {
             fetchUserByProfile().then((res) => {
                 if (res) {
                     setResult(res.profiles);
+                    // console.log(res.profiles);
                 }
             });
             setLoading(false);
@@ -216,12 +218,14 @@ const Search = () => {
                     )}
                 </Grid>
             </Grid>
-            {resultType === categoryOptions[0] ? (
-                <UserList
-                    title="Search Result"
-                    users={result}
-                    emptyText={'Try a valid search'}
-                />
+            {result && resultType === categoryOptions[0] ? (
+                <NavLink to={`/profile/${result ? result[0].username : 2}`}>
+                    <UserList
+                        title="Search Result"
+                        users={result}
+                        emptyText={'Try a valid search'}
+                    />
+                </NavLink>
             ) : (
                 <RoadmapList
                     title="Search Result"
