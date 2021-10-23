@@ -1,6 +1,6 @@
 .Container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 .Calendar {
     width: 350px;
@@ -38,8 +38,14 @@
     margin-top: 10px;
 }
 
-@media (max-width: 350px) {
-    .Panel {
+@media (max-width: 768px) {
+    .Container {
+        flex-direction: column;
+    }
+    .Calendar {
+        width: 100%;
+    }
+    .Profile {
         width: 100%;
     }
 }

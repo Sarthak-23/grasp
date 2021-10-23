@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { UserContext } from '../../../context/UserContext';
 
 //componennt
 import MainCalendar from './MainCalendar/MainCalendar';
@@ -20,19 +21,22 @@ import { Grid, Typography } from '@mui/material';
 import RoadmapList from '../../RoadmapList/RoadmapList';
 
 const Panel = (props) => {
-    const [value, onChange] = useState(new Date());
+    const [user, setUser] = React.useContext(UserContext);
+    const [isEditable, setIsEditable] = React.useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+
+    useEffect(() => {
+        if (props.user.username === user.username) setIsEditable(true);
+    }, []);
 
     const selectHandler = (dateArray) => {
         setSelectedDate(dateArray);
     };
 
-    const handleListItemClick = () => {};
-
     return (
-        <Grid container>
+        <Box className={classes.Container}>
             {/* profile  */}
-            <Grid item>
+            <Box>
                 <Box className={classes.Profile}>
                     <div
                         className={classes.image}
@@ -41,8 +45,9 @@ const Panel = (props) => {
                         }}
                     />
                     <div className={classes.info}>
-                        <h3>@Stalin</h3>
-                        <p>Joseph Stalin</p>
+                        <Typography>{props.user.username}</Typography>
+                        <Typography>{props.user.name}</Typography>
+                        <Typography>{props.user.about}</Typography>
                     </div>
                 </Box>
 
@@ -50,43 +55,15 @@ const Panel = (props) => {
                 <Box className={classes.Calendar}>
                     <MainCalendar selectDateHandler={selectHandler} />
                 </Box>
-            </Grid>
+            </Box>
 
             {/* RoadMap  */}
-            <Grid item>
-                <RoadmapList
-                    title="Your Roadmaps"
-                    roadmaps={[]}
-                    emptyText={'No roadmaps created yet.'}
-                />
-                {/* <Box>
-                    <div className={classes.head}>
-                        <Button
-                            style={{ marginRight: '5px' }}
-                            variant="contained"
-                        >
-                            Create
-                        </Button>
-                        <TextField size="small" label="Roadmap" id="Roadmap" />
-                    </div>
-                    <List component="nav" aria-label="secondary mailbox folder">
-                        <ListItemButton
-                            selected={1}
-                            onClick={handleListItemClick}
-                        >
-                            <ListItemText primary="Trash" />
-                        </ListItemButton>
-
-                        <ListItemButton
-                            selected={0}
-                            onClick={handleListItemClick}
-                        >
-                            <ListItemText primary="Spam" />
-                        </ListItemButton>
-                    </List>
-                </Box> */}
-            </Grid>
-        </Grid>
+            <RoadmapList
+                title="Your Roadmaps"
+                roadmaps={props.roadmaps}
+                emptyText={'No roadmaps created yet.'}
+            />
+        </Box>
     );
 };
 
