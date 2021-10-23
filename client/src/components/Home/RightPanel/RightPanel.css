@@ -1,37 +1,38 @@
 .Container {
+    position: absolute;
     display: flex;
     flex-direction: column;
-    width: 400px;
-    padding: 10px;
+    width: 350px;
+    max-width: 100%;
+    padding: 15px;
     box-shadow: 0 0 8px #3e3e3e;
     background-color: #b8d5f1;
     border-radius: 5px;
-    min-height: 100vh;
+    height: 100%;
     z-index: 1;
     align-items: center;
-    position: absolute;
     right: 0;
     top: 0;
 }
 
 .Description {
-    width: 350px;
+    /* width: 350px;
     padding: 10px;
     background-color: white;
     box-shadow: 0 0 4px grey;
     border-radius: 10px;
     min-height: 30vh;
-    margin-top: 20px;
+    margin-top: 20px; */
 }
 
 .Edit {
-    font-size: 10px;
+    /* font-size: 10px;
     float: right;
-    cursor: pointer;
+    cursor: pointer; */
 }
 
 .Materials {
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     width: 350px;
     padding: 20px;
@@ -39,12 +40,12 @@
     box-shadow: 0 0 4px grey;
     border-radius: 5px;
     min-height: 15vh;
-    margin-top: 20px;
+    margin-top: 20px; */
 }
 
 .textArea {
     border: none;
-    width: 350px;
+    width: 100%;
     padding: 10px;
     background-color: white;
     box-shadow: 0 0 4px grey;
@@ -60,3 +61,18 @@
     margin-top: 40px !important;
     border-radius: 20px !important;
 }
+
+/* @media screen and (max-width: 400px) {
+    .Container {
+        width: 100%;
+    }
+    .Description {
+        width: 100%;
+    }
+    .Materials {
+        width: 100%;
+    }
+    .textArea {
+        width: 100%;
+    }
+} */

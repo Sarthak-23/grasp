@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import classes from './RightPanel.css';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 const style = {
     position: 'absolute',
@@ -27,8 +29,13 @@ const RightPanel = () => {
     };
 
     return (
-        <div className={classes.Container}>
-            <h1>Topic Name</h1>
+        <Box className={classes.Container}>
+            <Typography
+                style={{ textAlign: 'left', width: '100%' }}
+                variant="h5"
+            >
+                Topic Name
+            </Typography>
             <TextareaAutosize
                 aria-label="minimum height"
                 minRows={10}
@@ -59,7 +66,7 @@ const RightPanel = () => {
             >
                 Update
             </Button>
-        </div>
+        </Box>
     );
 };
 

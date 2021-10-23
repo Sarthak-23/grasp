@@ -15,7 +15,7 @@ const Home = (props) => {
         <div className={classes.Home}>
             <Navbar />
             <Box className={classes.Box}>
-                {/* <Panel /> */}
+                <Panel />
                 <Roadmap />
                 <RightPanel />
             </Box>
