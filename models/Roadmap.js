@@ -13,6 +13,7 @@ const RoadmapSchema = mongoose.Schema(
         parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
         path: [
             {
+                index: { type: Number, require: true }, //  sort order
                 subpath: [
                     {
                         index: { type: Number, require: true }, // sort order

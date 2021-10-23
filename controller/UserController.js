@@ -43,6 +43,8 @@ exports.connectProfile = async (req, res) => {
 // Option to search include : username, name, goal
 exports.searchProfile = async (req, res) => {
     const { type, keyword } = req.query;
+    console.log(req.query);
+    res.json({ success: true });
 };
 
 // Accept invite
