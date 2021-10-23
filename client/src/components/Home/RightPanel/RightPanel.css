@@ -54,6 +54,6 @@
 }
 
 .Button {
-    margin-top: 40px;
-    border-radius: 20px;
+    margin-top: 40px !important;
+    border-radius: 20px !important;
 }

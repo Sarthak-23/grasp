@@ -16,8 +16,8 @@ const style = {
 };
 
 const RightPanel = () => {
-    const [des_disable, setDesdisable] = useState(false);
-    const [mat_disable, setMatdisable] = useState(false);
+    const [des_disable, setDesdisable] = useState(true);
+    const [mat_disable, setMatdisable] = useState(true);
     const [description, setDescription] = useState('');
     const [material, setMaterial] = useState('');
 
