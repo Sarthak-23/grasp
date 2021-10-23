@@ -14,7 +14,7 @@ const Home = (props) => {
     return (
         <div className={classes.Home}>
             <Navbar />
-            <Box>
+            <Box className={classes.Box}>
                 <Panel />
                 <Roadmap />
                 {/* <RightPanel /> */}
