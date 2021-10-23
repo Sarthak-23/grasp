@@ -57,13 +57,18 @@ const UserList = (props) => {
                                                 <Avatar />
                                             </ListItemIcon>
                                             <ListItemText
-                                                primary="Topic Name"
-                                                secondary="Description"
+                                                primary={user.username}
+                                                secondary={user.name}
                                             />
                                             <ListItemText
-                                                className={classes.Date_Class}
-                                                primary="Last Update: 23-10-2021"
-                                                secondary="Created On: 23-10-2021"
+                                                secondary={
+                                                    user.about
+                                                        ? user.about.slice(
+                                                              0,
+                                                              100
+                                                          ) + '...'
+                                                        : ''
+                                                }
                                             />
                                         </ListItem>
                                         <hr />
