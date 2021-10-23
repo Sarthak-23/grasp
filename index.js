@@ -16,11 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middle wares
 app.use(express.json());
-app.use(
-    cors({
-        origin: 'http://localhost:5000/',
-    })
-);
+app.use(cors());
 app.use(
     session({
         secret: process.env.SESSION_KEY,

@@ -16,6 +16,8 @@ import classes from './Search.css';
 import Navbar from '../Navbar/Navbar';
 import { Box } from '@mui/system';
 import { Button, CircularProgress, Icon } from '@mui/material';
+import RoadmapList from '../RoadmapList/RoadmapList';
+import UserList from '../UserList/UserList';
 
 // function generate(element) {
 //     return [0, 1, 2].map((value) =>
@@ -63,7 +65,44 @@ const Search = () => {
     const [category, setCategory] = React.useState(categoryOptions[0]);
     const [type, setType] = React.useState(profileOptions[0]);
     const [keyword, setKeyword] = React.useState('');
+    const [resultType, setResultType] = React.useState(categoryOptions[0]);
+    const [result, setResult] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+
+    const fetchUserByProfile = async () => {
+        try {
+            const res = await fetch(
+                `/profile/search?type=${type.toLowerCase()}&keyword=${keyword}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const data = await res.json();
+            if (data.error) throw data.error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const fetchRoadmap = async () => {
+        try {
+            const res = await fetch(`/roadmaps/all/search?q=${keyword}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await res.json();
+            if (data.error) throw data.error;
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const handleCategory = (e) => {
         setCategory(e.target.value);
@@ -81,9 +120,23 @@ const Search = () => {
 
     const handleSearch = async () => {
         setLoading(true);
-        setTimeout(() => {
+        if (category === 'Profile') {
+            setResultType(categoryOptions[0]);
+            fetchUserByProfile().then((res) => {
+                if (res) {
+                    setResult(res.profiles);
+                }
+            });
             setLoading(false);
-        }, 2000);
+        } else {
+            setResultType(categoryOptions[1]);
+            fetchRoadmap().then((res) => {
+                if (res) {
+                    setResult(res);
+                }
+            });
+            setLoading(false);
+        }
     };
 
     const renderProfileTypes = () => {
@@ -163,38 +216,19 @@ const Search = () => {
                     )}
                 </Grid>
             </Grid>
-            <Grid container className={classes.container}>
-                <Grid item xs={12} md={9}>
-                    <Typography
-                        sx={{ mt: 4, mb: 2 }}
-                        variant="h6"
-                        component="div"
-                    >
-                        Search Results
-                    </Typography>
-                    <hr />
-                    <Demo>
-                        <List>
-                            {/* {generate( */}
-                            <ListItem>
-                                <ListItemIcon>
-                                    <EditRoadIcon />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Topic Name"
-                                    secondary="Description"
-                                />
-                                <ListItemText
-                                    className={classes.Date_Class}
-                                    primary="Last Update: 23-10-2021"
-                                    secondary="Created On: 23-10-2021"
-                                />
-                            </ListItem>
-                            {/* )} */}
-                        </List>
-                    </Demo>
-                </Grid>
-            </Grid>
+            {resultType === categoryOptions[0] ? (
+                <UserList
+                    title="Search Result"
+                    users={result}
+                    emptyText={'Try a valid search'}
+                />
+            ) : (
+                <RoadmapList
+                    title="Search Result"
+                    roadmaps={result}
+                    emptyText={'Try a valid search'}
+                />
+            )}
         </Box>
     );
 };

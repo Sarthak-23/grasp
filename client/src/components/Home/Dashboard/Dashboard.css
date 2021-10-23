@@ -1,23 +1,16 @@
-.Panel {
-    position: absolute;
-    left: 0;
-    top: 0;
+.Container {
+    display: flex;
+    flex-direction: row;
+}
+.Calendar {
+    width: 350px;
+    max-width: 100%;
+}
+.Profile {
     display: flex;
     width: 350px;
     max-width: 100%;
     flex-direction: column;
-    padding: 10px;
-    box-shadow: 0 0 8px #3e3e3e;
-    background-color: #7a7e83c5;
-    border-radius: 5px;
-    height: 100%;
-    overflow-y: auto;
-    z-index: 1;
-}
-.Profile {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
     box-shadow: 0 0 4px grey;
     border-radius: 10px;
     padding: 10px;
@@ -45,8 +38,14 @@
     margin-top: 10px;
 }
 
-@media (max-width: 350px) {
-    .Panel {
+@media (max-width: 768px) {
+    .Container {
+        flex-direction: column;
+    }
+    .Calendar {
+        width: 100%;
+    }
+    .Profile {
         width: 100%;
     }
 }

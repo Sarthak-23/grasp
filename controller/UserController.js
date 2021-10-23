@@ -49,7 +49,7 @@ exports.searchProfile = async (req, res) => {
         if (option.includes(type)) {
             let query = {};
             query[type] = keyword;
-            const profiles = await User.find(query);
+            const profiles = await User.find(query).select('-password');
             res.json({ profiles });
         } else {
             res.status(401).json({ error: 'Invalid type' });
