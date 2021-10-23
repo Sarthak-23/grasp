@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
+import { Avatar, Button, Tooltip } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,9 +54,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const Menu = styled(MenuIcon)(({ theme }) => ({
-    color: 'white',
-    fill: 'white',
+const EmptySpace = styled('div')(({ theme }) => ({
+    flexGrow: 1,
+    margin: 'auto 1rem',
 }));
 
 const Container = styled('div')(({ theme }) => ({
@@ -69,8 +70,29 @@ const Navbar = (props) => {
     return (
         <Container >
             <AppBar position="static">
-                <Toolbar style={{display: "flex", justifyContent: "flex-end"}}>
-                    
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        sx={{ mr: 2 }}
+                    >
+                        <Icon style={{ color: 'white' }}>menu</Icon>
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        color="white"
+                        sx={{
+                            // flexGrow: 1,
+                            display: { xs: 'none', sm: 'block' },
+                        }}
+                    >
+                        Grasp
+                    </Typography>
+                    <EmptySpace />
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -80,7 +102,12 @@ const Navbar = (props) => {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
-                    
+                    <EmptySpace />
+                    <Tooltip title="Logout">
+                        <Button variant="contained" color="error">
+                            <Icon style={{ color: 'white' }}>logout</Icon>
+                        </Button>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
         </Container>
