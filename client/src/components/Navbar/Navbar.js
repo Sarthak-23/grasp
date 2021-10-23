@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
+import { Avatar, Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,9 +54,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const Menu = styled(MenuIcon)(({ theme }) => ({
-    color: 'white',
-    fill: 'white',
+const EmptySpace = styled('div')(({ theme }) => ({
+    flexGrow: 1,
+    margin: 'auto 1rem',
 }));
 
 const Container = styled('div')(({ theme }) => ({
@@ -85,12 +86,13 @@ const Navbar = (props) => {
                         component="div"
                         color="white"
                         sx={{
-                            flexGrow: 1,
+                            // flexGrow: 1,
                             display: { xs: 'none', sm: 'block' },
                         }}
                     >
                         Grasp
                     </Typography>
+                    <EmptySpace />
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -100,6 +102,10 @@ const Navbar = (props) => {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
+                    <EmptySpace />
+                    <Button variant="contained" color="error">
+                        Logout
+                    </Button>
                 </Toolbar>
             </AppBar>
         </Container>
