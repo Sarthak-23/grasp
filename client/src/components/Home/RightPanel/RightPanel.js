@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react';
 import Icon from '@mui/material/Icon';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Box from '@mui/material/Box';
@@ -18,20 +18,26 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
+};
 
 const RightPanel = () => {
     const [open, setOpen] = React.useState(false);
-    const [description,setDescription] = useState('');
+    const [description, setDescription] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     return (
         <div className={classes.Container}>
             <h1>Topic Name</h1>
             <div className={classes.Description}>
-                <BorderColorIcon className={classes.Edit} onClick={handleOpen}/><br/><br/>
-                <div style={{textAlign:"center"}}>
-                    <p>Description</p><br/>
+                <BorderColorIcon
+                    className={classes.Edit}
+                    onClick={handleOpen}
+                />
+                <br />
+                <br />
+                <div style={{ textAlign: 'center' }}>
+                    <p>Description</p>
+                    <br />
                 </div>
             </div>
             <div className={classes.Materials}>
@@ -45,31 +51,35 @@ const RightPanel = () => {
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                timeout: 500,
+                    timeout: 500,
                 }}
             >
                 <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Topic
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <TextField
-                        label="Description"
-                        variant="outlined"
-                        placeholder="Enter Description"
-                        fullWidth
-                        required
-                        style={{ marginTop: '20px' }}
-                        name="description"
-                        id="description"
-                        value={description}
-                        onChange={(e)=>setDescription(e.target.value)}
-                    />
-                </Typography>
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                    >
+                        Topic
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <TextField
+                            label="Description"
+                            variant="outlined"
+                            placeholder="Enter Description"
+                            fullWidth
+                            required
+                            style={{ marginTop: '20px' }}
+                            name="description"
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </Typography>
                 </Box>
             </Modal>
         </div>
-    )
-}
+    );
+};
 
-export default RightPanel
+export default RightPanel;

@@ -1,5 +1,5 @@
-.Home{
-    display: flex;   
+.Home {
+    display: flex;
     height: 100vh;
-    padding: 10px;
+    /* padding: 10px; */
 }
