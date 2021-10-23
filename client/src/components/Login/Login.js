@@ -5,7 +5,7 @@ import React from 'react'
 //classes
 import classes from "./Login.css"
 
-const Login = () => {
+const Login = (props) => {
     return (
         <div className={classes.Login}>
             <h1>Login Page</h1>
