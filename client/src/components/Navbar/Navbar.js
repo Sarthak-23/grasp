@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -67,6 +68,13 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const Navbar = (props) => {
+    const pathname = useLocation().pathname;
+    const [showSearch, setShowSearch] = React.useState(false);
+    React.useEffect(() => {
+        if (pathname !== '/search') {
+            setShowSearch(true);
+        }
+    }, []);
     return (
         <Container>
             <AppBar position="static">
@@ -93,16 +101,23 @@ const Navbar = (props) => {
                         Grasp
                     </Typography>
                     <EmptySpace />
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search>
-                    <EmptySpace />
+                    {showSearch ? (
+                        <Link style={{ margin: 'auto 2rem' }} to="/search">
+                            {/* <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search> */}
+                            <IconButton>
+                                <Icon style={{ color: 'white' }}>search</Icon>
+                            </IconButton>
+                        </Link>
+                    ) : null}
+                    {/* <EmptySpace /> */}
                     <Tooltip title="Logout">
                         <Button variant="contained" color="error">
                             <Icon style={{ color: 'white' }}>logout</Icon>
