@@ -6,7 +6,7 @@
     box-shadow: 0 0 8px #3e3e3e;
     background-color: #b8d5f1;
     border-radius: 5px;
-    min-height: 100vh;
+    height: 100%;
     z-index: 1;
     align-items: center;
     position: absolute;
@@ -59,4 +59,19 @@
 .Button {
     margin-top: 40px !important;
     border-radius: 20px !important;
+}
+
+@media screen and (max-width: 400px) {
+    .Container {
+        width: 100%;
+    }
+    .Description {
+        width: 100%;
+    }
+    .Materials {
+        width: 100%;
+    }
+    .textArea {
+        width: 100%;
+    }
 }
