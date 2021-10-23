@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
     },
+    Date_Class: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+    },
 }));
 
 const Demo = styled('div')(({ theme }) => ({
@@ -52,6 +57,11 @@ const Search = () => {
                             <ListItemText
                                 primary="Topic Name"
                                 secondary="Description"
+                            />
+                            <ListItemText
+                                className={classes.Date_Class}
+                                primary="Last Update: 23-10-2021"
+                                secondary="Created On: 23-10-2021"
                             />
                         </ListItem>
                         {/* )} */}
