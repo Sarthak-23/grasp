@@ -40,17 +40,6 @@
     overflow-y: scroll;
     transition: 0.3s;
 }
-.Main:hover{
-    transform: scale(1.1);
-}
-.Main::-webkit-scrollbar{
-    width: 10px;
-}
-.Main::-webkit-scrollbar-thumb{
-    width: 10px;
-    border-radius: 5px;
-    background-color: #e4e4e4;
-}
 .Topics{
     padding: 10px;
     border-radius: 5px;
@@ -74,12 +63,4 @@
     border-top: 1px solid #c1c1c1;
     padding-top: 20px;
     overflow-x: scroll;
-}
-.Box::-webkit-scrollbar{
-    height: 10px;
-}
-.Box::-webkit-scrollbar-thumb{
-    height: 10px;
-    border-radius: 5px;
-    background-color: #e4e4e4;
 }
