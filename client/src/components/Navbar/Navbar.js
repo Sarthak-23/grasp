@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -69,12 +69,27 @@ const Container = styled('div')(({ theme }) => ({
 
 const Navbar = (props) => {
     const pathname = useLocation().pathname;
+    const hist = useHistory();
     const [showSearch, setShowSearch] = React.useState(false);
     React.useEffect(() => {
         if (pathname !== '/search') {
             setShowSearch(true);
         }
     }, []);
+
+    const handleLogout = async () => {
+        try {
+            let res = await fetch('/auth/logout', { method: 'POST' });
+            res = await res.json();
+            if (!res.success) throw res.error;
+            else {
+                hist.replace('/login');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     return (
         <Container>
             <AppBar position="static">
@@ -121,7 +136,11 @@ const Navbar = (props) => {
                     ) : null}
                     {/* <EmptySpace /> */}
                     <Tooltip title="Logout">
-                        <Button variant="contained" color="error">
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleLogout}
+                        >
                             <Icon style={{ color: 'white' }}>logout</Icon>
                         </Button>
                     </Tooltip>
