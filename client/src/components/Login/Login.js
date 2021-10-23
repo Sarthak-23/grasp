@@ -52,7 +52,7 @@ const Login = () => {
         }
         // Submit the details...
         try {
-            let res = await fetch('http://localhost:5000/auth/login', {
+            let res = await fetch('/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
