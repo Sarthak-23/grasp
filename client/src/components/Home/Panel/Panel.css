@@ -6,6 +6,15 @@
     border: 1px solid #707070;
     border-radius: 10px;
     height: 100%;
+    /* overflow-y: scroll; */
+}
+.Panel::-webkit-scrollbar{
+    width: 10px;
+}
+.Panel::-webkit-scrollbar-thumb{
+    width: 10px;
+    border-radius: 5px;
+    background-color: #e4e4e4;
 }
 .Profile{
     display: flex;

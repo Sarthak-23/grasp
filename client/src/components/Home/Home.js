@@ -11,9 +11,9 @@ import classes from "./Home.css"
 const Home = (props) => {
     return (
         <div className={classes.Home}>
-            {/* <Roadmap /> */}
-            {/* <Panel /> */}
-            <RightPanel/>
+            <Panel />
+            <Roadmap />
+            {/* <RightPanel/> */}
         </div>
     )
 }

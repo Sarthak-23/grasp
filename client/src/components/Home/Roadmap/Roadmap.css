@@ -3,10 +3,50 @@
     margin-left: 10px;
     width: 100%;
     background-color: #E4E4E4;
-    border: 1px solid #707070;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
+    box-shadow: 2px 2px 5px #eee;
+}
+.Header{
+
+}
+.Header .title{
+    font-size: 2rem;
+}
+.Main{
+    width: 800px;
+    margin: auto;
+}
+.Topics{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    width: 100%;
+}
+.StartDiv{
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+}
+.path{
+    width: 4px;
+    height: 100px;
+    background-color: black;
+    margin-left: 40px;
+}
+.Topics .title{
+    margin: 10px 0;
 }
 .Box{
-
+    border-top: 1px solid #c1c1c1;
+    padding-top: 20px;
+    overflow-x: scroll;
+}
+.Box::-webkit-scrollbar{
+    height: 10px;
+}
+.Box::-webkit-scrollbar-thumb{
+    height: 10px;
+    border-radius: 5px;
+    background-color: #e4e4e4;
 }
