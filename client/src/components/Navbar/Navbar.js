@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Tooltip } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -103,9 +103,11 @@ const Navbar = (props) => {
                         />
                     </Search>
                     <EmptySpace />
-                    <Button variant="contained" color="error">
-                        Logout
-                    </Button>
+                    <Tooltip title="Logout">
+                        <Button variant="contained" color="error">
+                            <Icon style={{ color: 'white' }}>logout</Icon>
+                        </Button>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
         </Container>
