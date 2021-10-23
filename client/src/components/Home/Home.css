@@ -1,4 +1,8 @@
 .Home {
     display: flex;
+    flex-direction: column;
+}
+.Box {
+    display: flex;
     height: 100vh;
 }

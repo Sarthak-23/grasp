@@ -60,7 +60,7 @@ const EmptySpace = styled('div')(({ theme }) => ({
 }));
 
 const Container = styled('div')(({ theme }) => ({
-    position: 'fixed',
+    // position: 'fixed',
     display: 'flex',
     alignItems: 'center',
     width: '100%',
@@ -68,7 +68,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const Navbar = (props) => {
     return (
-        <Container >
+        <Container>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton

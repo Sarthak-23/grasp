@@ -8,14 +8,17 @@ import Navbar from '../Navbar/Navbar';
 
 //classes
 import classes from './Home.css';
+import { Box } from '@mui/system';
 
 const Home = (props) => {
     return (
         <div className={classes.Home}>
             <Navbar />
-            <Panel />
-            {/* <Roadmap /> */}
-            {/* <RightPanel/> */}
+            <Box>
+                <Panel />
+                <Roadmap />
+                {/* <RightPanel /> */}
+            </Box>
         </div>
     );
 };
