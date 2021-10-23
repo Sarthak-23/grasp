@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
 //componene
-import Panel from './Panel/Panel'
-import Roadmap from './Roadmap/Roadmap'
-import RightPanel from './RightPanel/RightPanel'
+import Panel from './Panel/Panel';
+import Roadmap from './Roadmap/Roadmap';
+import RightPanel from './RightPanel/RightPanel';
 
 //classes
-import classes from "./Home.css"
+import classes from './Home.css';
 
 const Home = (props) => {
     return (
@@ -15,7 +15,7 @@ const Home = (props) => {
             <Roadmap />
             {/* <RightPanel/> */}
         </div>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

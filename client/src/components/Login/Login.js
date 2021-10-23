@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
@@ -11,7 +11,6 @@ import Checkbox from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import classes from './Login.css';
-
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -35,24 +34,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
-    const [errors,setErrors] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState('');
     const classes = useStyles();
     const avatarStyle = { backgroundColor: '#1bbd7e', margin: 'auto 0.5rem' };
     const btnstyle = { margin: '8px 0' };
 
-    const handleSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if(!username || !password)
-        {
+        if (!username || !password) {
             setErrors('Please Fill all the Fields');
             return;
         }
         setErrors('');
         // Submit the details...
-    }
-
+    };
 
     return (
         <Grid className={classes.container}>
@@ -78,7 +75,7 @@ const Login = () => {
                     name="username"
                     id="username"
                     value={username}
-                    onChange={(e)=> setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                     label="Password"
@@ -90,14 +87,11 @@ const Login = () => {
                     name="password"
                     id="password"
                     value={password}
-                    onChange={(e)=> setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
-                {errors? 
-                    <Typography style={{color:"red"}}>
-                        {errors}
-                    </Typography>                    
-                    :null
-                }
+                {errors ? (
+                    <Typography style={{ color: 'red' }}>{errors}</Typography>
+                ) : null}
                 <Button
                     type="submit"
                     color="primary"
@@ -105,7 +99,7 @@ const Login = () => {
                     style={btnstyle}
                     fullWidth
                     onClick={handleSubmit}
-                    style={{marginTop:"20px",marginBottom:"15px"}}
+                    style={{ marginTop: '20px', marginBottom: '15px' }}
                 >
                     Sign in
                 </Button>
