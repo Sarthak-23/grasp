@@ -13,10 +13,7 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        height: '100vh',
-        margin: '0',
-        display: 'flex',
-        justifyContent: 'center',
+        margin: '0 2rem',
     },
     Date_Class: {
         display: 'flex',
@@ -36,8 +33,8 @@ const Demo = styled('div')(({ theme }) => ({
 const RoadmapList = (props) => {
     const classes = useStyles();
     return (
-        <Grid container className={classes.Container}>
-            <Grid item xs={12} md={9}>
+        <Grid container className={classes.container}>
+            <Grid item xs={12}>
                 <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                     {props.title}
                 </Typography>
