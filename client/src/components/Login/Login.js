@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+    const history = useHistory();
     const [user, setUser] = React.useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -50,18 +51,25 @@ const Login = () => {
             return;
         }
         // Submit the details...
-        let res = await fetch('/auth/login', {
-            method: 'POST',
-            body: JSON.stringify({ username, password }),
-            'Content-type': 'application/json',
-        });
+        try {
+            let res = await fetch('http://localhost:5000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+            res = await res.json();
 
-        res = await res.json();
-        if (res.id) {
-            setUser(res);
-            setErrors('');
-        } else {
-            setErrors(res || res.error);
+            if (res.id) {
+                setUser(res);
+                history.replace('/');
+                setErrors('');
+            } else {
+                setErrors(res || res.error);
+            }
+        } catch (e) {
+            setErrors('Something went wrong');
         }
     };
 

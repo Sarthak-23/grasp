@@ -21,6 +21,7 @@ import { Grid, Typography } from '@mui/material';
 import RoadmapList from '../../RoadmapList/RoadmapList';
 
 const Panel = (props) => {
+    console.log(props);
     const [user, setUser] = React.useContext(UserContext);
     const [isEditable, setIsEditable] = React.useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
