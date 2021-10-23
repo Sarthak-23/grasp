@@ -1,4 +1,4 @@
-.Panel{
+.Panel {
     display: flex;
     flex-direction: column;
     width: 350px;
@@ -6,20 +6,19 @@
     box-shadow: 0 0 8px #3e3e3e;
     background-color: #3b8ad969;
     border-radius: 5px;
-    height: 100%;
+    /* height: 100%; */
     z-index: 1;
     position: absolute;
-
 }
-.Panel::-webkit-scrollbar{
+.Panel::-webkit-scrollbar {
     width: 10px;
 }
-.Panel::-webkit-scrollbar-thumb{
+.Panel::-webkit-scrollbar-thumb {
     width: 10px;
     border-radius: 5px;
     background-color: #e4e4e4;
 }
-.Profile{
+.Profile {
     display: flex;
     justify-content: space-between;
     background-color: white;
@@ -27,32 +26,31 @@
     border-radius: 10px;
     padding: 10px;
 }
-.Profile .image{
+.Profile .image {
     border-radius: 50%;
     height: 80px;
     width: 80px;
     background-size: cover;
 }
-.RoadMapSection{
+.RoadMapSection {
     padding: 10px;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 0 4px grey;
 }
-.head{
+.head {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.roadmaps{
+.roadmaps {
     display: flex;
     flex-flow: column;
     margin-top: 10px;
 }
 
-
-@media(max-width: 350px){
-    .Panel{
+@media (max-width: 350px) {
+    .Panel {
         width: 100%;
     }
 }
