@@ -1,0 +1,36 @@
+.Container{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 8px;
+    min-height: 100vh;
+    align-items: center;
+}
+
+.Description{
+    width: 350px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    min-height: 30vh;
+    margin-top: 20px;
+}
+
+.Edit{
+    font-size: 10px;
+    float: right;
+    cursor: pointer;
+}
+
+.Materials{
+    display: flex;
+    flex-direction: row;
+    width: 350px;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    min-height: 15vh;
+    margin-top: 20px;
+}
