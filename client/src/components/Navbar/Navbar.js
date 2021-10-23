@@ -88,18 +88,20 @@ const Navbar = (props) => {
                     >
                         <Icon style={{ color: 'white' }}>menu</Icon>
                     </IconButton>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        color="white"
-                        sx={{
-                            // flexGrow: 1,
-                            display: { xs: 'none', sm: 'block' },
-                        }}
-                    >
-                        Grasp
-                    </Typography>
+                    <Link style={{ textDecoration: 'none' }} to="/">
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            color="white"
+                            sx={{
+                                // flexGrow: 1,
+                                display: { xs: 'none', sm: 'block' },
+                            }}
+                        >
+                            Grasp
+                        </Typography>
+                    </Link>
                     <EmptySpace />
                     {showSearch ? (
                         <Link style={{ margin: 'auto 2rem' }} to="/search">
