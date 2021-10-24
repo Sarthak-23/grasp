@@ -38,9 +38,13 @@ import UserListItem from '../../UserList/UserListItem';
 import UserConnectionRequestItem from '../../UserList/UserConnectionRequestItem';
 import Connections from './Connections';
 import YourRoadmaps from './YourRoadmaps';
+
+import CreateRoadmap from './CreateRoadmap/CreateRoadmap';
+
 import Pending from './Pending';
 import Requests from './Requests';
 import NewConnection from './NewConnection';
+
 
 const style = {
     position: 'absolute',
@@ -101,6 +105,8 @@ const Panel = (props) => {
     const [newGoal, setNewGoal] = useState(null);
 
 
+    const [showCreateRoadMap, setShowCreteRoadmap] = useState(false)
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -117,6 +123,16 @@ const Panel = (props) => {
             return newgoal;
         });
     };
+
+    const createRoadmapHandler = () => {
+        setShowCreteRoadmap(true)
+    }
+
+    const closeRoadmapHandler = () => {
+        setShowCreteRoadmap(false)
+    }
+
+
     const handleClick = () => {
         console.info('You clicked the Chip.');
     };
@@ -196,10 +212,10 @@ const Panel = (props) => {
     return (
         <Box className={classes.Container}>
             {/* Create Roadmap Modal */}
-            <div className={classes.CR_Modal}>
-                <div className={classes.Backdrop} onClick={()=>closeModal(notes.modalContent.showModal ? 0 : 1)}/>
-                {true && <CreateRoadmap />}
-            </div>
+            {showCreateRoadMap && <div className={classes.CR_Modal}>
+                <div className={classes.Backdrop} onClick={closeRoadmapHandler} />
+                <CreateRoadmap />
+            </div>}
 
             {/* profile  */}
             <Box>
@@ -429,6 +445,7 @@ const Panel = (props) => {
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <YourRoadmaps
+                        modalClick={createRoadmapHandler}
                         user={props.user}
                         roadmaps={props.roadmaps}
                         isEditable={isEditable}

@@ -14,7 +14,7 @@ const YourRoadmaps = (props) => {
             emptyText={'No roadmaps created yet.'}
         >
             {props.isEditable ? (
-                <Button variant="contained" style={buttonStyle}>
+                <Button onClick={props.modalClick} variant="contained" style={buttonStyle}>
                     <Icon style={{ color: 'white' }}>add</Icon>
                     <Typography style={{ color: 'white' }}>CREATE</Typography>
                 </Button>
@@ -24,11 +24,3 @@ const YourRoadmaps = (props) => {
 };
 
 export default YourRoadmaps;
-
-
-
-
-
-
-
-// onClick={props.modalClick}
