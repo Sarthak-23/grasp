@@ -2,8 +2,8 @@ require('dotenv').config();
 require('./config/dbConfig').config();
 const express = require('express');
 const passport = require('passport');
-const session = require('express-session');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // Routers
 const authRoutes = require('./routes/auth');
@@ -16,24 +16,25 @@ const PORT = process.env.PORT || 5000;
 
 // Middle wares
 app.use(express.json());
-app.use(cors());
-app.use(
-    session({
-        secret: process.env.SESSION_KEY,
-        resave: true,
-        saveUninitialized: true,
-        cookie: {
-            expires: new Date(Date.now() + 3 * 24 * 60 * 1000),
-        },
-    })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+if (process.env.NODE_ENV === 'production') {
+    app.use(cors());
+}
+app.use(cookieParser());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Routing
 app.use('/api/profile', profileRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/roadmaps', roadRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+    const path = require('path');
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
 
 // Listen at PORT
 app.listen(PORT, () => {

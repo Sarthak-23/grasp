@@ -64,13 +64,15 @@ const Login = () => {
             });
             res = await res.json();
 
-            if (res.id) {
+            if (res._id) {
                 setUser(res);
-                history.replace('/');
+                history.push('/');
                 setErrors('');
             } else {
-                setErrors(res || res.error);
+                setErrors('Something went wrong');
             }
+            console.log(res);
+            setLoader(false);
         } catch (e) {
             setLoader(false);
             setErrors('Something went wrong');
@@ -159,6 +161,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-

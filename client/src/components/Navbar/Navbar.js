@@ -131,7 +131,7 @@ const Navbar = (props) => {
                         </Link>
                     ) : null}
                     {/* <EmptySpace /> */}
-                    {user.id ? (
+                    {user._id ? (
                         <Tooltip title="Logout">
                             <IconButton onClick={handleLogout}>
                                 <Icon style={{ color: 'white' }}>logout</Icon>
