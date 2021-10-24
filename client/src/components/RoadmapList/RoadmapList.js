@@ -73,7 +73,7 @@ const RoadmapList = (props) => {
                                                 secondary={road.description}
                                             />
                                             <Grid>
-                                                {road &&
+                                                {road.tags &&
                                                     road.tags.map(
                                                         (t, index) => {
                                                             return (

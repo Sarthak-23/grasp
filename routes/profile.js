@@ -39,6 +39,9 @@ router.get(
 // Profile
 router.get('/:username', userController.getProfile);
 
+// Get all roadmaps of the user
+router.get('/:username/roadmaps', userController.getRoadmaps);
+
 // Connections to a user
 router.get('/:username/connections', userController.getUserConnections);
 

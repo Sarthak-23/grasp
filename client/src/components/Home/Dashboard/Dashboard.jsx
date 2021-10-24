@@ -45,7 +45,6 @@ import Pending from './Pending';
 import Requests from './Requests';
 import NewConnection from './NewConnection';
 
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -94,8 +93,6 @@ const Panel = (props) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
 
-    console.log(props.user);
-
     const [editGoals, setEditGoals] = useState([
         'Flying',
         'Singning',
@@ -104,9 +101,7 @@ const Panel = (props) => {
     ]);
     const [newGoal, setNewGoal] = useState(null);
 
-
-    const [showCreateRoadMap, setShowCreteRoadmap] = useState(false)
-
+    const [showCreateRoadMap, setShowCreteRoadmap] = useState(false);
 
     const handleOpen = () => {
         setOpen(true);
@@ -125,13 +120,12 @@ const Panel = (props) => {
     };
 
     const createRoadmapHandler = () => {
-        setShowCreteRoadmap(true)
-    }
+        setShowCreteRoadmap(true);
+    };
 
     const closeRoadmapHandler = () => {
-        setShowCreteRoadmap(false)
-    }
-
+        setShowCreteRoadmap(false);
+    };
 
     const handleClick = () => {
         console.info('You clicked the Chip.');
@@ -212,10 +206,15 @@ const Panel = (props) => {
     return (
         <Box className={classes.Container}>
             {/* Create Roadmap Modal */}
-            {showCreateRoadMap && <div className={classes.CR_Modal}>
-                <div className={classes.Backdrop} onClick={closeRoadmapHandler} />
-                <CreateRoadmap handleClose={closeRoadmapHandler} />
-            </div>}
+            {showCreateRoadMap && (
+                <div className={classes.CR_Modal}>
+                    <div
+                        className={classes.Backdrop}
+                        onClick={closeRoadmapHandler}
+                    />
+                    <CreateRoadmap handleClose={closeRoadmapHandler} />
+                </div>
+            )}
 
             {/* profile  */}
             <Box>
@@ -446,7 +445,6 @@ const Panel = (props) => {
                     <YourRoadmaps
                         modalClick={createRoadmapHandler}
                         user={props.user}
-                        roadmaps={props.roadmaps}
                         isEditable={isEditable}
                     />
                 </TabPanel>

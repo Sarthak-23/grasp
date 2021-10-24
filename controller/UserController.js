@@ -10,10 +10,22 @@ exports.getProfile = async (req, res) => {
             '-password'
         );
         if (!user) return res.json({ error: 'Username invalid!' });
-        const roadmaps = await Roadmap.find({ user: user._id });
-        res.json({ user, roadmaps });
+        res.json({ user });
     } catch (e) {
         res.json(501).json({ error: e });
+    }
+};
+
+exports.getRoadmaps = async (req, res) => {
+    try {
+        if (!req.params.username)
+            return res.json({ error: 'Invalid username' });
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) return res.json({ error: 'Invalid username' });
+        const roadmaps = await Roadmap.find({ user: user._id });
+        res.json(roadmaps);
+    } catch (e) {
+        res.json(501).json({ error: 'Something went wrong' });
     }
 };
 
