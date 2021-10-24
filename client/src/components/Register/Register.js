@@ -112,7 +112,7 @@ const Register = (props) => {
                     name="username"
                     id="username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value.toLowerCase())}
                 />
                 <TextField
                     label="Password"
