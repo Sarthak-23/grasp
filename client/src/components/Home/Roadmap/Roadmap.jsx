@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useContext, useParams} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import { useParams } from 'react-router';
 
 //component
 import Stepper from '@mui/material/Stepper';
@@ -19,139 +20,24 @@ import { UserContext } from '../../../context/UserContext';
 //classes
 import classes from "./Roadmap.css";
 
-const roadmap_temp = {
-  _id: "98342323rwo",
-  title: "Placement",
-  description: "This is the discription about the placement!",
-  start: "21 March, 2002",
-  // user: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     require: true,
-  //     ref: 'User',
-  // },
-  // parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
-  path: [
-      {
-          index: 0, //  sort order
-          topic: "Data Structure",
-          subpath: [
-              {
-                  index: 0, // sort order
-                  topic: "Array",
-                  description: "This is array!",
-                  materials: ["String"],
-              },
-              {
-                  index: 1, // sort order
-                  topic: "Stack",
-                  description: "This is Stack!",
-                  materials: ["String"],
-              },
-              {
-                  index: 2, // sort order
-                  topic: "Queue",
-                  description: "This is Queue!",
-                  materials: ["String"],
-              },
-          ],
-      },
-      {
-          index: 1, //  sort order
-          topic: "Resume",
-          subpath: [
-              {
-                  index: 0, // sort order
-                  topic: "Language",
-                  description: "This is array!",
-                  materials: ["String"],
-              },
-              {
-                  index: 1, // sort order
-                  topic: "Experience",
-                  description: "This is Stack!",
-                  materials: ["String"],
-              },
-              {
-                  index: 2, // sort order
-                  topic: "Projects",
-                  description: "This is Queue!",
-                  materials: ["String"],
-              },
-          ],
-      },
-      {
-          index: 2, //  sort order
-          topic: "Interview",
-          subpath: [
-              {
-                  index: 0, // sort order
-                  topic: "Why you are good for this job?",
-                  description: "This is array!",
-                  materials: ["String"],
-              },
-              {
-                  index: 1, // sort order
-                  topic: "Who the hell are you?",
-                  description: "This is Stack!",
-                  materials: ["String"],
-              },
-              {
-                  index: 2, // sort order
-                  topic: "Fuck off!",
-                  description: "This is Queue!",
-                  materials: ["String"],
-              },
-          ],
-      },
-  ],
-  tags: ["Tag", "Tag", "Tag"],
-  // private: { type: Boolean, default: false },
-}
-
-const notes_temp = [
-  {
-    title: 'title 1',
-    _id: "asldk20394nmd",
-    content: "This is the content of this note!", // can be markdown and what not
-    date: '21 March, 2021',
-  },
-  {
-    title: 'title 2',
-    _id: "a02-842jlksdj9nl",
-    content: "This is the content of this note!", // can be markdown and what not
-    date: '21 March, 2021',
-  },
-  {
-    title: 'title 3',
-    _id: "lv3928jldjs-q2idsap",
-    content: "This is the content of this note!", // can be markdown and what not
-    date: '21 March, 2021',
-  },
-]
-
 const date = new Date()
 
 const Roadmap = (props) => {
   
-  const { params } = useParams();
+  const params = useParams();
+  const [user, setUser] = useContext(UserContext) // {id, username, name, goals, connnections, pending, recieve}
 
   const [roadmap, setRoadmap] = useState(null)
-  const [loader, setLoader] = useState(null)
-  const [user, setUser] = useContext(UserContext) // {id, username, name, goals, connnections, pending, recieve}
   const [createPath, setCreatePath] = useState({ topic: null, data: [], showModal: false, index: 0 })
-  
-  const [error, setErrors] = useState(null)
 
-  const [notes, setNotes] = useState({
-    data: null,
-    modalContent: {
-      title: 'title 1',
-      _id: "asldk20394nmd",
-      content: "This is the content of this note!", // can be markdown and what not
-      date: '21 March, 2021',
-      showModal: true,
-    }
-  })
+  const [loader, setLoader] = useState(null)
+  const [error, setErrors] = useState(null)
+  
+
+  const [notes, setNotes] = useState(null)
+  const [noteData, setNoteData] = useState(null)
+
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   useEffect(async() => {
 
@@ -166,8 +52,12 @@ const Roadmap = (props) => {
         console.log(res);
 
         if (res._id) {
-          setRoadmap(res);
           console.log(res);
+          setRoadmap({
+            ...res,
+            createdAt: convertDate(res.createdAt),
+            updatedAt: convertDate(res.createdAt)
+          });
             // history.replace('/');
             setErrors('');
         } else {
@@ -178,16 +68,49 @@ const Roadmap = (props) => {
         setErrors('Something went wrong');
     }
 
-    setRoadmap(roadmap_temp);
-    setNotes(prev => ({
-      ...prev,
-      data: notes_temp,
-    }))
-  }, [])
+    // Setting notes from database;
+    try {
+      let res = await fetch(`/roadmaps/${params.id}/notes/all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      res = await res.json();
+      console.log(res);
+      setNotes(res)
+    
+    } catch (e) {
+      setLoader(false);
+      setErrors('Something went wrong');
+    }
+
+  }, [showCreateModal])
 
 
-  const viewNoteModal = (id) => {
+  const getNoteData = async(note_id) => {
     //requesting for data
+    try {
+      let res = await fetch(`/roadmaps/notes/${note_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      res = await res.json();
+
+      if (res._id) {
+        console.log(res);
+        setNoteData(res);
+        // history.replace('/');
+        setErrors('');
+      } else {
+        setErrors(res || res.error);
+      }
+    } catch (e) {
+      setLoader(false);
+      setErrors('Something went wrong');
+    }
   }
 
   const addHandler = () => {
@@ -204,15 +127,11 @@ const Roadmap = (props) => {
       ...prev,
       showModal: false
     }))
-    else
-    setNotes(prev=>({
-      ...prev,
-      modalContent: {
-        ...prev.modalContent,
-        showModal: false
-      }
-    }))
 
+    setNoteData(null)
+
+    setShowCreateModal(false)
+    
   }
 
   const createSubPath = (newData) => {
@@ -231,13 +150,61 @@ const Roadmap = (props) => {
     }))
   }
 
-  const createPathHandler = () => {
+
+  // createdAt: "24 October, 2021"
+  // description: "NO description"-
+  // parent: null
+  // path: []
+  // private: false
+  // start: "2021-10-24T16:19:07.140Z"
+  // tags: ['NO']
+  // title: "First Roadmap"
+  // updatedAt: "24 October, 2021"
+  // user: "6175086df8261f96296cfb75"
+  // __v: 0
+  // _id: "61758817805c7aedcda6a950"
+
+  const createPathHandler = async () => {
+    console.log(roadmap)
+    try {
+      let res = await fetch(`/roadmaps/${params.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...roadmap,
+          path: [
+            ...roadmap.path,
+            {
+              index: roadmap.path.length,
+              topic: createPath.topic,
+              subpath: createPath.data
+            }
+          ]
+        })
+      });
+      res = await res.json();
+      console.log(res);
+
+      if (res._id) {
+        console.log(res);
+        // history.replace('/');
+        setErrors('');
+      } else {
+        setErrors(res || res.error);
+      }
+    } catch (e) {
+      setLoader(false);
+      setErrors('Something went wrong');
+    }
+
     setRoadmap(prev => ({
       ...prev,
       path: [
         ...prev.path,
         {
-          index: roadmap.length,
+          index: roadmap.path.length,
           topic: createPath.topic,
           subpath: createPath.data
         }
@@ -246,14 +213,38 @@ const Roadmap = (props) => {
     setCreatePath({topic: null, data: [], showModal: false, index: 0})
   }
 
+  const createNote = async (newNote) => {
+    console.log(params.id)
+    try {
+      let res = await fetch(`/roadmaps/${params.id}/notes/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: newNote.title,
+          content: newNote.content,
+        })
+      });
+      res = await res.json();
+      console.log(res);
+      setShowCreateModal(false)
+
+    } catch (e) {
+      setLoader(false);
+      setErrors('Something went wrong');
+    }
+  }
+
   return (
     (roadmap && notes) &&
     <div className={classes.Roadmap}>
-      {(createPath.showModal || notes.modalContent.showModal) &&
+      {(createPath.showModal || noteData || showCreateModal) &&
         <div className={classes.Modal}>
-        <div className={classes.Backdrop} onClick={()=>closeModal(notes.modalContent.showModal ? 0 : 1)}/>
+        <div className={classes.Backdrop} onClick={() => closeModal(notes.showCreateModal ? 0 : 1)}/>
             {createPath.showModal && <CreateModal index={createPath.index} creatModal={createSubPath} />}
-            {notes.modalContent.showModal && <NotesModal data={{topic: null, content: null}} />}
+            {noteData && <NotesModal data={noteData} />}
+            {showCreateModal && <CreateNotes create={createNote}/>}
         </div>
       }
       <div className={classes.Info}>
@@ -264,8 +255,12 @@ const Roadmap = (props) => {
           <p>{roadmap.description}</p>
         </div>
         <div className={classes.Sec}>
-          <label>Start</label>
-          <p>{roadmap.start}</p>
+          <label>Create on</label>
+          <p>{roadmap.createdAt}</p>
+        </div>
+        <div className={classes.Sec}>
+          <label>Last Update</label>
+          <p>{roadmap.updatedAt}</p>
         </div>
         <div className={classes.Sec}>
           <label>Tags</label>
@@ -281,9 +276,9 @@ const Roadmap = (props) => {
           <label>Notes</label>
           <div className={classes.Notes}>
               <List component="nav" aria-label="secondary mailbox folder">
-              {notes.data && notes.data.map((note, ind) => {
-                return <ListItemButton onClick={()=>viewNoteModal(note._id)} style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
-                    <p className="cont">{note.title}</p> <p className="cont">{note.date}</p>
+              {notes && notes.map((note, ind) => {
+                return <ListItemButton key={ind} onClick={()=>getNoteData(note._id)} style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
+                    <p className="cont">{note.title}</p> <p className="cont">{convertDate(note.updatedAt)}</p>
                 </ListItemButton>
                 })}
                 
@@ -291,13 +286,17 @@ const Roadmap = (props) => {
           </div>
             
         </div>
+        <Button onClick={() => setShowCreateModal(true)}  variant="contained" startIcon={<AddBoxIcon color="white"/>}>
+          Create
+        </Button>
+
         
       </div>
       
       <div className={classes.Main}>
           
           <div className={classes.StartDiv}>
-            Starting Placement Roadmap
+            Starting {roadmap.title}
           </div>
         {
           roadmap.path.map((path, index) => {
@@ -432,6 +431,50 @@ const CreateModal = (props) => {
   )
 }
 
+// ================ Notes ===================
+
+
+const CreateNotes = (props) => {
+  const [data, setData] = useState({
+    title: null,
+    content: null,
+  })
+
+  const createHandler = () => {
+    console.log(data);
+    // props.creatModal()
+    props.create(data)
+  }
+
+  const onChangeHandler = (e) => {
+    setData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  return (
+    <div className={classes.CreateNoteModal}>
+      <div className={classes.head}>
+        <label>Create Notes</label>
+      </div>
+      <TextField required onChange={onChangeHandler} value={data.title || ""} style={{ margin: "10px 0" }} size='small' id="standard-basic" label="Title" name="title" variant="outlined" />
+      <TextField
+        style={{ margin: "10px 0" }}
+        id="outlined-multiline-static"
+        label="Content"
+        name="content"
+        multiline
+        required
+        rows={4}
+        onChange={onChangeHandler}
+        value={data.content || ""}
+      />
+      <Button onClick={createHandler} disabled={!(data.title && data.content)} variant="contained" size="small">Create</Button>
+
+    </div>
+  )
+}
 
 //This component may use HTML formatting for its content
 const NotesModal = (props) => {
@@ -444,8 +487,10 @@ const NotesModal = (props) => {
   useEffect(() => {
     
     setNote({
-      topic: props.data.topic || "",
+      title: props.data.title || "",
       content: props.data.content || "",
+      createdAt: props.data.createdAt,
+      updatedAt: props.data.updatedAt
     })
 
   }, [])
@@ -453,18 +498,51 @@ const NotesModal = (props) => {
   return (
     <div className={classes.NotesModal}>
       <div className={classes.head}>
-        Topic
+        {note.title}
       </div>
       <div className={classes.content}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        {note.content}
       </div>
     </div>
   )
+}
+
+
+const convertDate = (date) => {
+  let dates = date.split('T')[0]
+  // let times = date.split('T')[1]
+  // console.log(dates, times)
+  let [year, month, day] = dates.split("-");
+  console.log(year, month, day)
+  return `${day} ${getMonth(month)}, ${year}`;
+}
+
+//No. to month
+function getMonth(n) {
+  switch (n) {
+    case "1":
+      return "January"
+    case "2":
+      return "February"
+    case "3":
+      return "March"
+    case "4":
+      return "April"
+    case "5":
+      return "May"
+    case "6":
+      return "June"
+    case "7":
+      return "July"
+    case "8":
+      return "August"
+    case "9":
+      return "September"
+    case "10":
+      return "October"
+    case "11":
+      return "November"
+    case "12":
+      return "December"
+  }
 }
