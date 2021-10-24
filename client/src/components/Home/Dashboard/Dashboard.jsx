@@ -23,6 +23,7 @@ import './Dashboard.css';
 import { Box } from '@mui/system';
 import {
     Avatar,
+    Chip,
     CircularProgress,
     FormControl,
     FormGroup,
@@ -205,35 +206,32 @@ const Panel = (props) => {
                             <Typography style={{ color: 'grey' }}>
                                 Name
                             </Typography>
-                            {/* {isEditable ? (
-                                <TextField
-                                    id="outlined"
-                                    value={details.name}
-                                ></TextField>
-                            ) : (
-                                )} */}
                             <Typography> {details.name} </Typography>
                         </Box>
                         <Box className={classes.fieldContainer}>
                             <Typography style={{ color: 'grey' }}>
                                 About
                             </Typography>
-                            {/* {isEditable ? (
-                                <TextField
-                                    id="outlined-textarea"
-                                    placeholder="Write something about yourself"
-                                    multiline
-                                    value={details.about}
-                                    style={{ width: '100%' }}
-                                />
-                            ) : (
-                            )} */}
                             <Typography>
-                                {' '}
                                 {details.about
                                     ? details.about
                                     : 'The user has not mentioned about them.'}{' '}
                             </Typography>
+                        </Box>
+                        <Box className={classes.fieldContainer}>
+                            <Typography style={{ color: 'grey' }}>
+                                Goals
+                            </Typography>
+                            {details.goals.map((g, index) => (
+                                <Chip
+                                    key={index}
+                                    label={g}
+                                    style={{
+                                        margin: '0.2em',
+                                        backgroundColor: 'lightgreen',
+                                    }}
+                                />
+                            ))}
                         </Box>
                     </Grid>
 
