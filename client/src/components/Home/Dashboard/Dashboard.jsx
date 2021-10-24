@@ -190,10 +190,10 @@ const Panel = (props) => {
     return (
         <Box className={classes.Container}>
             {/* Create Roadmap Modal */}
-            <div className={classes.CR_Modal}>
+            {/* <div className={classes.CR_Modal}>
                 <div className={classes.Backdrop} onClick={()=>closeModal(notes.modalContent.showModal ? 0 : 1)}/>
                 {true && <CreateRoadmap />}
-            </div>
+            </div> */}
 
             {/* profile  */}
             <Box>
