@@ -9,14 +9,13 @@ const UserConnectionRequestItem = (props) => {
     const { index, user, type } = props;
 
     const handleAccept = async (e) => {
-        e.preventDefault();
+        e.stopPropagation();
         try {
-            let res = await fetch(`/${user.username}/accept`, {
+            let res = await fetch(`/profile/${user.username}/accept`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(user.username),
             });
             res = await res.json();
 
@@ -27,14 +26,13 @@ const UserConnectionRequestItem = (props) => {
     };
 
     const handleDecline = async (e) => {
-        e.preventDefault();
+        e.stopPropagation();
         try {
-            let res = await fetch(`/${user.username}/reject`, {
+            let res = await fetch(`/profile/${user.username}/reject`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(user.username),
             });
             res = await res.json();
 
@@ -61,26 +59,30 @@ const UserConnectionRequestItem = (props) => {
                         label={'Pending'}
                         size="small"
                         style={{
-                            backgroundColor: '#90ee90',
+                            backgroundColor: 'orange',
                             color: 'white',
                         }}
                     />
                 ) : (
                     <>
-                        <Tooltip title="Accept">
-                            <Icon
-                                style={{ color: 'green' }}
-                                onClick={handleAccept}
-                            >
-                                check_circle
-                            </Icon>
-                        </Tooltip>
                         <Tooltip title="Decline">
                             <Icon
-                                style={{ color: 'red' }}
+                                style={{
+                                    color: 'red',
+                                    fontSize: '2rem',
+                                    marginRight: '1rem',
+                                }}
                                 onClick={handleDecline}
                             >
                                 highlight_off
+                            </Icon>
+                        </Tooltip>
+                        <Tooltip title="Accept">
+                            <Icon
+                                style={{ color: 'green', fontSize: '2rem' }}
+                                onClick={handleAccept}
+                            >
+                                check_circle
                             </Icon>
                         </Tooltip>
                     </>
