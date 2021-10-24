@@ -55,7 +55,7 @@ const Requests = (props) => {
         fetchReceived().then((res) => {
             if (res.profiles) setReceived(res.profiles);
         });
-    });
+    }, []);
 
     return (
         <Box>

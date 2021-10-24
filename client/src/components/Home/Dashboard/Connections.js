@@ -18,7 +18,7 @@ const Connections = (props) => {
         fetchConnections().then((res) => {
             if (res.profiles) setConnections(res.profiles);
         });
-    });
+    }, []);
 
     return (
         <Box>

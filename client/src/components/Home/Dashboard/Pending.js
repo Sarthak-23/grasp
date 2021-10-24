@@ -25,7 +25,7 @@ const Pending = (props) => {
         fetchSent().then((res) => {
             if (res.profiles) setSent(res.profiles);
         });
-    });
+    }, []);
 
     return (
         <Box>
