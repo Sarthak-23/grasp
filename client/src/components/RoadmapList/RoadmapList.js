@@ -50,7 +50,7 @@ const RoadmapList = (props) => {
                 <hr />
                 <Demo>
                     <List>
-                        {props.roadmaps.length > 0 ? (
+                        {props.roadmaps && props.roadmaps.length > 0 ? (
                             props.roadmaps.map((road, index) => {
                                 var createdate = road.createdAt
                                     ? road.createdAt.split('T')
@@ -73,19 +73,27 @@ const RoadmapList = (props) => {
                                                 secondary={road.description}
                                             />
                                             <Grid>
-                                                {road.tags.map((t, index) => {
-                                                    return (
-                                                        <Chip
-                                                            key={index}
-                                                            label={t.toLowerCase()}
-                                                            className={
-                                                                classes.chip
-                                                            }
-                                                            size="small"
-                                                            color="warning"
-                                                        />
-                                                    );
-                                                })}
+                                                {road &&
+                                                    road.tags.map(
+                                                        (t, index) => {
+                                                            return (
+                                                                <Chip
+                                                                    key={index}
+                                                                    label={t.toLowerCase()}
+                                                                    className={
+                                                                        classes.chip
+                                                                    }
+                                                                    size="small"
+                                                                    style={{
+                                                                        backgroundColor:
+                                                                            'orange',
+                                                                        color: 'white',
+                                                                    }}
+                                                                    // color="warning"
+                                                                />
+                                                            );
+                                                        }
+                                                    )}
                                             </Grid>
                                             <ListItemText
                                                 className={classes.Date_Class}

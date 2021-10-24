@@ -1,8 +1,13 @@
 import { Avatar, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 
 const UserConnectionRequestItem = (props) => {
-    const { index, user } = props;
+    const { index, user, type, handleAccept, handleDecline } = props;
+
     return (
         <Link
             key={index}
@@ -14,11 +19,40 @@ const UserConnectionRequestItem = (props) => {
                     <Avatar />
                 </ListItemIcon>
                 <ListItemText primary={user.username} secondary={user.name} />
-                <ListItemText
-                    secondary={
-                        user.about ? user.about.slice(0, 100) + '...' : ''
-                    }
-                />
+                {type === 'Pending' ? (
+                    <Chip
+                        key={index}
+                        label={'Pending'}
+                        size="small"
+                        style={{
+                            backgroundColor: 'orange',
+                            color: 'white',
+                        }}
+                    />
+                ) : (
+                    <>
+                        <Tooltip title="Decline">
+                            <Icon
+                                style={{
+                                    color: 'red',
+                                    fontSize: '2rem',
+                                    marginRight: '1rem',
+                                }}
+                                onClick={handleDecline}
+                            >
+                                highlight_off
+                            </Icon>
+                        </Tooltip>
+                        <Tooltip title="Accept">
+                            <Icon
+                                style={{ color: 'green', fontSize: '2rem' }}
+                                onClick={handleAccept}
+                            >
+                                check_circle
+                            </Icon>
+                        </Tooltip>
+                    </>
+                )}
             </ListItem>
             <hr />
         </Link>
