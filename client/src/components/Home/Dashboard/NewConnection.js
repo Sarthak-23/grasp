@@ -41,11 +41,11 @@ const NewConnection = () => {
                 label="Username"
                 value={newusername}
                 onChange={(e) => setNewusername(e.target.value)}
-                error={error}
+                error={error ? true : false}
             />
             <Button
                 variant="contained"
-                disabled={loading}
+                disabled={loading ? true : false}
                 style={{ marginLeft: '1rem' }}
                 onClick={handleConnect}
             >

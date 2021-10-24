@@ -44,7 +44,12 @@ const Profile = () => {
             <Navbar />
             <Box className={classes.Box}>
                 {user ? (
-                    <Panel user={user} roadmaps={roadmaps} />
+                    <Panel
+                        user={user}
+                        roadmaps={roadmaps}
+                        // setUser={setUser}
+                        setRoadmaps={setRoadmaps}
+                    />
                 ) : (
                     <Typography color="error">Something went wrong</Typography>
                 )}
