@@ -13,7 +13,10 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        margin: '0 2rem',
+        height: '100vh',
+        margin: '0',
+        display: 'flex',
+        justifyContent: 'center',
     },
     Date_Class: {
         display: 'flex',
@@ -32,9 +35,10 @@ const Demo = styled('div')(({ theme }) => ({
 // emptyText
 const RoadmapList = (props) => {
     const classes = useStyles();
+    console.log(props);
     return (
         <Grid container className={classes.container}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={9}>
                 <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                     {props.title}
                 </Typography>
@@ -43,23 +47,29 @@ const RoadmapList = (props) => {
                     <List>
                         {props.roadmaps.length > 0 ? (
                             props.roadmaps.map((road) => {
+                                var createdate = road.createdAt
+                                    ? road.createdAt.split('T')
+                                    : '';
+                                var updatedate = road.updatedAt
+                                    ? road.updatedAt.split('T')
+                                    : '';
                                 return (
                                     <Link
                                         style={{ textDecoration: 'none' }}
-                                        to="/"
+                                        to={`/roadmap/${road._id}`}
                                     >
                                         <ListItem>
                                             <ListItemIcon>
                                                 <EditRoadIcon />
                                             </ListItemIcon>
                                             <ListItemText
-                                                primary="Topic Name"
-                                                secondary="Description"
+                                                primary={road.title}
+                                                secondary={road.description}
                                             />
                                             <ListItemText
                                                 className={classes.Date_Class}
-                                                primary="Last Update: 23-10-2021"
-                                                secondary="Created On: 23-10-2021"
+                                                primary={updatedate[0]}
+                                                secondary={createdate[0]}
                                             />
                                         </ListItem>
                                         <hr />

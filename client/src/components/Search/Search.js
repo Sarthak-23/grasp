@@ -91,12 +91,15 @@ const Search = () => {
 
     const fetchRoadmap = async () => {
         try {
-            const res = await fetch(`/roadmaps/all/search?q=${keyword}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const res = await fetch(
+                `/roadmaps/all/search?q=${keyword.toLowerCase()}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
             const data = await res.json();
             if (data.error) throw data.error;
             return data;
