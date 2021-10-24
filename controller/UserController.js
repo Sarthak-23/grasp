@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Roadmap = require('../models/Roadmap');
+const User = require('../models/User');
 
 // Get a profile
 exports.getProfile = async (req, res) => {
@@ -10,8 +11,19 @@ exports.getProfile = async (req, res) => {
             '-password'
         );
         if (!user) return res.json({ error: 'Username invalid!' });
+        res.json({ user });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+exports.getRoadmaps = async (req, res) => {
+    try {
+        if (!username) return res.json({ error: 'Invalid username' });
+        const user = await User.find({ username: req.params.username });
+        if (!user) return res.json({ error: 'Invalid username' });
         const roadmaps = await Roadmap.find({ user: user._id });
-        res.json({ user, roadmaps });
+        res.json(roadmaps);
     } catch (e) {
         res.json(501).json({ error: e });
     }
