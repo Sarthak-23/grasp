@@ -74,7 +74,7 @@ const Search = () => {
     const fetchUserByProfile = async () => {
         try {
             const res = await fetch(
-                `/profile/api/search?type=${type.toLowerCase()}&keyword=${keyword}`,
+                `/profile/search?type=${type.toLowerCase()}&keyword=${keyword}`,
                 {
                     method: 'GET',
                     headers: {
