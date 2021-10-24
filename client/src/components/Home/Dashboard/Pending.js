@@ -30,7 +30,6 @@ const Pending = (props) => {
     return (
         <Box>
             <UserList users={sent} title="Users">
-                <NewConnection />
                 {sent.length > 0 ? (
                     sent.map((user, index) => {
                         return (

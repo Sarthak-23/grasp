@@ -14,16 +14,17 @@ const Requests = (props) => {
         return res;
     };
 
-    const handleAccept = async (e) => {
+    const handleAccept = async (e, u) => {
         e.stopPropagation();
         try {
-            let res = await fetch(`/profile/${user.username}/accept`, {
+            let res = await fetch(`/profile/${u.username}/accept`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             res = await res.json();
+            console.log(res);
 
             //Rest will done by backend developer (On Current Project)
         } catch (err) {
@@ -31,16 +32,18 @@ const Requests = (props) => {
         }
     };
 
-    const handleDecline = async (e) => {
+    const handleDecline = async (e, u) => {
         e.stopPropagation();
         try {
-            let res = await fetch(`/profile/${user.username}/reject`, {
+            console.log(u.username);
+            let res = await fetch(`/profile/${u.username}/reject`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             res = await res.json();
+            console.log(res);
 
             // Rest will done by backend developer (On Current Project)
         } catch (err) {
@@ -57,7 +60,6 @@ const Requests = (props) => {
     return (
         <Box>
             <UserList users={received} title="Users">
-                <NewConnection />
                 {received.length > 0 ? (
                     received.map((user, index) => {
                         return (

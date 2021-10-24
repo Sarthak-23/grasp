@@ -39,7 +39,6 @@ const Demo = styled('div')(({ theme }) => ({
 // roadmaps
 // emptyText
 const RoadmapList = (props) => {
-    console.log(props.roadmaps);
     const classes = useStyles();
     return (
         <Grid container className={classes.container}>

@@ -23,8 +23,22 @@ exports.connectProfile = async (req, res) => {
         if (!req.params.username || req.params.username === req.user.username) {
             return res.json({ error: 'Username invalid!' });
         }
+        // let otherUser = await User.findOne({
+        //     username: req.params.username,
+        //     received: req.user.username,
+        // });
+        // if (otherUser) {
+        //     return res.json({ error: 'Requested already' });
+        // }
+        // otherUser = await User.findOne({
+        //     username: req.params.username,
+        //     connections: req.user.username,
+        // });
+        // if (otherUser) {
+        //     return res.json({ error: 'Already connected' });
+        // }
         // Append to received of other
-        const otherUser = await User.findOneAndUpdate(
+        otherUser = await User.findOneAndUpdate(
             { username: req.params.username },
             { $push: { received: req.user._id } }
         );
@@ -36,6 +50,7 @@ exports.connectProfile = async (req, res) => {
         );
         return res.json({ success: 'Request sent!' });
     } catch (e) {
+        console.log(e);
         res.json(501).json({ error: e });
     }
 };

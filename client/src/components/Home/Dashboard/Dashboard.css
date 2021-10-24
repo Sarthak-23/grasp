@@ -7,6 +7,7 @@
     max-width: 100%;
 }
 .Profile {
+    position: relative;
     display: flex;
     flex-direction: column;
     max-width: 350px;
@@ -48,12 +49,12 @@
     flex-flow: column;
     margin-top: 10px;
 }
-.addGoals{
+.addGoals {
     border-radius: 50px;
     border: 1px solid grey;
     padding: 0 10px;
 }
-.addGoals input{
+.addGoals input {
     width: 100px;
     padding: 5px;
     border-radius: 50px;
