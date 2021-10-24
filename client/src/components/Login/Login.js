@@ -40,14 +40,17 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
+    const [loader, setLoader] = useState(false);
     const classes = useStyles();
     const avatarStyle = { backgroundColor: '#1bbd7e', margin: 'auto 0.5rem' };
     const btnstyle = { margin: '8px 0' };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoader(true);
         if (!username || !password) {
             setErrors('Please Fill all the Fields');
+            setLoader(false);
             return;
         }
         // Submit the details...
@@ -69,6 +72,7 @@ const Login = () => {
                 setErrors(res || res.error);
             }
         } catch (e) {
+            setLoader(false);
             setErrors('Something went wrong');
         }
     };
@@ -114,17 +118,33 @@ const Login = () => {
                 {errors ? (
                     <Typography style={{ color: 'red' }}>{errors}</Typography>
                 ) : null}
-                <Button
-                    type="submit"
-                    color="success"
-                    variant="contained"
-                    style={btnstyle}
-                    fullWidth
-                    onClick={handleSubmit}
-                    style={{ marginTop: '20px', marginBottom: '15px' }}
-                >
-                    Sign in
-                </Button>
+                {loader ? (
+                    <Button
+                        type="submit"
+                        color="success"
+                        variant="contained"
+                        style={btnstyle}
+                        fullWidth
+                        onClick={handleSubmit}
+                        style={{ marginTop: '20px', marginBottom: '15px' }}
+                        disabled
+                    >
+                        Sign in
+                    </Button>
+                ) : (
+                    <Button
+                        type="submit"
+                        color="success"
+                        variant="contained"
+                        style={btnstyle}
+                        fullWidth
+                        onClick={handleSubmit}
+                        style={{ marginTop: '20px', marginBottom: '15px' }}
+                    >
+                        Sign in
+                    </Button>
+                )}
+
                 <Typography>
                     <NavLink
                         to="/register"
