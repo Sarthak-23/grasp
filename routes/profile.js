@@ -39,6 +39,9 @@ router.get(
 // Profile
 router.get('/:username', userController.getProfile);
 
+// Connections to a user
+router.get('/:username/connections', userController.getUserConnections);
+
 // Connect to a user
 router.post(
     '/:username/connect',

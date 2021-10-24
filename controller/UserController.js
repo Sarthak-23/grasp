@@ -128,6 +128,20 @@ exports.getAllConnections = async (req, res) => {
     }
 };
 
+exports.getUserConnections = async (req, res) => {
+    try {
+        const connections = await User.findOne({
+            username: req.params.username,
+        }).select('connections');
+        const profiles = await User.find({
+            _id: { $in: connections.connections },
+        }).select('-password -sent -received');
+        res.json({ profiles });
+    } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
 // Get pending
 exports.getPendingRequests = async (req, res) => {
     try {

@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'flex-end',
     },
+    chip: {
+        pointerEvents: 'none',
+        margin: '0.1em',
+    },
 }));
 
 const Demo = styled('div')(({ theme }) => ({
@@ -34,6 +39,7 @@ const Demo = styled('div')(({ theme }) => ({
 // roadmaps
 // emptyText
 const RoadmapList = (props) => {
+    console.log(props.roadmaps);
     const classes = useStyles();
     return (
         <Grid container className={classes.container}>
@@ -66,6 +72,21 @@ const RoadmapList = (props) => {
                                                 primary={road.title}
                                                 secondary={road.description}
                                             />
+                                            <Grid>
+                                                {road.tags.map((t, index) => {
+                                                    return (
+                                                        <Chip
+                                                            key={index}
+                                                            label={t.toLowerCase()}
+                                                            className={
+                                                                classes.chip
+                                                            }
+                                                            size="small"
+                                                            color="warning"
+                                                        />
+                                                    );
+                                                })}
+                                            </Grid>
                                             <ListItemText
                                                 className={classes.Date_Class}
                                                 primary={updatedate[0]}

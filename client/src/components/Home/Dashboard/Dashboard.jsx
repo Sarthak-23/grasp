@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 //componennt
 import MainCalendar from './MainCalendar/MainCalendar';
@@ -29,6 +31,9 @@ import {
     Typography,
 } from '@mui/material';
 import RoadmapList from '../../RoadmapList/RoadmapList';
+import UserList from '../../UserList/UserList';
+import UserListItem from '../../UserList/UserListItem';
+import UserConnectionRequestItem from '../../UserList/UserConnectionRequestItem';
 
 const style = {
     position: 'absolute',
@@ -51,19 +56,75 @@ const inputs = {
     margin: '1rem auto',
 };
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            <Box>{children}</Box>
+        </div>
+    );
+}
+
 const Panel = (props) => {
     const [details, setDetails] = React.useState(props.user);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState('');
     const [user, setUser] = React.useContext(UserContext);
     const [isEditable, setIsEditable] = React.useState(false);
+    const [connections, setConnections] = useState([]);
+    const [sent, setSent] = useState([]);
+    const [received, setReceived] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [open, setOpen] = useState(false);
+    const [value, setValue] = React.useState(0);
+
+    console.log(user);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleTabChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const fetchConnections = async () => {
+        let res = await fetch(`/profile/connections`);
+        res = await res.json();
+        return res;
+    };
+
+    const fetchSent = async () => {
+        let res = await fetch(`/profile/sent`);
+        res = await res.json();
+        return res;
+    };
+
+    const fetchReceived = async () => {
+        let res = await fetch(`/profile/received`);
+        res = await res.json();
+        return res;
+    };
+
     useEffect(() => {
-        if (details.username === user.username) setIsEditable(true);
+        fetchConnections().then((res) => {
+            if (res.profiles) setConnections(res.profiles);
+        });
+        if (details.username === user.username) {
+            setIsEditable(true);
+            fetchSent().then((res) => {
+                if (res.profiles) setConnections(res.profiles);
+            });
+            fetchReceived().then((res) => {
+                if (res.profiles) setConnections(res.profiles);
+            });
+        }
     }, []);
 
     const selectHandler = (dateArray) => {
@@ -269,12 +330,87 @@ const Panel = (props) => {
                 </Box>
             </Box>
 
+            <Box
+                style={{
+                    width: '100%',
+                }}
+            >
+                <Tabs
+                    value={value}
+                    onChange={handleTabChange}
+                    aria-label="basic tabs example"
+                >
+                    <Tab label="Roadmaps" />
+                    <Tab label="Connections" />
+                    {isEditable ? <Tab label="Pending" /> : null}
+                    {isEditable ? <Tab label="Received" /> : null}
+                </Tabs>
+                <TabPanel value={value} index={0}>
+                    <RoadmapList
+                        title="Your Roadmaps"
+                        roadmaps={props.roadmaps}
+                        emptyText={'No roadmaps created yet.'}
+                    />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <UserList users={connections} title="Users">
+                        {connections.length > 0 ? (
+                            connections.map((user, index) => {
+                                return (
+                                    <UserListItem
+                                        key={index}
+                                        user={user}
+                                        index={index}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <Typography style={{ textAlign: 'center' }}>
+                                No connections yet.
+                            </Typography>
+                        )}
+                    </UserList>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <UserList users={sent} title="Users">
+                        {sent.length > 0 ? (
+                            sent.map((user, index) => {
+                                return (
+                                    <UserConnectionRequestItem
+                                        key={index}
+                                        user={user}
+                                        index={index}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <Typography style={{ textAlign: 'center' }}>
+                                No pending requests yet.
+                            </Typography>
+                        )}
+                    </UserList>
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <UserList users={received} title="Users">
+                        {received.length > 0 ? (
+                            received.map((user, index) => {
+                                return (
+                                    <UserConnectionRequestItem
+                                        key={index}
+                                        user={user}
+                                        index={index}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <Typography style={{ textAlign: 'center' }}>
+                                No received requests yet.
+                            </Typography>
+                        )}
+                    </UserList>
+                </TabPanel>
+            </Box>
             {/* RoadMap  */}
-            <RoadmapList
-                title="Your Roadmaps"
-                roadmaps={props.roadmaps}
-                emptyText={'No roadmaps created yet.'}
-            />
         </Box>
     );
 };

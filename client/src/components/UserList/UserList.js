@@ -11,6 +11,7 @@ import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import UserListItem from './UserListItem';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -44,44 +45,7 @@ const UserList = (props) => {
                 </Typography>
                 <hr />
                 <Demo>
-                    <List>
-                        {props.users.length > 0 ? (
-                            props.users.map((user, index) => {
-                                return (
-                                    <Link
-                                        key={index}
-                                        style={{ textDecoration: 'none' }}
-                                        to={`/profile/${user.username}`}
-                                    >
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <Avatar />
-                                            </ListItemIcon>
-                                            <ListItemText
-                                                primary={user.username}
-                                                secondary={user.name}
-                                            />
-                                            <ListItemText
-                                                secondary={
-                                                    user.about
-                                                        ? user.about.slice(
-                                                              0,
-                                                              100
-                                                          ) + '...'
-                                                        : ''
-                                                }
-                                            />
-                                        </ListItem>
-                                        <hr />
-                                    </Link>
-                                );
-                            })
-                        ) : (
-                            <Typography style={{ textAlign: 'center' }}>
-                                {props.emptyText}
-                            </Typography>
-                        )}
-                    </List>
+                    <List>{props.children}</List>
                 </Demo>
             </Grid>
         </Grid>

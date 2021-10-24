@@ -11,6 +11,7 @@ import { makeStyles } from '@mui/styles';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import UserListItem from '../UserList/UserListItem';
 
 import classes from './Search.css';
 import Navbar from '../Navbar/Navbar';
@@ -234,11 +235,23 @@ const Search = () => {
                 </Grid>
             </Grid>
             {result && resultType === categoryOptions[0] ? (
-                <UserList
-                    title="Search Result"
-                    users={result}
-                    emptyText={'Try a valid search'}
-                />
+                <UserList title="Search Result" users={result}>
+                    {result.length > 0 ? (
+                        result.map((user, index) => {
+                            return (
+                                <UserListItem
+                                    key={index}
+                                    user={user}
+                                    index={index}
+                                />
+                            );
+                        })
+                    ) : (
+                        <Typography style={{ textAlign: 'center' }}>
+                            Try a valid search
+                        </Typography>
+                    )}
+                </UserList>
             ) : (
                 <RoadmapList
                     title="Search Result"
