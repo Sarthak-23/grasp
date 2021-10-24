@@ -16,7 +16,6 @@ const Profile = () => {
         sent: [],
         received: [],
     });
-    const [roadmaps, setRoadmaps] = useState([]);
     const params = useParams();
     const fetchProfile = async () => {
         try {
@@ -32,7 +31,6 @@ const Profile = () => {
         fetchProfile().then((res) => {
             if (res.user) {
                 setUser(res.user);
-                setRoadmaps(res.roadmaps);
             } else {
                 console.log(res.error);
             }
@@ -44,12 +42,7 @@ const Profile = () => {
             <Navbar />
             <Box className={classes.Box}>
                 {user ? (
-                    <Panel
-                        user={user}
-                        roadmaps={roadmaps}
-                        // setUser={setUser}
-                        setRoadmaps={setRoadmaps}
-                    />
+                    <Panel user={user} />
                 ) : (
                     <Typography color="error">Something went wrong</Typography>
                 )}

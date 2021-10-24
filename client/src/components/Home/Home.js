@@ -13,31 +13,12 @@ import { UserContext } from '../../context/UserContext';
 
 const Home = (props) => {
     const [user, setUser] = React.useState(props.user);
-    const [roadmaps, setRoadmaps] = React.useState([]);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            let result = await fetch(`/profile/${user.username}`);
-            result = await result.json();
-            return result;
-        };
-        fetchUser().then((res) => {
-            setRoadmaps(res.roadmaps);
-        });
-    }, []);
 
     return (
         <div className={classes.Home}>
             <Navbar />
             <Box className={classes.Box}>
-                <Panel
-                    user={user}
-                    roadmaps={roadmaps}
-                    setUser={setUser}
-                    setRoadmaps={setRoadmaps}
-                />
-                {/* <Roadmap /> */}
-                {/* <RightPanel /> */}
+                <Panel user={user} setUser={setUser} />
             </Box>
         </div>
     );
