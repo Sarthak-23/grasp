@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
 import { Edit } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
+import Icon from '@mui/material/Icon';
 
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -79,6 +80,7 @@ const Panel = (props) => {
     const [error, setError] = React.useState('');
     const [user, setUser] = React.useContext(UserContext);
     const [isEditable, setIsEditable] = React.useState(false);
+    const [addgoals, setAddgoals] = React.useState(false);
     const [connections, setConnections] = useState([]);
     const [sent, setSent] = useState([]);
     const [received, setReceived] = useState([]);
@@ -88,7 +90,13 @@ const Panel = (props) => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const handleDelete = (i) => {
+        console.info('You clicked the delete icon.');
+        details.goals.splice(i, 1);
+    };
+    const handleClick = () => {
+        console.info('You clicked the Chip.');
+    };
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -283,6 +291,44 @@ const Panel = (props) => {
                                         style={{ width: '100%' }}
                                         sx={inputs}
                                     />
+                                    <Typography>
+                                        {details.goals.map((g, index) => (
+                                            <Chip
+                                                key={index}
+                                                label={g}
+                                                variant="outlined"
+                                                onDelete={() =>
+                                                    handleDelete(index)
+                                                }
+                                            />
+                                        ))}
+                                    </Typography>
+                                    {addgoals ? (
+                                        <TextField
+                                            id="outlined"
+                                            label="Goals"
+                                            placeholder="Add goal"
+                                            value={details.goals}
+                                            name="goals"
+                                            onChange={handleEditChange}
+                                            style={{ width: '100%' }}
+                                            sx={inputs}
+                                        />
+                                    ) : (
+                                        ''
+                                    )}
+                                    <Typography style={{ marginTop: '10px' }}>
+                                        <Tooltip title="Add Goals">
+                                            <Icon
+                                                style={{ color: 'green' }}
+                                                onClick={() =>
+                                                    setAddgoals(true)
+                                                }
+                                            >
+                                                add_circle
+                                            </Icon>
+                                        </Tooltip>
+                                    </Typography>
                                     <TextField
                                         id="outlined"
                                         label="About"
