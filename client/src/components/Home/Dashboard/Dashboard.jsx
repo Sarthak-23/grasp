@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
+import { Edit } from '@mui/icons-material';
+import Modal from '@mui/material/Modal';
 
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -17,13 +19,35 @@ import ListItemText from '@mui/material/ListItemText';
 import classes from './Dashboard.css';
 import './Dashboard.css';
 import { Box } from '@mui/system';
-import { Avatar, Grid, Typography } from '@mui/material';
+import {
+    Avatar,
+    FormControl,
+    FormGroup,
+    Grid,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import RoadmapList from '../../RoadmapList/RoadmapList';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '5px',
+    width: 400,
+    bgcolor: 'white',
+    boxShadow: 24,
+    p: 4,
+};
 
 const Panel = (props) => {
     const [user, setUser] = React.useContext(UserContext);
     const [isEditable, setIsEditable] = React.useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     console.log(user);
 
@@ -71,20 +95,20 @@ const Panel = (props) => {
                             <Typography style={{ color: 'grey' }}>
                                 Name
                             </Typography>
-                            {isEditable ? (
+                            {/* {isEditable ? (
                                 <TextField
                                     id="outlined"
                                     value={props.user.name}
                                 ></TextField>
                             ) : (
-                                <Typography> {props.user.name} </Typography>
-                            )}
+                                )} */}
+                            <Typography> {props.user.name} </Typography>
                         </Box>
                         <Box className={classes.fieldContainer}>
                             <Typography style={{ color: 'grey' }}>
                                 About
                             </Typography>
-                            {isEditable ? (
+                            {/* {isEditable ? (
                                 <TextField
                                     id="outlined-textarea"
                                     placeholder="Write something about yourself"
@@ -93,14 +117,55 @@ const Panel = (props) => {
                                     style={{ width: '100%' }}
                                 />
                             ) : (
-                                <Typography>
-                                    {' '}
-                                    {props.user.about ||
-                                        'The user has not mentioned about them.'}{' '}
-                                </Typography>
-                            )}
+                            )} */}
+                            <Typography>
+                                {' '}
+                                {props.user.about ||
+                                    'The user has not mentioned about them.'}{' '}
+                            </Typography>
                         </Box>
                     </Grid>
+
+                    {isEditable ? (
+                        <Grid item>
+                            <Tooltip title="Edit" onClick={handleOpen}>
+                                <IconButton color="primary">
+                                    <Edit />
+                                </IconButton>
+                            </Tooltip>
+                            <Modal
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+                                    <Typography
+                                        variant="h6"
+                                        component="h2"
+                                        style={{ textAlign: 'center' }}
+                                    >
+                                        Edit Profile
+                                    </Typography>
+                                    <FormGroup className={classes.formgroup}>
+                                        <Typography variant="h6" component="h2">
+                                            {props.user.username}
+                                        </Typography>
+                                    </FormGroup>
+                                    <FormGroup className={classes.formgroup}>
+                                        <TextField
+                                            id="outlined-textarea"
+                                            label="About"
+                                            placeholder="Write something about yourself"
+                                            multiline
+                                            value={props.user.about}
+                                            style={{ width: '100%' }}
+                                        />
+                                    </FormGroup>
+                                </Box>
+                            </Modal>
+                        </Grid>
+                    ) : null}
                 </Grid>
 
                 {/* Calander  */}

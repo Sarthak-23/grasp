@@ -23,6 +23,9 @@
 .info {
     width: 100%;
 }
+.formgroup {
+    margin: '2rem auto';
+}
 .Profile .image {
     border-radius: 50%;
     height: 80px;
