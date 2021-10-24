@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
+    const hist = useHistory();
     const [user, setUser] = React.useContext(UserContext);
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
@@ -46,25 +47,32 @@ const Register = (props) => {
     const btnstyle = { margin: '8px 0' };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name || !username || !password) {
-            setErrors('Please Fill all the fields');
-            return;
-        }
-        setErrors('');
-        //Submit the Register Form
-        let res = await fetch('/auth/register', {
-            method: 'POST',
-            body: JSON.stringify({ username, password, name }),
-            'Content-type': 'application/json',
-        });
-
-        res = await res.json();
-        if (res.id) {
-            setUser(res);
+        try {
+            e.preventDefault();
+            if (!name || !username || !password) {
+                setErrors('Please Fill all the fields');
+                return;
+            }
             setErrors('');
-        } else {
-            setErrors(res || res.error);
+            //Submit the Register Form
+            let res = await fetch('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ username, password, name }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            res = await res.json();
+            if (res.id) {
+                setUser(res);
+                setErrors('');
+                hist.replace('/');
+            } else {
+                setErrors(res || res.error);
+            }
+        } catch (e) {
+            setErrors('Something went wrong');
         }
     };
 
