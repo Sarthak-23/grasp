@@ -16,9 +16,13 @@ const UserConnectionRequestItem = (props) => {
                 to={`/profile/${user.username}`}
             >
                 <ListItemIcon>
-                    <Avatar />
+                    <Avatar style={{ marginTop: '8px' }} />
+                    <ListItemText
+                        primary={user.username}
+                        secondary={user.name}
+                        style={{ paddingLeft: '20px' }}
+                    />
                 </ListItemIcon>
-                <ListItemText primary={user.username} secondary={user.name} />
             </Link>
             {type === 'Pending' ? (
                 <Chip
