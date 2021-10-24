@@ -66,6 +66,8 @@ const Requests = (props) => {
         });
     }, []);
 
+    useEffect(() => {}, [received]);
+
     return (
         <Box>
             <UserList users={received} title="Users">
