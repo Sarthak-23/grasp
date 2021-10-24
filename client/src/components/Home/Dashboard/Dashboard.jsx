@@ -101,7 +101,7 @@ const Panel = (props) => {
     };
 
     const fetchSent = async () => {
-        let res = await fetch(`/profile/sent`);
+        let res = await fetch(`/profile/pending`);
         res = await res.json();
         return res;
     };
@@ -121,6 +121,7 @@ const Panel = (props) => {
             setIsEditable(true);
             fetchSent().then((res) => {
                 if (res.profiles) setSent(res.profiles);
+                console.log(res);
             });
             fetchReceived().then((res) => {
                 if (res.profiles) setReceived(res.profiles);
