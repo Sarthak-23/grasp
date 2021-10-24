@@ -16,7 +16,12 @@ router.post('/login', passport.authenticate('login'), (req, res) => {
     res.json({
         username: req.user.username,
         name: req.user.name,
+        about: req.user.about,
         id: req.user._id,
+        connections: req.user.connections,
+        goals: req.user.goals,
+        sent: req.user.sent,
+        received: req.user.received,
     });
 });
 
@@ -25,7 +30,12 @@ router.post('/register', passport.authenticate('register'), (req, res) => {
     res.json({
         username: req.user.username,
         name: req.user.name,
+        about: req.user.about,
         id: req.user._id,
+        connections: req.user.connections,
+        goals: req.user.goals,
+        sent: req.user.sent,
+        received: req.user.received,
     });
 });
 

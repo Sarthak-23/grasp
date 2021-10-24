@@ -45,7 +45,7 @@ const RoadmapList = (props) => {
                 <Demo>
                     <List>
                         {props.roadmaps.length > 0 ? (
-                            props.roadmaps.map((road) => {
+                            props.roadmaps.map((road, index) => {
                                 var createdate = road.createdAt
                                     ? road.createdAt.split('T')
                                     : '';
@@ -54,6 +54,7 @@ const RoadmapList = (props) => {
                                     : '';
                                 return (
                                     <Link
+                                        key={index}
                                         style={{ textDecoration: 'none' }}
                                         to={`/roadmap/${road._id}`}
                                     >
