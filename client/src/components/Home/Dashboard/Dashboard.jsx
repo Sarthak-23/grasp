@@ -115,14 +115,15 @@ const Panel = (props) => {
     useEffect(() => {
         fetchConnections().then((res) => {
             if (res.profiles) setConnections(res.profiles);
+            console.log(connections);
         });
         if (details.username === user.username) {
             setIsEditable(true);
             fetchSent().then((res) => {
-                if (res.profiles) setConnections(res.profiles);
+                if (res.profiles) setSent(res.profiles);
             });
             fetchReceived().then((res) => {
-                if (res.profiles) setConnections(res.profiles);
+                if (res.profiles) setReceived(res.profiles);
             });
         }
     }, []);
@@ -339,9 +340,13 @@ const Panel = (props) => {
                     value={value}
                     onChange={handleTabChange}
                     aria-label="basic tabs example"
+                    centered
+                    style={{
+                        margin: 'auto 1rem',
+                    }}
                 >
                     <Tab label="Roadmaps" />
-                    <Tab label="Connections" />
+                    {isEditable ? <Tab label="Connections" /> : null}
                     {isEditable ? <Tab label="Pending" /> : null}
                     {isEditable ? <Tab label="Received" /> : null}
                 </Tabs>
