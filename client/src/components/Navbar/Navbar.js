@@ -103,9 +103,7 @@ const Navbar = (props) => {
                         color="inherit"
                         aria-label="open drawer"
                         sx={{ mr: 2 }}
-                    >
-                        <Icon style={{ color: 'white' }}>menu</Icon>
-                    </IconButton>
+                    ></IconButton>
                     <Link style={{ textDecoration: 'none' }} to="/">
                         <Typography
                             variant="h6"
