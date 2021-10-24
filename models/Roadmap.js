@@ -4,7 +4,7 @@ const RoadmapSchema = mongoose.Schema(
     {
         title: { type: String, require: true },
         description: String,
-        start: Date,
+        start: { type: Date, default: Date.now() },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             require: true,
