@@ -9,6 +9,11 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+
+
 //classes
 import classes from "./Roadmap.css";
 
@@ -100,16 +105,35 @@ const roadmap_temp = {
   // private: { type: Boolean, default: false },
 }
 
+const notes_temp = [
+  {
+    title: 'title 1',
+    content: "This is the content of this note!", // can be markdown and what not
+    date: '21 March, 2021',
+  },
+  {
+    title: 'title 2',
+    content: "This is the content of this note!", // can be markdown and what not
+    date: '21 March, 2021',
+  },
+  {
+    title: 'title 3',
+    content: "This is the content of this note!", // can be markdown and what not
+    date: '21 March, 2021',
+  },
+]
+
 const date = new Date()
 
 const Roadmap =(props)=> {
 
   const [roadmap, setRoadmap] = useState(null)
-  const [createPath, setCreatePath] = useState({topic: null, data: [], showModal: true})
-  
+  const [createPath, setCreatePath] = useState({topic: null, data: [], showModal: false, index: 0})
+  const [notes, setNotes] = useState(null)
 
   useEffect(() => {
     setRoadmap(roadmap_temp);
+    setNotes(notes_temp)
   }, [])
 
   const addHandler = () => {
@@ -130,8 +154,31 @@ const Roadmap =(props)=> {
     setCreatePath(prev => ({
       ...prev,
       data: [...prev.data, newData],
-      showModal: false
+      showModal: false,
+      index: prev.index+1
     }))
+  }
+
+  const removeLast = () => {
+    setCreatePath(prev => ({
+      ...prev,
+      data: [...prev.data].splice(0, prev.data.length-1)
+    }))
+  }
+
+  const createPathHandler = () => {
+    setRoadmap(prev => ({
+      ...prev,
+      path: [
+        ...prev.path,
+        {
+          index: roadmap.length,
+          topic: createPath.topic,
+          subpath: createPath.data
+        }
+      ]
+    }))
+    setCreatePath({topic: null, data: [], showModal: false, index: 0})
   }
 
   return (
@@ -140,7 +187,7 @@ const Roadmap =(props)=> {
       {createPath.showModal &&
         <div className={classes.Modal}>
         <div className={classes.Backdrop} onClick={closeModal}/>
-          <CreateModal creatModal={createSubPath}/>
+          <CreateModal index={createPath.index} creatModal={createSubPath}/>
         </div>
       }
       <div className={classes.Info}>
@@ -164,6 +211,20 @@ const Roadmap =(props)=> {
           </ul>
         </div>
 
+        <div className={classes.Sec}>
+          <label>Notes</label>
+          <div className={classes.Notes}>
+              <List component="nav" aria-label="secondary mailbox folder">
+              {notes.map((note, ind) => {
+                return <ListItemButton style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
+                    <p>{note.title}</p> <p>{note.date}</p>
+                </ListItemButton>
+                })}
+                
+              </List>
+          </div>
+            
+        </div>
       </div>
       
       <div className={classes.Main}>
@@ -180,10 +241,11 @@ const Roadmap =(props)=> {
                 <p className={classes.title}>{path.topic}</p>
                 
                 <div className={classes.Box}>
+
                     <Stepper activeStep={1} alternativeLabel>
                       {path.subpath.map((sub, ind) => {
                         return <Step key={ind}>
-                          <StepLabel style={{ width: "100px" }}>{sub.topic}</StepLabel>
+                          <StepLabel >{sub.topic}</StepLabel>
                         </Step>
                       })}
                     </Stepper>
@@ -207,18 +269,17 @@ const Roadmap =(props)=> {
               <Stepper activeStep={0} alternativeLabel>
                 {createPath.data.map((sub, ind) => {
                   return <Step key={ind}>
-                    <StepLabel style={{ width: "100px" }}>{sub.topic}</StepLabel>
+                    <StepLabel >{sub.topic}</StepLabel>
                   </Step>
                 })}
               </Stepper>
+          </div>
               <IconButton onClick={addHandler} size="large" color="primary" aria-label="add">
                 <AddBoxIcon />
               </IconButton>
-            
-          </div>
           
-          <Button style={{margin: "0 5px 0 0"}} disabled={!createPath.topic && !(createPath.data.length==0)} variant="contained" size="small">Create</Button>
-          <Button disabled={!createPath.data.length} variant="contained" size="small">Pop</Button>
+          <Button onClick={createPathHandler} style={{margin: "0 5px 0 0"}} disabled={!createPath.topic && !(createPath.data.length==0)} variant="contained" size="small">Create</Button>
+          <Button onClick={removeLast} disabled={!createPath.data.length} variant="contained" size="small">Pop</Button>
           
         </div>
 
@@ -239,6 +300,7 @@ export default Roadmap;
 const CreateModal = (props) => {
 
   const [data, setData] = useState({
+    index: props.index,
     topic: null,
     description: null,
     material: [],
@@ -274,7 +336,7 @@ const CreateModal = (props) => {
     <div className={classes.CreateModal}>
       <div className={classes.head}>
         <label>Create Subtopic</label>
-        <p>{props.index}</p>
+        <p>Step {props.index+1}</p>
       </div>
       <TextField required onChange={onChangeHandler} value={data.topic || ""} style={{margin: "10px 0"}} size='small' id="standard-basic" label="Subtopic" name="topic" variant="outlined" />
       <TextField

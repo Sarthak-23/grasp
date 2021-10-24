@@ -67,6 +67,14 @@
     padding-top: 20px;
     overflow-x: scroll;
 }
+.Notes{
+    max-height: 300px;
+    background-color: white;
+    overflow-y: scroll;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #c4c4c4;
+    text-align: center;
+}
 
 /* // ----------Create Modal----------  */
 .Modal{
