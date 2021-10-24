@@ -386,6 +386,7 @@ const Panel = (props) => {
                                         key={index}
                                         user={user}
                                         index={index}
+                                        type="Pending"
                                     />
                                 );
                             })
@@ -405,6 +406,7 @@ const Panel = (props) => {
                                         key={index}
                                         user={user}
                                         index={index}
+                                        type="Received"
                                     />
                                 );
                             })
