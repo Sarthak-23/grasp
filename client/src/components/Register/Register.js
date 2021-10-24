@@ -67,15 +67,18 @@ const Register = (props) => {
             });
 
             res = await res.json();
-            if (res.id) {
+            console.log(res);
+            if (res._id) {
                 setUser(res);
                 setErrors('');
                 hist.replace('/');
             } else {
-                setErrors(res || res.error);
+                setErrors('Something went wrong');
             }
+            setLoader(false);
         } catch (e) {
             setLoader(false);
+            console.log(e);
             setErrors('Something went wrong');
         }
     };

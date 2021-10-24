@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
-const saltrounds = 10;
+const saltRounds = 10;
 const JWT = require('./JWTController');
 
 // // Serialize user
@@ -149,6 +149,7 @@ exports.signup = async (req, res) => {
         newUser.password = '';
         res.json(newUser);
     } catch (e) {
+        console.log(e);
         res.json({ error: e || 'Something went wrong!' });
     }
 };
