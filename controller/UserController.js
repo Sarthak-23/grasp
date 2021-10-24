@@ -18,13 +18,14 @@ exports.getProfile = async (req, res) => {
 
 exports.getRoadmaps = async (req, res) => {
     try {
-        if (!username) return res.json({ error: 'Invalid username' });
-        const user = await User.find({ username: req.params.username });
+        if (!req.params.username)
+            return res.json({ error: 'Invalid username' });
+        const user = await User.findOne({ username: req.params.username });
         if (!user) return res.json({ error: 'Invalid username' });
         const roadmaps = await Roadmap.find({ user: user._id });
         res.json(roadmaps);
     } catch (e) {
-        res.json(501).json({ error: e });
+        res.json(501).json({ error: 'Something went wrong' });
     }
 };
 

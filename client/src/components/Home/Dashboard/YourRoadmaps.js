@@ -12,14 +12,19 @@ const YourRoadmaps = (props) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            let result = await fetch(
-                `/profile/${props.user.username}/roadmaps`
-            );
-            result = await result.json();
-            return result;
+            try {
+                let result = await fetch(
+                    `/profile/${props.user.username}/roadmaps`
+                );
+                result = await result.json();
+                if (result.error) throw result.error;
+                return result;
+            } catch (e) {
+                console.log(e);
+            }
         };
         fetchUser().then((res) => {
-            setRoadmaps(res.roadmaps);
+            setRoadmaps(res);
         });
     }, []);
 
