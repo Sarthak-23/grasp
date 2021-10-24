@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
 import { Avatar, Button, Tooltip } from '@mui/material';
+import { UserContext } from '../../context/UserContext';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -68,6 +69,8 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const Navbar = (props) => {
+    const [user, setUser] = React.useContext(UserContext);
+    // console.log(user.id);
     const pathname = useLocation().pathname;
     const hist = useHistory();
     const [showSearch, setShowSearch] = React.useState(false);
@@ -135,15 +138,16 @@ const Navbar = (props) => {
                         </Link>
                     ) : null}
                     {/* <EmptySpace /> */}
-                    <Tooltip title="Logout">
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={handleLogout}
-                        >
-                            <Icon style={{ color: 'white' }}>logout</Icon>
-                        </Button>
-                    </Tooltip>
+                    {user.id ? (
+                        <Tooltip title="Logout">
+                            <Icon
+                                style={{ color: 'white' }}
+                                onClick={handleLogout}
+                            >
+                                logout
+                            </Icon>
+                        </Tooltip>
+                    ) : null}
                 </Toolbar>
             </AppBar>
         </Container>
