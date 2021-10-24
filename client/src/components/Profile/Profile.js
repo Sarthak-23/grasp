@@ -6,7 +6,7 @@ import Navbar from '../Navbar/Navbar';
 import Panel from '../Home/Dashboard/Dashboard';
 import { Typography } from '@mui/material';
 
-const Profile = (props) => {
+const Profile = () => {
     const [user, setUser] = useState({
         id: '',
         username: '',
@@ -31,16 +31,13 @@ const Profile = (props) => {
     useEffect(() => {
         fetchProfile().then((res) => {
             if (res.user) {
-                setUser((prev) => {
-                    return res.user;
-                });
+                setUser(res.user);
                 setRoadmaps(res.roadmaps);
-                console.log(user);
             } else {
                 console.log(res.error);
             }
         });
-    });
+    }, []);
 
     return (
         <div className={classes.Home}>
