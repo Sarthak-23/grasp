@@ -88,28 +88,33 @@ const Panel = (props) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
-    
-    const [editGoals, setEditGoals] = useState(["Flying", "Singning", "Coding", "Parking Car"])
+
+    const [editGoals, setEditGoals] = useState([
+        'Flying',
+        'Singning',
+        'Coding',
+        'Parking Car',
+    ]);
     const [newGoal, setNewGoal] = useState(null);
 
 
 
     const handleOpen = () => {
         setOpen(true);
-        setEditGoals([...details.goals])
-    }
+        setEditGoals([...details.goals]);
+    };
     const handleClose = () => {
         setOpen(false);
-    }
+    };
 
     const handleDelete = (i) => {
         console.info('You clicked the delete icon.');
 
-        setEditGoals(prev => {
-            let newgoal = [...prev]
-            newgoal.splice(i, 1)
-            return newgoal
-        })
+        setEditGoals((prev) => {
+            let newgoal = [...prev];
+            newgoal.splice(i, 1);
+            return newgoal;
+        });
     };
     const handleClick = () => {
         console.info('You clicked the Chip.');
@@ -140,14 +145,11 @@ const Panel = (props) => {
     };
 
     const addGoalHandlerNew = () => {
-        if (newGoal != null)
-        {
-            setEditGoals(prev => [...prev, newGoal])
+        if (newGoal != null) {
+            setEditGoals((prev) => [...prev, newGoal]);
             setNewGoal(null);
         }
-        
-        
-    }
+    };
 
     const handleSubmit = async () => {
         try {
@@ -156,10 +158,10 @@ const Panel = (props) => {
                 return;
             }
             setLoading(true);
-            setDetails(prev => ({
+            setDetails((prev) => ({
                 ...prev,
                 goals: [...editGoals],
-            }))
+            }));
             let res = await fetch('/profile/update', {
                 method: 'PATCH',
                 body: JSON.stringify(details),
@@ -308,11 +310,24 @@ const Panel = (props) => {
                                         />
                                     ))}
                                     <div className={classes.addGoals}>
-                                        <input onChange={(e) => { setNewGoal(e.target.value === "" ? null : e.target.value) }} type="text" value={newGoal || ""} />
-                                        <IconButton onClick={addGoalHandlerNew} aria-label="delete" color="primary">
+                                        <input
+                                            onChange={(e) => {
+                                                setNewGoal(
+                                                    e.target.value === ''
+                                                        ? null
+                                                        : e.target.value
+                                                );
+                                            }}
+                                            type="text"
+                                            value={newGoal || ''}
+                                        />
+                                        <IconButton
+                                            onClick={addGoalHandlerNew}
+                                            aria-label="delete"
+                                            color="primary"
+                                        >
                                             <AddIcon />
                                         </IconButton>
-
                                     </div>
                                     <TextField
                                         id="outlined"
@@ -388,7 +403,11 @@ const Panel = (props) => {
                     {isEditable ? <Tab label="Received" /> : null}
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <YourRoadmaps user={user} roadmaps={props.roadmaps} />
+                    <YourRoadmaps
+                        user={user}
+                        roadmaps={props.roadmaps}
+                        isEditable={isEditable}
+                    />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Connections user={user} />

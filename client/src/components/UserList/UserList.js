@@ -41,7 +41,7 @@ const UserList = (props) => {
         <Grid container className={classes.container}>
             <Grid item xs={12} md={9}>
                 <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                    {props.title}
+                    {`${props.title} (${props.users.length})`}
                 </Typography>
                 <hr />
                 <Demo>
