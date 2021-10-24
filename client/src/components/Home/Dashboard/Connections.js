@@ -23,7 +23,6 @@ const Connections = (props) => {
     return (
         <Box>
             <UserList users={connections} title="Users">
-                <NewConnection />
                 {connections.length > 0 ? (
                     connections.map((user, index) => {
                         return (

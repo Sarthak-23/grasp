@@ -57,7 +57,6 @@ const Requests = (props) => {
     return (
         <Box>
             <UserList users={received} title="Users">
-                <NewConnection />
                 {received.length > 0 ? (
                     received.map((user, index) => {
                         return (

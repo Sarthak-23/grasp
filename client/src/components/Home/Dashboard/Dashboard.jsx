@@ -40,6 +40,7 @@ import Connections from './Connections';
 import YourRoadmaps from './YourRoadmaps';
 import Pending from './Pending';
 import Requests from './Requests';
+import NewConnection from './NewConnection';
 
 const style = {
     position: 'absolute',
@@ -391,7 +392,12 @@ const Panel = (props) => {
                                 </Box>
                             </Modal>
                         </Grid>
-                    ) : null}
+                    ) : (
+                        <NewConnection
+                            currentuser={user}
+                            profile={props.user}
+                        />
+                    )}
                 </Grid>
 
                 {/* Calander  */}
