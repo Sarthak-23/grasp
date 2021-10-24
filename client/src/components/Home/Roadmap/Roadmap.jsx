@@ -28,14 +28,14 @@ const Roadmap = (props) => {
   const params = useParams();
   const [user, setUser] = useContext(UserContext) // {id, username, name, goals, connnections, pending, recieve}
 
-  const [roadmap, setRoadmap] = useState(null)
+  const [roadmap, setRoadmap] = useState([])
   const [createPath, setCreatePath] = useState({ topic: null, data: [], showModal: false, index: 0 })
 
   const [loader, setLoader] = useState(null)
   const [error, setErrors] = useState(null)
   
 
-  const [notes, setNotes] = useState(null)
+  const [notes, setNotes] = useState([])
   const [noteData, setNoteData] = useState(null)
 
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -282,7 +282,6 @@ const Roadmap = (props) => {
   }
 
   return (
-    (roadmap && notes) &&
     <div className={classes.Roadmap}>
       {(createPath.showModal || noteData || showCreateModal) &&
         <div className={classes.Modal}>
@@ -310,7 +309,7 @@ const Roadmap = (props) => {
         <div className={classes.Sec}>
           <label>Tags</label>
           <ul>
-            {roadmap.tags.length ? roadmap.tags.map((tag, index) => {
+            {roadmap.tags ? roadmap.tags.map((tag, index) => {
               return <li key={index}>{tag}</li>
             })
           : <li>No tags</li>}
@@ -341,9 +340,9 @@ const Roadmap = (props) => {
       <div className={classes.Main}>
           
           <div className={classes.StartDiv}>
-            Starting {roadmap.title}
+          Starting {roadmap && roadmap.title}
           </div>
-        {
+        {roadmap.path && 
           roadmap.path.map((path, index) => {
             return <>
               <div className={classes.path}/>
