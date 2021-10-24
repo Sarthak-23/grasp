@@ -6,41 +6,7 @@ import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 
 const UserConnectionRequestItem = (props) => {
-    const { index, user, type } = props;
-
-    const handleAccept = async (e) => {
-        e.stopPropagation();
-        try {
-            let res = await fetch(`/profile/${user.username}/accept`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            res = await res.json();
-
-            //Rest will done by backend developer (On Current Project)
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const handleDecline = async (e) => {
-        e.stopPropagation();
-        try {
-            let res = await fetch(`/profile/${user.username}/reject`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            res = await res.json();
-
-            // Rest will done by backend developer (On Current Project)
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    const { index, user, type, handleAccept, handleDecline } = props;
 
     return (
         <Link

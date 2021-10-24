@@ -36,6 +36,10 @@ import RoadmapList from '../../RoadmapList/RoadmapList';
 import UserList from '../../UserList/UserList';
 import UserListItem from '../../UserList/UserListItem';
 import UserConnectionRequestItem from '../../UserList/UserConnectionRequestItem';
+import Connections from './Connections';
+import YourRoadmaps from './YourRoadmaps';
+import Pending from './Pending';
+import Requests from './Requests';
 
 const style = {
     position: 'absolute',
@@ -81,9 +85,6 @@ const Panel = (props) => {
     const [user, setUser] = React.useContext(UserContext);
     const [isEditable, setIsEditable] = React.useState(false);
     const [addgoals, setAddgoals] = React.useState(false);
-    const [connections, setConnections] = useState([]);
-    const [sent, setSent] = useState([]);
-    const [received, setReceived] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
@@ -101,38 +102,9 @@ const Panel = (props) => {
         setValue(newValue);
     };
 
-    const fetchConnections = async () => {
-        let res = await fetch(`/profile/connections`);
-        res = await res.json();
-        return res;
-    };
-
-    const fetchSent = async () => {
-        let res = await fetch(`/profile/pending`);
-        res = await res.json();
-        return res;
-    };
-
-    const fetchReceived = async () => {
-        let res = await fetch(`/profile/received`);
-        res = await res.json();
-        return res;
-    };
-
     useEffect(() => {
-        fetchConnections().then((res) => {
-            if (res.profiles) setConnections(res.profiles);
-            console.log(connections);
-        });
         if (details.username === user.username) {
             setIsEditable(true);
-            fetchSent().then((res) => {
-                if (res.profiles) setSent(res.profiles);
-                console.log(res);
-            });
-            fetchReceived().then((res) => {
-                if (res.profiles) setReceived(res.profiles);
-            });
         }
     }, [props]);
 
@@ -291,32 +263,14 @@ const Panel = (props) => {
                                         style={{ width: '100%' }}
                                         sx={inputs}
                                     />
-                                    <Typography>
-                                        {details.goals.map((g, index) => (
-                                            <Chip
-                                                key={index}
-                                                label={g}
-                                                variant="outlined"
-                                                onDelete={() =>
-                                                    handleDelete(index)
-                                                }
-                                            />
-                                        ))}
-                                    </Typography>
-                                    {addgoals ? (
-                                        <TextField
-                                            id="outlined"
-                                            label="Goals"
-                                            placeholder="Add goal"
-                                            value={details.goals}
-                                            name="goals"
-                                            onChange={handleEditChange}
-                                            style={{ width: '100%' }}
-                                            sx={inputs}
+                                    {details.goals.map((g, index) => (
+                                        <Chip
+                                            key={index}
+                                            label={g}
+                                            variant="outlined"
+                                            onDelete={() => handleDelete(index)}
                                         />
-                                    ) : (
-                                        ''
-                                    )}
+                                    ))}
                                     <Typography style={{ marginTop: '10px' }}>
                                         <Tooltip title="Add Goals">
                                             <Icon
@@ -403,70 +357,16 @@ const Panel = (props) => {
                     {isEditable ? <Tab label="Received" /> : null}
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <RoadmapList
-                        title="Your Roadmaps"
-                        roadmaps={props.roadmaps}
-                        emptyText={'No roadmaps created yet.'}
-                    />
+                    <YourRoadmaps user={user} roadmaps={props.roadmaps} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <UserList users={connections} title="Users">
-                        {connections.length > 0 ? (
-                            connections.map((user, index) => {
-                                return (
-                                    <UserListItem
-                                        key={index}
-                                        user={user}
-                                        index={index}
-                                    />
-                                );
-                            })
-                        ) : (
-                            <Typography style={{ textAlign: 'center' }}>
-                                No connections yet.
-                            </Typography>
-                        )}
-                    </UserList>
+                    <Connections user={user} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <UserList users={sent} title="Users">
-                        {sent.length > 0 ? (
-                            sent.map((user, index) => {
-                                return (
-                                    <UserConnectionRequestItem
-                                        key={index}
-                                        user={user}
-                                        index={index}
-                                        type="Pending"
-                                    />
-                                );
-                            })
-                        ) : (
-                            <Typography style={{ textAlign: 'center' }}>
-                                No pending requests yet.
-                            </Typography>
-                        )}
-                    </UserList>
+                    <Pending user={user} />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <UserList users={received} title="Users">
-                        {received.length > 0 ? (
-                            received.map((user, index) => {
-                                return (
-                                    <UserConnectionRequestItem
-                                        key={index}
-                                        user={user}
-                                        index={index}
-                                        type="Received"
-                                    />
-                                );
-                            })
-                        ) : (
-                            <Typography style={{ textAlign: 'center' }}>
-                                No received requests yet.
-                            </Typography>
-                        )}
-                    </UserList>
+                    <Requests user={user} />
                 </TabPanel>
             </Box>
             {/* RoadMap  */}
