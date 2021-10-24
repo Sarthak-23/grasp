@@ -1,8 +1,14 @@
-import { Avatar, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+    Avatar,
+    Chip,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const UserListItem = (props) => {
-    const { index, user } = props;
+    const { index, user, type } = props;
     return (
         <Link
             key={index}
@@ -14,11 +20,21 @@ const UserListItem = (props) => {
                     <Avatar />
                 </ListItemIcon>
                 <ListItemText primary={user.username} secondary={user.name} />
-                <ListItemText
-                    secondary={
-                        user.about ? user.about.slice(0, 100) + '...' : ''
-                    }
-                />
+                {type
+                    ? user.goals.map((g, index) => {
+                          return (
+                              <Chip
+                                  key={index}
+                                  label={g}
+                                  style={{
+                                      margin: '0.2em',
+                                      backgroundColor: '#D2B48C',
+                                  }}
+                                  size="small"
+                              />
+                          );
+                      })
+                    : null}
             </ListItem>
             <hr />
         </Link>

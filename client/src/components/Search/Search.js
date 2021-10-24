@@ -243,6 +243,7 @@ const Search = () => {
                                     key={index}
                                     user={user}
                                     index={index}
+                                    type="Connection"
                                 />
                             );
                         })

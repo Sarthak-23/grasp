@@ -85,8 +85,6 @@ const Panel = (props) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
 
-    console.log(user);
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -127,7 +125,7 @@ const Panel = (props) => {
                 if (res.profiles) setReceived(res.profiles);
             });
         }
-    }, []);
+    }, [props]);
 
     const selectHandler = (dateArray) => {
         setSelectedDate(dateArray);
