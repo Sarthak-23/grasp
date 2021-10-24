@@ -6,12 +6,21 @@ import NewConnection from './NewConnection';
 import { Box } from '@mui/system';
 
 const Requests = (props) => {
-    const { user } = props;
+    const { user, setUser } = props;
     const [received, setReceived] = useState([]);
     const fetchReceived = async () => {
         let res = await fetch(`/profile/received`);
         res = await res.json();
         return res;
+    };
+
+    const mount = (u) => {
+        setReceived((prev) => {
+            let unames = prev.map((p) => p.username);
+            let index = unames.indexOf(u.username);
+            index > -1 && prev.splice(index, 1);
+            return prev;
+        });
     };
 
     const handleAccept = async (e, u) => {
@@ -24,7 +33,7 @@ const Requests = (props) => {
                 },
             });
             res = await res.json();
-            console.log(res);
+            mount(u);
 
             //Rest will done by backend developer (On Current Project)
         } catch (err) {
@@ -43,7 +52,7 @@ const Requests = (props) => {
                 },
             });
             res = await res.json();
-            console.log(res);
+            mount(u);
 
             // Rest will done by backend developer (On Current Project)
         } catch (err) {

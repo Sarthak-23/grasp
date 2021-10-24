@@ -17,14 +17,13 @@ const YourRoadmaps = (props) => {
                     `/profile/${props.user.username}/roadmaps`
                 );
                 result = await result.json();
-                if (result.error) throw result.error;
                 return result;
             } catch (e) {
                 console.log(e);
             }
         };
         fetchUser().then((res) => {
-            setRoadmaps(res);
+            if (!res.error) setRoadmaps(res);
         });
     }, []);
 

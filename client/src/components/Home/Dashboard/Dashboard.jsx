@@ -260,9 +260,8 @@ const Panel = (props) => {
                             </Typography>
                             <Typography
                                 style={{
-                                    color: `${
-                                        props.user.about ? 'black' : 'grey'
-                                    }`,
+                                    color: `${props.user.about ? 'black' : 'grey'
+                                        }`,
                                 }}
                             >
                                 {props.user.about
