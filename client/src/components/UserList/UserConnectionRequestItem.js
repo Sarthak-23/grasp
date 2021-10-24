@@ -22,7 +22,6 @@ const UserConnectionRequestItem = (props) => {
             </Link>
             {type === 'Pending' ? (
                 <Chip
-                    key={index}
                     label={'Pending'}
                     size="small"
                     style={{
