@@ -19,6 +19,7 @@ import { UserContext } from '../../../context/UserContext';
 
 //classes
 import classes from "./Roadmap.css";
+import RightPanel from '../RightPanel/RightPanel';
 
 const date = new Date()
 
@@ -38,6 +39,8 @@ const Roadmap = (props) => {
   const [noteData, setNoteData] = useState(null)
 
   const [showCreateModal, setShowCreateModal] = useState(false)
+
+  const [selectedTopic, setSelectedTopic] = useState(null)
 
   useEffect(async() => {
 
@@ -78,7 +81,9 @@ const Roadmap = (props) => {
       });
       res = await res.json();
       console.log(res);
-      setNotes(res)
+      if (res.length) {
+        setNotes(res)
+      }
     
     } catch (e) {
       setLoader(false);
@@ -129,7 +134,6 @@ const Roadmap = (props) => {
     }))
 
     setNoteData(null)
-
     setShowCreateModal(false)
     
   }
@@ -236,6 +240,45 @@ const Roadmap = (props) => {
     }
   }
 
+  const subtopicUpdateHandler = async (data, index, ind) => {
+    
+    let oldPath = JSON.parse(JSON.stringify(roadmap.path));
+    oldPath[index].subpath[ind] = {
+      ...oldPath[index].subpath[ind],
+      description: data.description,
+      material: data.material,
+    }
+    
+    try {
+      let res = await fetch(`/roadmaps/${params.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...roadmap,
+          path: oldPath
+        })
+      });
+      res = await res.json();
+      console.log(res);
+      setRoadmap({
+        ...roadmap,
+        path: oldPath
+      })
+      if (res._id) {
+        console.log(res);
+        // history.replace('/');
+        setErrors('');
+      } else {
+        setErrors(res || res.error);
+      }
+    } catch (e) {
+      setLoader(false);
+      setErrors('Something went wrong');
+    }
+  }
+
   return (
     (roadmap && notes) &&
     <div className={classes.Roadmap}>
@@ -310,8 +353,8 @@ const Roadmap = (props) => {
 
                     <Stepper activeStep={1} alternativeLabel>
                       {path.subpath.map((sub, ind) => {
-                        return <Step key={ind}>
-                          <StepLabel >{sub.topic}</StepLabel>
+                        return <Step  onClick={() => setSelectedTopic(sub, index, ind)} key={ind}>
+                          <StepLabel style={{ cursor: "pointer" }}>{sub.topic}</StepLabel>
                         </Step>
                       })}
                     </Stepper>
@@ -334,8 +377,8 @@ const Roadmap = (props) => {
           <div className={classes.Box}>
               <Stepper activeStep={0} alternativeLabel>
                 {createPath.data.map((sub, ind) => {
-                  return <Step key={ind}>
-                    <StepLabel >{sub.topic}</StepLabel>
+                  return <Step  key={ind}>
+                    <StepLabel>{sub.topic}</StepLabel>
                   </Step>
                 })}
               </Stepper>
@@ -349,7 +392,9 @@ const Roadmap = (props) => {
           
         </div>
               
-        </div>
+      </div>
+      
+      {selectedTopic && <RightPanel updateSubtopic={subtopicUpdateHandler} data={selectedTopic} />}
 
     </div>
   );

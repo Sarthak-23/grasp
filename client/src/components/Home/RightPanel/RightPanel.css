@@ -6,7 +6,7 @@
     max-width: 100%;
     padding: 15px;
     box-shadow: 0 0 8px #3e3e3e;
-    background-color: #b8d5f1;
+    background-color: #e4e4e4;
     border-radius: 5px;
     height: 100%;
     z-index: 1;
@@ -61,7 +61,41 @@
     margin-top: 40px !important;
     border-radius: 20px !important;
 }
-
+.addGoals {
+    border-radius: 50px;
+    border: 1px solid grey;
+    padding: 0 10px;
+    background: white;
+    margin-top: 20px;
+}
+.addGoals input {
+    width: 100px;
+    padding: 5px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background-color: rgb(204, 204, 204);
+}
+.boxbox{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;
+}
+.box{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+.parent{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 5px grey;
+}
 /* @media screen and (max-width: 400px) {
     .Container {
         width: 100%;

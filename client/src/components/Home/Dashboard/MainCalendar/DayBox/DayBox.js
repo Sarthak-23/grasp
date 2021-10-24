@@ -14,6 +14,10 @@ const DayBox = (props) => {
         window.addEventListener("resize", ()=>{
             setWidth(window.innerWidth);
         })
+        
+        return () => {
+            window.removeEventListener("resize", ()=>{});
+        }
     }, [])
 
     let DayBoxClassList = [classes.DayBox]

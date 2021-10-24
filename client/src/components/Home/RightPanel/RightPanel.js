@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './RightPanel.css';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import TextField from '@mui/material/TextField';
+import {
+    Avatar,
+    Chip,
+    CircularProgress,
+    FormControl,
+    FormGroup,
+    Grid,
+    Tooltip,
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 const style = {
     position: 'absolute',
@@ -17,15 +31,49 @@ const style = {
     p: 4,
 };
 
-const RightPanel = () => {
-    const [des_disable, setDesdisable] = useState(true);
-    const [mat_disable, setMatdisable] = useState(true);
-    const [description, setDescription] = useState('');
-    const [material, setMaterial] = useState('');
+const RightPanel = (props) => {
+    const [description, setDescription] = useState(null);
+    const [material, setMaterial] = useState(null);
+    
+    const [newMaterial, setNewMaterial] = useState(null)
+    
+    const [isDataChanged, setIsDataChanged] = useState(false)
+
+    useEffect(() => {
+        console.log(props)
+        setDescription(props.data.description)
+        // setMaterial(props.data.material)
+
+    }, [props])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(description, material);
+        // console.log(description, material);
+        props.updateSubtopic({
+            material: material,
+            description: description,
+        })
+    };
+
+    const descriptionHandler = (e) => {
+        setIsDataChanged(true);
+        setDescription(e.target.value)
+    }
+
+    const addMatHandler = () => {
+        if (newMaterial != null) {
+            setMaterial((prev) => [...prev, newMaterial]);
+            setIsDataChanged(true)
+            setNewMaterial(null);
+        }
+    };
+    const handleMatDelete = (i) => {
+        setMaterial((prev) => {
+            let newMat = [...prev];
+            newMat.splice(i, 1);
+            return newMat;
+        });
+        setIsDataChanged(true)
     };
 
     return (
@@ -34,38 +82,58 @@ const RightPanel = () => {
                 style={{ textAlign: 'left', width: '100%' }}
                 variant="h5"
             >
-                Topic Name
+                {props.data.title}
             </Typography>
-            <TextareaAutosize
-                aria-label="minimum height"
-                minRows={10}
-                placeholder="Description"
-                className={classes.textArea}
-                disabled={des_disable}
-                name="description"
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+
+            <TextField
+            id="outlined-multiline-static"
+            label="Multiline"
+            color="primary"
+            className={classes.textArea}
+            multiline
+            name="description"
+            id="description"
+            rows={10}
+            value={description}
+            onChange={descriptionHandler}    
             />
-            <TextareaAutosize
-                aria-label="minimum height"
-                minRows={5}
-                placeholder="Materials"
-                className={classes.textArea}
-                disabled={mat_disable}
-                name="material"
-                id="material"
-                value={material}
-                onChange={(e) => setMaterial(e.target.value)}
-            />
-            <Button
-                variant="contained"
-                color="success"
-                className={classes.Button}
-                onClick={handleSubmit}
-            >
-                Update
-            </Button>
+            <div className={classes.parent} style={{margin: "30px 0 0 0"}}>
+            <label style={{margin: "30px 0 0 0", textAlign: "center"}}>Material</label>
+                <div className={classes.boxbox}>
+                    {material && material.map((g, index) => (
+                        <Chip
+                            key={index}
+                            label={g}
+                            variant="outlined"
+                            style={{ margin: '0.2em', backgroundColor: "white" }}
+                            size="small"
+                            onDelete={()=>handleMatDelete(index)}
+                        />
+                    ))}
+                </div>
+                <div className={classes.box}>
+                    <TextField onChange={(e) => {
+                            setNewMaterial(
+                                e.target.value === ''
+                                    ? null
+                                    : e.target.value
+                        )
+                    }}
+                    value={newMaterial || ""} style={{ margin: "10px 0" }} size='small' id="standard-basic" label="Material" name="material" variant="outlined" />
+                    <IconButton onClick={addMatHandler} style={{ margin: "10px 0" }} size="small" color="primary" aria-label="add">
+                        <AddBoxIcon />
+                    </IconButton>
+                </div>
+            </div>
+            {isDataChanged &&
+                <Button
+                    style={{marginTop: "20px"}}
+                    variant="text"
+                    onClick={handleSubmit}
+                >
+                    UPDATE
+                </Button>
+            }
         </Box>
     );
 };

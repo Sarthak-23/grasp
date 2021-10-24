@@ -31,9 +31,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routing
-app.use('/profile', profileRoutes);
-app.use('/auth', authRoutes);
-app.use('/roadmaps', roadRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/roadmaps', roadRoutes);
 
 // Listen at PORT
 app.listen(PORT, () => {
