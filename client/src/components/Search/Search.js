@@ -70,7 +70,7 @@ const Search = () => {
     const [resultType, setResultType] = React.useState(categoryOptions[0]);
     const [result, setResult] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-
+    const [errors, setErrors] = React.useState('');
     const fetchUserByProfile = async () => {
         try {
             const res = await fetch(
@@ -125,6 +125,12 @@ const Search = () => {
 
     const handleSearch = async () => {
         setLoading(true);
+        if (!keyword) {
+            setErrors('Please Enter a Query');
+            setLoading(false);
+            return;
+        }
+        setErrors('');
         if (category === 'Profile') {
             setResultType(categoryOptions[0]);
             fetchUserByProfile().then((res) => {
@@ -234,6 +240,9 @@ const Search = () => {
                     )}
                 </Grid>
             </Grid>
+            <Typography className={classes.boxer} style={{ color: 'red' }}>
+                {errors}
+            </Typography>
             {result && resultType === categoryOptions[0] ? (
                 <UserList title="Search Result" users={result}>
                     {result.length > 0 ? (

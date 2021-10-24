@@ -1,7 +1,16 @@
 import UserList from '../../UserList/UserList';
 import UserConnectionRequestItem from '../../UserList/UserConnectionRequestItem';
-import { Typography } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { Box } from '@mui/system';
+import NewConnection from './NewConnection';
+
+const container = {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: '2rem',
+};
 
 const Pending = (props) => {
     const [sent, setSent] = useState([]);
@@ -19,24 +28,29 @@ const Pending = (props) => {
     });
 
     return (
-        <UserList users={sent} title="Users">
-            {sent.length > 0 ? (
-                sent.map((user, index) => {
-                    return (
-                        <UserConnectionRequestItem
-                            key={index}
-                            user={user}
-                            index={index}
-                            type="Pending"
-                        />
-                    );
-                })
-            ) : (
-                <Typography style={{ textAlign: 'center' }}>
-                    No pending requests yet.
-                </Typography>
-            )}
-        </UserList>
+        <Box>
+            <UserList users={sent} title="Users">
+                <NewConnection />
+                {sent.length > 0 ? (
+                    sent.map((user, index) => {
+                        return (
+                            <UserConnectionRequestItem
+                                key={index}
+                                user={user}
+                                index={index}
+                                type="Pending"
+                            />
+                        );
+                    })
+                ) : (
+                    <Typography
+                        style={{ textAlign: 'center', marginTop: '1rem' }}
+                    >
+                        No pending requests yet.
+                    </Typography>
+                )}
+            </UserList>
+        </Box>
     );
 };
 

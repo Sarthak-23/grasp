@@ -17,10 +17,10 @@ const Profile = (props) => {
         received: [],
     });
     const [roadmaps, setRoadmaps] = useState([]);
-    const { username } = useParams();
+    const params = useParams();
     const fetchProfile = async () => {
         try {
-            let res = await fetch(`/profile/${username}`);
+            let res = await fetch(`/profile/${params.username}`);
             res = await res.json();
             return res;
         } catch (err) {

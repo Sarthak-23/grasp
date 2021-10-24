@@ -48,6 +48,7 @@ const RoadmapList = (props) => {
                     {props.title}
                 </Typography>
                 <hr />
+                {props.children}
                 <Demo>
                     <List>
                         {props.roadmaps && props.roadmaps.length > 0 ? (
