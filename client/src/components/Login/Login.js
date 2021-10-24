@@ -69,7 +69,7 @@ const Login = () => {
                 history.push('/');
                 setErrors('');
             } else {
-                setErrors(res.error);
+                setErrors('Something went wrong');
             }
             console.log(res);
             setLoader(false);
@@ -161,6 +161,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
