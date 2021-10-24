@@ -5,12 +5,18 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    Icon,
+    Button,
+    Tooltip,
+    IconButton,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
+import { useContext, useState } from 'react';
+import { UserContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -40,6 +46,26 @@ const Demo = styled('div')(({ theme }) => ({
 // emptyText
 const RoadmapList = (props) => {
     const classes = useStyles();
+    const [user, setUser] = useContext(UserContext);
+    const handleCloning = async (id) => {
+        if (!id) {
+            return;
+        }
+        try {
+            let res = await fetch(`/roadmaps/fork/${id}`, {
+                method: 'POST',
+            });
+            res = await res.json();
+            console.log(res);
+            if (res.error) throw res.error;
+            props.handleOpen();
+            setTimeout(() => {
+                if (props.open) props.handleClose();
+            }, 3000);
+        } catch (e) {
+            console.log(e);
+        }
+    };
     return (
         <Grid container className={classes.container}>
             <Grid item xs={12} md={9}>
@@ -59,12 +85,14 @@ const RoadmapList = (props) => {
                                     ? road.updatedAt.split('T')
                                     : '';
                                 return (
-                                    <Link
-                                        key={index}
-                                        style={{ textDecoration: 'none' }}
-                                        to={`/roadmap/${road._id}`}
-                                    >
-                                        <ListItem>
+                                    <ListItem key={index}>
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                flexGrow: 1,
+                                            }}
+                                            to={`/roadmap/${road._id}`}
+                                        >
                                             <ListItemIcon>
                                                 <EditRoadIcon />
                                             </ListItemIcon>
@@ -100,9 +128,27 @@ const RoadmapList = (props) => {
                                                 primary={updatedate[0]}
                                                 secondary={createdate[0]}
                                             />
-                                        </ListItem>
-                                        <hr />
-                                    </Link>
+                                            <hr />
+                                        </Link>
+                                        {user && road.user !== user._id ? (
+                                            <Tooltip title="Clone">
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={() => {
+                                                        handleCloning(road._id);
+                                                    }}
+                                                >
+                                                    <Icon
+                                                        style={{
+                                                            color: 'white',
+                                                        }}
+                                                    >
+                                                        file_copy
+                                                    </Icon>
+                                                </Button>
+                                            </Tooltip>
+                                        ) : null}
+                                    </ListItem>
                                 );
                             })
                         ) : (

@@ -127,11 +127,20 @@ exports.forkRoadmap = async (req, res) => {
         if (roadmap.user.equals(req.user._id)) {
             return res.status(401).json({ error: 'Invalid operation' });
         }
-        roadmap.parent = roadmap._id;
-        roadmap.user = req.user._id;
-        delete roadmap._id;
-        const newRoadmap = new Roadmap(roadmap);
-        await newRoadmap.save();
+        // roadmap.parent = roadmap._id;
+        // roadmap.user = req.user._id;
+        // delete roadmap._id;
+        // delete roadmap.start;
+        // delete roadmap.createdAt;
+        // delete roadmap.updatedAt;
+        const newroadmap = new Roadmap({
+            title: roadmap.title,
+            description: roadmap.description,
+            user: req.user._id,
+            path: roadmap.path,
+            tags: roadmap.tags,
+        });
+        await newroadmap.save();
         res.json({ success: 'Forked successfully' });
     } catch (e) {
         res.status(501).json({ error: e });
