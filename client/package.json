@@ -1,5 +1,5 @@
 {
-    "proxy": "https://cod-grasp.herokuapp.com/api/",
+    "proxy": "https://localhost:5000/",
     "name": "client",
     "version": "0.1.0",
     "private": true,

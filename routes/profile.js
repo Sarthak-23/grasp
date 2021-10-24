@@ -6,7 +6,7 @@ const Roadmap = require('../models/Roadmap');
 const User = require('../models/User');
 
 // Search a profile
-router.get('/search', userController.searchProfile);
+router.get('/api/search', userController.searchProfile);
 
 // Update profile
 router.patch(
