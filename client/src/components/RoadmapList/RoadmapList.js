@@ -82,7 +82,12 @@ const RoadmapList = (props) => {
                                                                 classes.chip
                                                             }
                                                             size="small"
-                                                            color="warning"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    'orange',
+                                                                color: 'white',
+                                                            }}
+                                                            // color="warning"
                                                         />
                                                     );
                                                 })}
