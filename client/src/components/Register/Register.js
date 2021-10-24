@@ -131,7 +131,7 @@ const Register = (props) => {
                 ) : null}
                 <Button
                     type="submit"
-                    color="primary"
+                    color="success"
                     variant="contained"
                     style={btnstyle}
                     fullWidth
