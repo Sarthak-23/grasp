@@ -46,9 +46,10 @@ const UserList = (props) => {
                 <Demo>
                     <List>
                         {props.users.length > 0 ? (
-                            props.users.map((user) => {
+                            props.users.map((user, index) => {
                                 return (
                                     <Link
+                                        key={index}
                                         style={{ textDecoration: 'none' }}
                                         to={`/profile/${user.username}`}
                                     >

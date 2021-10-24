@@ -153,8 +153,12 @@ const Search = () => {
                 label="Type"
                 onChange={handleTypes}
             >
-                {profileOptions.map((cat) => {
-                    return <MenuItem value={cat}>{cat}</MenuItem>;
+                {profileOptions.map((cat, index) => {
+                    return (
+                        <MenuItem key={index} value={cat}>
+                            {cat}
+                        </MenuItem>
+                    );
                 })}
             </Select>
         );
@@ -168,8 +172,12 @@ const Search = () => {
                 label="Type"
                 onChange={handleTypes}
             >
-                {roadmapOptions.map((cat) => {
-                    return <MenuItem value={cat}>{cat}</MenuItem>;
+                {roadmapOptions.map((cat, index) => {
+                    return (
+                        <MenuItem key={index} value={cat}>
+                            {cat}
+                        </MenuItem>
+                    );
                 })}
             </Select>
         );
@@ -187,8 +195,12 @@ const Search = () => {
                         label="Category"
                         onChange={handleCategory}
                     >
-                        {categoryOptions.map((cat) => {
-                            return <MenuItem value={cat}>{cat}</MenuItem>;
+                        {categoryOptions.map((cat, index) => {
+                            return (
+                                <MenuItem key={index} value={cat}>
+                                    {cat}
+                                </MenuItem>
+                            );
                         })}
                     </Select>
                 </Grid>
