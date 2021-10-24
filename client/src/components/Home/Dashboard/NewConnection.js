@@ -5,6 +5,29 @@ import { useState } from 'react';
 const NewConnection = () => {
     const [newusername, setNewusername] = useState('');
     const [loading, setLoading] = useState('');
+    const [error, setError] = useState('');
+
+    const handleConnect = async () => {
+        setLoading(true);
+        try {
+            let res = await fetch(`/profile/${newusername}/connect`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            res = await res.json();
+            if (res.error) setError(res.error);
+            else {
+                setError('');
+                setNewusername('');
+            }
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+            setError('Something went wrong');
+        }
+    };
 
     return (
         <Box
@@ -18,11 +41,13 @@ const NewConnection = () => {
                 label="Username"
                 value={newusername}
                 onChange={(e) => setNewusername(e.target.value)}
+                error={error}
             />
             <Button
                 variant="contained"
                 disabled={loading}
                 style={{ marginLeft: '1rem' }}
+                onClick={handleConnect}
             >
                 Connect
             </Button>

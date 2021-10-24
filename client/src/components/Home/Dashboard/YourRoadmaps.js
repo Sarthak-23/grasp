@@ -13,10 +13,12 @@ const YourRoadmaps = (props) => {
             roadmaps={props.roadmaps}
             emptyText={'No roadmaps created yet.'}
         >
-            <Button variant="contained" style={buttonStyle}>
-                <Icon style={{ color: 'white' }}>add</Icon>
-                <Typography style={{ color: 'white' }}>CREATE</Typography>
-            </Button>
+            {props.isEditable ? (
+                <Button variant="contained" style={buttonStyle}>
+                    <Icon style={{ color: 'white' }}>add</Icon>
+                    <Typography style={{ color: 'white' }}>CREATE</Typography>
+                </Button>
+            ) : null}
         </RoadmapList>
     );
 };
