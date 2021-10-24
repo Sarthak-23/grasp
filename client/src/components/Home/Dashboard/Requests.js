@@ -8,6 +8,7 @@ import { Box } from '@mui/system';
 const Requests = (props) => {
     const { user, setUser } = props;
     const [received, setReceived] = useState([]);
+    const [toggle, setToggle] = useState(false);
     const fetchReceived = async () => {
         let res = await fetch(`/profile/received`);
         res = await res.json();
@@ -21,6 +22,7 @@ const Requests = (props) => {
             index > -1 && prev.splice(index, 1);
             return prev;
         });
+        setToggle((prev) => !prev);
     };
 
     const handleAccept = async (e, u) => {
@@ -33,7 +35,7 @@ const Requests = (props) => {
                 },
             });
             res = await res.json();
-            mount(u);
+            if (res.success) mount(u);
 
             //Rest will done by backend developer (On Current Project)
         } catch (err) {
@@ -52,7 +54,7 @@ const Requests = (props) => {
                 },
             });
             res = await res.json();
-            mount(u);
+            if (res.success) mount(u);
 
             // Rest will done by backend developer (On Current Project)
         } catch (err) {
@@ -64,9 +66,7 @@ const Requests = (props) => {
         fetchReceived().then((res) => {
             if (res.profiles) setReceived(res.profiles);
         });
-    }, []);
-
-    useEffect(() => {}, [received]);
+    }, [toggle]);
 
     return (
         <Box>

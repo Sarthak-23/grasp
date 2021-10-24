@@ -93,8 +93,6 @@ const Panel = (props) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
 
-    console.log(props.user);
-
     const [editGoals, setEditGoals] = useState([
         'Flying',
         'Singning',

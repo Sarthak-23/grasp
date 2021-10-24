@@ -9,6 +9,7 @@ const buttonStyle = {
 
 const YourRoadmaps = (props) => {
     const [roadmaps, setRoadmaps] = React.useState([]);
+    const [toggle, setToggle] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -36,7 +37,9 @@ const YourRoadmaps = (props) => {
             {console.log(roadmaps)}
             {props.isEditable ? (
                 <Button
-                    onClick={props.modalClick}
+                    onClick={() => {
+                        props.modalClick();
+                    }}
                     variant="contained"
                     style={buttonStyle}
                 >
