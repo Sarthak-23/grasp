@@ -137,7 +137,7 @@ const Roadmap = (props) => {
 
   const [roadmap, setRoadmap] = useState(null)
   const [loader, setLoader] = useState(null)
-  const [user, setUser] = useContext(UserContext) // {_id, username, name, goals, connnections, pending, recieve}
+  const [user, setUser] = useContext(UserContext) // {id, username, name, goals, connnections, pending, recieve}
   const [createPath, setCreatePath] = useState({ topic: null, data: [], showModal: false, index: 0 })
   
   const [error, setErrors] = useState(null)

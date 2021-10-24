@@ -40,7 +40,7 @@ const Profile = (props) => {
                 console.log(res.error);
             }
         });
-    });
+    }, []);
 
     return (
         <div className={classes.Home}>

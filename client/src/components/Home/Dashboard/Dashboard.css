@@ -61,6 +61,25 @@
     outline: none;
     background-color: rgb(204, 204, 204);
 }
+.CR_Modal{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #404040a3;
+    z-index: 3;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: fixed;
+}
+.Backdrop{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
 @media (max-width: 908px) {
     .Container {
         flex-direction: column;
