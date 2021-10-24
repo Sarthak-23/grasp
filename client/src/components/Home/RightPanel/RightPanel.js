@@ -62,7 +62,11 @@ const RightPanel = (props) => {
 
     const addMatHandler = () => {
         if (newMaterial != null) {
-            setMaterial((prev) => [...prev, newMaterial]);
+            if (material === null) {
+                setMaterial((prev) => [...prev, newMaterial]);
+            }else
+                setMaterial((prev) => [...prev, newMaterial]);
+            
             setIsDataChanged(true)
             setNewMaterial(null);
         }

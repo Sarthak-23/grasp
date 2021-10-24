@@ -19,7 +19,7 @@ const Profile = () => {
     const params = useParams();
     const fetchProfile = async () => {
         try {
-            let res = await fetch(`/profile/${params.username}`);
+            let res = await fetch(`/profile/api/${params.username}`);
             res = await res.json();
             return res;
         } catch (err) {
