@@ -35,14 +35,14 @@ const NewConnection = (props) => {
         }
     };
 
-    if (currentuser.id && profile.connections.includes(currentuser.id))
+    if (currentuser._id && profile.connections.includes(currentuser._id))
         return <Chip color="success" label="Connected" />;
-    if (currentuser.id && profile.received.includes(currentuser.id))
+    if (currentuser._id && profile.received.includes(currentuser._id))
         return <Chip color="warning" label="Pending" />;
-    if (currentuser.id && profile.sent.includes(currentuser.id))
+    if (currentuser._id && profile.sent.includes(currentuser._id))
         return <Chip color="warning" label="Pending" />;
 
-    if (currentuser.id)
+    if (currentuser._id)
         return (
             <Box>
                 {!success ? (
