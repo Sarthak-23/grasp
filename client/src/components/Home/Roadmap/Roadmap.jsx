@@ -243,10 +243,11 @@ const Roadmap = (props) => {
   const subtopicUpdateHandler = async (data, index, ind) => {
     
     let oldPath = JSON.parse(JSON.stringify(roadmap.path));
+    console.log(oldPath)
     oldPath[index].subpath[ind] = {
       ...oldPath[index].subpath[ind],
       description: data.description,
-      material: data.material,
+      materials: data.materials,
     }
     
     try {
@@ -266,6 +267,7 @@ const Roadmap = (props) => {
         ...roadmap,
         path: oldPath
       })
+      selectedTopic(null)
       if (res._id) {
         console.log(res);
         // history.replace('/');
@@ -353,7 +355,7 @@ const Roadmap = (props) => {
 
                     <Stepper activeStep={1} alternativeLabel>
                       {path.subpath.map((sub, ind) => {
-                        return <Step  onClick={() => setSelectedTopic(sub, index, ind)} key={ind}>
+                        return <Step  onClick={() => setSelectedTopic({sub: sub, index: index, ind: ind})} key={ind}>
                           <StepLabel style={{ cursor: "pointer" }}>{sub.topic}</StepLabel>
                         </Step>
                       })}

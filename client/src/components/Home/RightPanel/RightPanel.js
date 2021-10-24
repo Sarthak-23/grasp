@@ -33,7 +33,7 @@ const style = {
 
 const RightPanel = (props) => {
     const [description, setDescription] = useState(null);
-    const [material, setMaterial] = useState(null);
+    const [material, setMaterial] = useState([]);
     
     const [newMaterial, setNewMaterial] = useState(null)
     
@@ -41,8 +41,8 @@ const RightPanel = (props) => {
 
     useEffect(() => {
         console.log(props)
-        setDescription(props.data.description)
-        // setMaterial(props.data.material)
+        setDescription(props.data.sub.description)
+        setMaterial(props.data.sub.materials)
 
     }, [props])
 
@@ -50,9 +50,9 @@ const RightPanel = (props) => {
         e.preventDefault();
         // console.log(description, material);
         props.updateSubtopic({
-            material: material,
+            materials: material,
             description: description,
-        })
+        }, props.data.index, props.data.ind)
     };
 
     const descriptionHandler = (e) => {
@@ -62,11 +62,7 @@ const RightPanel = (props) => {
 
     const addMatHandler = () => {
         if (newMaterial != null) {
-            if (material === null) {
-                setMaterial((prev) => [...prev, newMaterial]);
-            }else
-                setMaterial((prev) => [...prev, newMaterial]);
-            
+            setMaterial((prev) => [...prev, newMaterial]);            
             setIsDataChanged(true)
             setNewMaterial(null);
         }
@@ -86,7 +82,7 @@ const RightPanel = (props) => {
                 style={{ textAlign: 'left', width: '100%' }}
                 variant="h5"
             >
-                {props.data.title}
+                {props.data.sub.title}
             </Typography>
 
             <TextField
@@ -104,7 +100,7 @@ const RightPanel = (props) => {
             <div className={classes.parent} style={{margin: "30px 0 0 0"}}>
             <label style={{margin: "30px 0 0 0", textAlign: "center"}}>Material</label>
                 <div className={classes.boxbox}>
-                    {material && material.map((g, index) => (
+                    {material.length !=0 && material.map((g, index) => (
                         <Chip
                             key={index}
                             label={g}
