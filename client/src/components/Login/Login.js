@@ -64,13 +64,15 @@ const Login = () => {
             });
             res = await res.json();
 
-            if (res.id) {
+            if (res._id) {
                 setUser(res);
-                history.replace('/');
+                history.push('/');
                 setErrors('');
             } else {
-                setErrors(res || res.error);
+                setErrors(res.error);
             }
+            console.log(res);
+            setLoader(false);
         } catch (e) {
             setLoader(false);
             setErrors('Something went wrong');

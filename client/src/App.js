@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Login from '../src/components/Login/Login';
 import Register from '../src/components/Register/Register';
 import Home from '../src/components/Home/Home';
@@ -13,6 +13,7 @@ import Profile from './components/Profile/Profile';
 
 function Routes() {
     const [user, setUser] = React.useContext(UserContext);
+    const hist = useHistory();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -22,7 +23,13 @@ function Routes() {
         };
         fetchUser().then((res) => {
             if (!res.error) {
-                setUser(res);
+                setUser(() => {
+                    return {
+                        ...res,
+                        id: res.id,
+                    };
+                });
+                hist.push('/');
             }
         });
     }, []);
@@ -45,7 +52,7 @@ function Routes() {
                 <Profile />
             </Route>
             <Route exact path="/">
-                {!user || !user.id ? (
+                {!user || !user._id ? (
                     <Redirect to="/login" />
                 ) : (
                     <Home user={user} />
