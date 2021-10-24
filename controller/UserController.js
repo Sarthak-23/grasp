@@ -159,6 +159,7 @@ exports.updateProfile = async (req, res) => {
     try {
         const profile = await User.findByIdAndUpdate(req.user._id, {
             name: req.body.name || req.user.name,
+            about: req.body.about || req.user.about,
             goals: req.body.goals || req.user.goals,
         });
         if (!profile) {
