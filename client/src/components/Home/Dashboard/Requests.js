@@ -2,6 +2,8 @@ import UserList from '../../UserList/UserList';
 import UserConnectionRequestItem from '../../UserList/UserConnectionRequestItem';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import NewConnection from './NewConnection';
+import { Box } from '@mui/system';
 
 const Requests = (props) => {
     const { user } = props;
@@ -53,26 +55,31 @@ const Requests = (props) => {
     });
 
     return (
-        <UserList users={received} title="Users">
-            {received.length > 0 ? (
-                received.map((user, index) => {
-                    return (
-                        <UserConnectionRequestItem
-                            key={index}
-                            user={user}
-                            index={index}
-                            handleAccept={handleAccept}
-                            handleDecline={handleDecline}
-                            type="Received"
-                        />
-                    );
-                })
-            ) : (
-                <Typography style={{ textAlign: 'center' }}>
-                    No received requests yet.
-                </Typography>
-            )}
-        </UserList>
+        <Box>
+            <UserList users={received} title="Users">
+                <NewConnection />
+                {received.length > 0 ? (
+                    received.map((user, index) => {
+                        return (
+                            <UserConnectionRequestItem
+                                key={index}
+                                user={user}
+                                index={index}
+                                handleAccept={handleAccept}
+                                handleDecline={handleDecline}
+                                type="Received"
+                            />
+                        );
+                    })
+                ) : (
+                    <Typography
+                        style={{ textAlign: 'center', marginTop: '1rem' }}
+                    >
+                        No received requests yet.
+                    </Typography>
+                )}
+            </UserList>
+        </Box>
     );
 };
 

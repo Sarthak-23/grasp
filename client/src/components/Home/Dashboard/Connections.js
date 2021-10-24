@@ -2,6 +2,8 @@ import UserList from '../../UserList/UserList';
 import UserListItem from '../../UserList/UserListItem';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { Box } from '@mui/system';
+import NewConnection from './NewConnection';
 
 const Connections = (props) => {
     const [connections, setConnections] = useState([]);
@@ -19,19 +21,28 @@ const Connections = (props) => {
     });
 
     return (
-        <UserList users={connections} title="Users">
-            {connections.length > 0 ? (
-                connections.map((user, index) => {
-                    return (
-                        <UserListItem key={index} user={user} index={index} />
-                    );
-                })
-            ) : (
-                <Typography style={{ textAlign: 'center' }}>
-                    No connections yet.
-                </Typography>
-            )}
-        </UserList>
+        <Box>
+            <UserList users={connections} title="Users">
+                <NewConnection />
+                {connections.length > 0 ? (
+                    connections.map((user, index) => {
+                        return (
+                            <UserListItem
+                                key={index}
+                                user={user}
+                                index={index}
+                            />
+                        );
+                    })
+                ) : (
+                    <Typography
+                        style={{ textAlign: 'center', marginTop: '1rem' }}
+                    >
+                        No connections yet.
+                    </Typography>
+                )}
+            </UserList>
+        </Box>
     );
 };
 
