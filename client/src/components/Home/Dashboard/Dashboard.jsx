@@ -88,12 +88,26 @@ const Panel = (props) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [open, setOpen] = useState(false);
     const [value, setValue] = React.useState(0);
+    
+    const [editGoals, setEditGoals] = useState(["Flying", "Singning", "Coding", "Parking Car"])
+    const [newGoal, setNewGoal] = useState(null);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpen = () => {
+        setOpen(true);
+        setEditGoals([...details.goals])
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     const handleDelete = (i) => {
         console.info('You clicked the delete icon.');
-        details.goals.splice(i, 1);
+
+        setEditGoals(prev => {
+            let newgoal = [...prev]
+            newgoal.splice(i, 1)
+            return newgoal
+        })
     };
     const handleClick = () => {
         console.info('You clicked the Chip.');
@@ -123,6 +137,16 @@ const Panel = (props) => {
         });
     };
 
+    const addGoalHandlerNew = () => {
+        if (newGoal != null)
+        {
+            setEditGoals(prev => [...prev, newGoal])
+            setNewGoal(null);
+        }
+        
+        
+    }
+
     const handleSubmit = async () => {
         try {
             if (!details.name) {
@@ -130,6 +154,10 @@ const Panel = (props) => {
                 return;
             }
             setLoading(true);
+            setDetails(prev => ({
+                ...prev,
+                goals: [...editGoals],
+            }))
             let res = await fetch('/profile/update', {
                 method: 'PATCH',
                 body: JSON.stringify(details),
@@ -161,6 +189,12 @@ const Panel = (props) => {
 
     return (
         <Box className={classes.Container}>
+            {/* Create Roadmap Modal */}
+            <div className={classes.CR_Modal}>
+                <div className={classes.Backdrop} onClick={()=>closeModal(notes.modalContent.showModal ? 0 : 1)}/>
+                {true && <CreateRoadmap />}
+            </div>
+
             {/* profile  */}
             <Box>
                 <Grid container className={classes.Profile}>
@@ -263,7 +297,7 @@ const Panel = (props) => {
                                         style={{ width: '100%' }}
                                         sx={inputs}
                                     />
-                                    {details.goals.map((g, index) => (
+                                    {editGoals.map((g, index) => (
                                         <Chip
                                             key={index}
                                             label={g}
@@ -271,18 +305,13 @@ const Panel = (props) => {
                                             onDelete={() => handleDelete(index)}
                                         />
                                     ))}
-                                    <Typography style={{ marginTop: '10px' }}>
-                                        <Tooltip title="Add Goals">
-                                            <Icon
-                                                style={{ color: 'green' }}
-                                                onClick={() =>
-                                                    setAddgoals(true)
-                                                }
-                                            >
-                                                add_circle
-                                            </Icon>
-                                        </Tooltip>
-                                    </Typography>
+                                    <div className={classes.addGoals}>
+                                        <input onChange={(e) => { setNewGoal(e.target.value === "" ? null : e.target.value) }} type="text" value={newGoal || ""} />
+                                        <IconButton onClick={addGoalHandlerNew} aria-label="delete" color="primary">
+                                            <AddIcon />
+                                        </IconButton>
+
+                                    </div>
                                     <TextField
                                         id="outlined"
                                         label="About"

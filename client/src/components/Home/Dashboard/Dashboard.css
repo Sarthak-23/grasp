@@ -48,7 +48,19 @@
     flex-flow: column;
     margin-top: 10px;
 }
-
+.addGoals{
+    border-radius: 50px;
+    border: 1px solid grey;
+    padding: 0 10px;
+}
+.addGoals input{
+    width: 100px;
+    padding: 5px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background-color: rgb(204, 204, 204);
+}
 @media (max-width: 908px) {
     .Container {
         flex-direction: column;
