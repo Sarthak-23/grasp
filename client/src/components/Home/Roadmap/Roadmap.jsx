@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext, useParams} from 'react';
 
 //component
 import Stepper from '@mui/material/Stepper';
@@ -13,11 +13,14 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
+//user
+import { UserContext } from '../../../context/UserContext';
 
 //classes
 import classes from "./Roadmap.css";
 
 const roadmap_temp = {
+  _id: "98342323rwo",
   title: "Placement",
   description: "This is the discription about the placement!",
   start: "21 March, 2002",
@@ -108,16 +111,19 @@ const roadmap_temp = {
 const notes_temp = [
   {
     title: 'title 1',
+    _id: "asldk20394nmd",
     content: "This is the content of this note!", // can be markdown and what not
     date: '21 March, 2021',
   },
   {
     title: 'title 2',
+    _id: "a02-842jlksdj9nl",
     content: "This is the content of this note!", // can be markdown and what not
     date: '21 March, 2021',
   },
   {
     title: 'title 3',
+    _id: "lv3928jldjs-q2idsap",
     content: "This is the content of this note!", // can be markdown and what not
     date: '21 March, 2021',
   },
@@ -125,16 +131,64 @@ const notes_temp = [
 
 const date = new Date()
 
-const Roadmap =(props)=> {
+const Roadmap = (props) => {
+  
+  const { params } = useParams();
 
   const [roadmap, setRoadmap] = useState(null)
-  const [createPath, setCreatePath] = useState({topic: null, data: [], showModal: false, index: 0})
-  const [notes, setNotes] = useState(null)
+  const [loader, setLoader] = useState(null)
+  const [user, setUser] = useContext(UserContext) // {_id, username, name, goals, connnections, pending, recieve}
+  const [createPath, setCreatePath] = useState({ topic: null, data: [], showModal: false, index: 0 })
+  
+  const [error, setErrors] = useState(null)
 
-  useEffect(() => {
+  const [notes, setNotes] = useState({
+    data: null,
+    modalContent: {
+      title: 'title 1',
+      _id: "asldk20394nmd",
+      content: "This is the content of this note!", // can be markdown and what not
+      date: '21 March, 2021',
+      showModal: true,
+    }
+  })
+
+  useEffect(async() => {
+
+    try {
+        let res = await fetch(`/roadmaps/${params.id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        res = await res.json();
+        console.log(res);
+
+        if (res._id) {
+          setRoadmap(res);
+          console.log(res);
+            // history.replace('/');
+            setErrors('');
+        } else {
+            setErrors(res || res.error);
+        }
+    } catch (e) {
+        setLoader(false);
+        setErrors('Something went wrong');
+    }
+
     setRoadmap(roadmap_temp);
-    setNotes(notes_temp)
+    setNotes(prev => ({
+      ...prev,
+      data: notes_temp,
+    }))
   }, [])
+
+
+  const viewNoteModal = (id) => {
+    //requesting for data
+  }
 
   const addHandler = () => {
     setCreatePath(prev => ({
@@ -143,11 +197,22 @@ const Roadmap =(props)=> {
     }))
   }
 
-  const closeModal = () => {
+  const closeModal = (a=1) => {
+    
+    if(a)
     setCreatePath(prev => ({
       ...prev,
       showModal: false
     }))
+    else
+    setNotes(prev=>({
+      ...prev,
+      modalContent: {
+        ...prev.modalContent,
+        showModal: false
+      }
+    }))
+
   }
 
   const createSubPath = (newData) => {
@@ -182,12 +247,13 @@ const Roadmap =(props)=> {
   }
 
   return (
-    roadmap &&
+    (roadmap && notes) &&
     <div className={classes.Roadmap}>
-      {createPath.showModal &&
+      {(createPath.showModal || notes.modalContent.showModal) &&
         <div className={classes.Modal}>
-        <div className={classes.Backdrop} onClick={closeModal}/>
-          <CreateModal index={createPath.index} creatModal={createSubPath}/>
+        <div className={classes.Backdrop} onClick={()=>closeModal(notes.modalContent.showModal ? 0 : 1)}/>
+            {createPath.showModal && <CreateModal index={createPath.index} creatModal={createSubPath} />}
+            {notes.modalContent.showModal && <NotesModal data={{topic: null, content: null}} />}
         </div>
       }
       <div className={classes.Info}>
@@ -215,9 +281,9 @@ const Roadmap =(props)=> {
           <label>Notes</label>
           <div className={classes.Notes}>
               <List component="nav" aria-label="secondary mailbox folder">
-              {notes.map((note, ind) => {
-                return <ListItemButton style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
-                    <p>{note.title}</p> <p>{note.date}</p>
+              {notes.data && notes.data.map((note, ind) => {
+                return <ListItemButton onClick={()=>viewNoteModal(note._id)} style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
+                    <p className="cont">{note.title}</p> <p className="cont">{note.date}</p>
                 </ListItemButton>
                 })}
                 
@@ -225,6 +291,7 @@ const Roadmap =(props)=> {
           </div>
             
         </div>
+        
       </div>
       
       <div className={classes.Main}>
@@ -262,7 +329,7 @@ const Roadmap =(props)=> {
         <div className={classes.Topics}>
 
           <p className={classes.title}>
-            <TextField onChange={(e) => { setCreatePath(prev => ({ ...prev, topic: e.target.value })) }} required size='small' id="standard-basic" label="Topic" variant="standard" value={createPath.topic || ""}/>
+            <TextField onChange={(e) => { setCreatePath(prev => ({ ...prev, topic: e.target.value==="" ? null : e.target.value})) }} required size='small' id="standard-basic" label="Topic" variant="standard" value={createPath.topic || ""}/>
           </p>
           
           <div className={classes.Box}>
@@ -278,11 +345,11 @@ const Roadmap =(props)=> {
                 <AddBoxIcon />
               </IconButton>
           
-          <Button onClick={createPathHandler} style={{margin: "0 5px 0 0"}} disabled={!createPath.topic && !(createPath.data.length==0)} variant="contained" size="small">Create</Button>
+          <Button onClick={createPathHandler} style={{margin: "0 5px 0 0"}} disabled={(!createPath.topic || !createPath.data.length)} variant="contained" size="small">Create</Button>
           <Button onClick={removeLast} disabled={!createPath.data.length} variant="contained" size="small">Pop</Button>
           
         </div>
-
+              
         </div>
 
     </div>
@@ -293,9 +360,7 @@ export default Roadmap;
 
 
 
-
-
-////create modal component
+////------------create modals component------------
 
 const CreateModal = (props) => {
 
@@ -363,6 +428,43 @@ const CreateModal = (props) => {
       </div>
       <Button onClick={createHandler} disabled={!data.topic} variant="contained" size="small">Create</Button>
     
+    </div>
+  )
+}
+
+
+//This component may use HTML formatting for its content
+const NotesModal = (props) => {
+
+  const [note, setNote] = useState({
+    note: null,
+    content: null,
+  })
+
+  useEffect(() => {
+    
+    setNote({
+      topic: props.data.topic || "",
+      content: props.data.content || "",
+    })
+
+  }, [])
+
+  return (
+    <div className={classes.NotesModal}>
+      <div className={classes.head}>
+        Topic
+      </div>
+      <div className={classes.content}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit
+        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.
+      </div>
     </div>
   )
 }

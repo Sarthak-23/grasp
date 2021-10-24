@@ -36,7 +36,7 @@ router.post(
     roadmapController.forkRoadmap
 );
 
-// Get a single roadmap
+// Get a single roadmap // id of roadmap
 router.get('/:id', roadmapController.getRoadmap);
 
 // Update a roadmap

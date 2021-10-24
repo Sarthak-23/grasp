@@ -75,6 +75,9 @@
     box-shadow: 0 0 5px #c4c4c4;
     text-align: center;
 }
+.Notes p{
+    font-size: 0.8rem;
+}
 
 /* // ----------Create Modal----------  */
 .Modal{
@@ -105,7 +108,6 @@
     padding: 20px;
 
 }
-
 .CreateModal .head label{
     color: #b4b4b4;
 }
@@ -131,5 +133,20 @@
     background-color: #5c5cd74b;
 }
 
-
-
+/* // ----------Notes Modal----------  */
+.NotesModal{
+    display: flex;
+    flex-flow: column;
+    background-color: white;
+    width: 50%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #424242;
+}
+.head{
+    font-size: 1.5rem;
+}
+.content{
+    padding: 20px 0;
+    border-top: 1px solid grey;
+}
