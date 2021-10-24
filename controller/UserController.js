@@ -1,6 +1,5 @@
 const User = require('../models/User');
 const Roadmap = require('../models/Roadmap');
-const User = require('../models/User');
 
 // Get a profile
 exports.getProfile = async (req, res) => {
