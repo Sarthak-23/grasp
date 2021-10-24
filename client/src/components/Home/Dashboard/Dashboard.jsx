@@ -214,7 +214,7 @@ const Panel = (props) => {
             {/* Create Roadmap Modal */}
             {showCreateRoadMap && <div className={classes.CR_Modal}>
                 <div className={classes.Backdrop} onClick={closeRoadmapHandler} />
-                <CreateRoadmap />
+                <CreateRoadmap handleClose={closeRoadmapHandler} />
             </div>}
 
             {/* profile  */}
@@ -259,9 +259,8 @@ const Panel = (props) => {
                             </Typography>
                             <Typography
                                 style={{
-                                    color: `${
-                                        props.user.about ? 'black' : 'grey'
-                                    }`,
+                                    color: `${props.user.about ? 'black' : 'grey'
+                                        }`,
                                 }}
                             >
                                 {props.user.about

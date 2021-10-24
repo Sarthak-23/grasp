@@ -13,7 +13,7 @@ import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
 import { Avatar, Button, Tooltip } from '@mui/material';
 import { UserContext } from '../../context/UserContext';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -123,29 +123,21 @@ const Navbar = (props) => {
                     <EmptySpace />
                     {showSearch ? (
                         <Link style={{ margin: 'auto 2rem' }} to="/search">
-                            {/* <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search> */}
-                            <IconButton>
-                                <Icon style={{ color: 'white' }}>search</Icon>
-                            </IconButton>
+                            <Tooltip title="Search">
+                                <IconButton>
+                                    <Icon style={{ color: 'white' }}>
+                                        search
+                                    </Icon>
+                                </IconButton>
+                            </Tooltip>
                         </Link>
                     ) : null}
                     {/* <EmptySpace /> */}
                     {user.id ? (
                         <Tooltip title="Logout">
-                            <Icon
-                                style={{ color: 'white' }}
-                                onClick={handleLogout}
-                            >
-                                logout
-                            </Icon>
+                            <IconButton onClick={handleLogout}>
+                                <Icon style={{ color: 'white' }}>logout</Icon>
+                            </IconButton>
                         </Tooltip>
                     ) : null}
                 </Toolbar>

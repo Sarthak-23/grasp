@@ -19,7 +19,7 @@ import {
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
-import { UserContext } from '../../../../context/UserContext'; 
+import { UserContext } from '../../../../context/UserContext';
 
 //classes 
 import classes from "./CreateRoadmap.css"
@@ -48,16 +48,15 @@ const CreateRoadmap = (props) => {
             }))
         }
         else
-        setRoadmapData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }))
+            setRoadmapData(prev => ({
+                ...prev,
+                [e.target.name]: e.target.value
+            }))
     }
 
     const addtags = (e) => {
-        
-        if (e.code === "Enter" || e.code === "NumpadEnter")
-        {
+
+        if (e.code === "Enter" || e.code === "NumpadEnter") {
             setRoadmapData(prev => ({
                 ...prev,
                 tags: [...prev.tags, newTag]
@@ -66,29 +65,29 @@ const CreateRoadmap = (props) => {
         }
     }
 
-    const createHandler = () => {
+    const createHandler = async () => {
         console.log(roadmapData)
-        // try {
-        //     let res = await fetch('/create/login', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ username, password }),
-        //     });
-        //     res = await res.json();
+        try {
+            let res = await fetch('/roadmaps/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(roadmapData),
+            });
+            res = await res.json();
 
-        //     if (res.id) {
-        //         setUser(res);
-        //         history.replace('/');
-        //         setErrors('');
-        //     } else {
-        //         setErrors(res || res.error);
-        //     }
-        // } catch (e) {
-        //     setLoader(false);
-        //     setErrors('Something went wrong');
-        // }
+            if (!res.error) {
+                props.handleClose()
+                // history.replace('/');
+                // setErrors('');
+            } else {
+                // setErrors(res || res.error);
+            }
+        } catch (e) {
+            // setLoader(false);
+            // setErrors('Something went wrong');
+        }
     }
 
     const handleDelete = (i) => {
@@ -98,12 +97,12 @@ const CreateRoadmap = (props) => {
 
             let newtags = [...prev.tags];
             newtags.splice(i, 1);
-            
+
             return {
                 ...prev,
                 tags: newtags
             };
-            
+
         });
     };
 
@@ -132,14 +131,14 @@ const CreateRoadmap = (props) => {
                 value={roadmapData.description || ""}
             />
             <div className={classes.tags}>
-                <TextField onKeyPress={addtags} size="small" onChange={(e)=>setNewTag(e.target.value == "" ? null : e.target.value)} value={newTag || ""} style={{ margin: "10px 0" }} id="standard-basic" label="Tags" name="tags" variant="outlined" />
+                <TextField onKeyPress={addtags} size="small" onChange={(e) => setNewTag(e.target.value == "" ? null : e.target.value)} value={newTag || ""} style={{ margin: "10px 0" }} id="standard-basic" label="Tags" name="tags" variant="outlined" />
                 <IconButton onClick={addtags} style={{ margin: "10px 0" }} size="small" color="primary" aria-label="add">
                     <AddBoxIcon />
                 </IconButton>
                 <div className={classes.box}>
                     {roadmapData.tags.length ? roadmapData.tags.map((t, index) => (
                         <Chip
-                            style={{margin: '0 5px'}}
+                            style={{ margin: '0 5px' }}
                             key={index}
                             label={t}
                             variant="outlined"
@@ -151,10 +150,10 @@ const CreateRoadmap = (props) => {
             </div>
             <FormControlLabel
                 control={
-                <Switch
-                    checked={roadmapData.private}
-                    onChange={changeHandler}
-                />}
+                    <Switch
+                        checked={roadmapData.private}
+                        onChange={changeHandler}
+                    />}
                 label="I want this to be private"
             />
 
