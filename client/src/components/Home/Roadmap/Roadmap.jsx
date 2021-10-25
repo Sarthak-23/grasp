@@ -90,7 +90,7 @@ const Roadmap = (props) => {
       setErrors('Something went wrong');
     }
 
-  }, [showCreateModal])
+  }, [showCreateModal, selectedTopic])
 
 
   const getNoteData = async(note_id) => {
@@ -267,7 +267,7 @@ const Roadmap = (props) => {
         ...roadmap,
         path: oldPath
       })
-      selectedTopic(null)
+      setSelectedTopic(null)
       if (res._id) {
         console.log(res);
         // history.replace('/');
