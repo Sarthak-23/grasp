@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 
 //componentn
 import TextField from '@mui/material/TextField';
@@ -21,11 +21,11 @@ import Switch from '@mui/material/Switch';
 
 import { UserContext } from '../../../../context/UserContext';
 
-//classes 
-import classes from "./CreateRoadmap.css"
+//classes
+import classes from './CreateRoadmap.css';
 
 const CreateRoadmap = (props) => {
-    const [user, setUser] = useContext(UserContext)
+    const [user, setUser] = useContext(UserContext);
 
     const [roadmapData, setRoadmapData] = useState({
         title: null, //require
@@ -34,39 +34,36 @@ const CreateRoadmap = (props) => {
         path: [],
         user: user.id,
         private: false,
-    })
+    });
 
-    const [newTag, setNewTag] = useState(null)
+    const [newTag, setNewTag] = useState(null);
 
     const changeHandler = (e) => {
-
-        if (e.target.value == "on") {
-            console.log(e, roadmapData.private)
-            setRoadmapData(prev => ({
+        if (e.target.value == 'on') {
+            console.log(e, roadmapData.private);
+            setRoadmapData((prev) => ({
                 ...prev,
-                private: !prev.private
-            }))
-        }
-        else
-            setRoadmapData(prev => ({
+                private: !prev.private,
+            }));
+        } else
+            setRoadmapData((prev) => ({
                 ...prev,
-                [e.target.name]: e.target.value
-            }))
-    }
+                [e.target.name]: e.target.value,
+            }));
+    };
 
     const addtags = (e) => {
-
-        if (e.code === "Enter" || e.code === "NumpadEnter") {
-            setRoadmapData(prev => ({
+        if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+            setRoadmapData((prev) => ({
                 ...prev,
-                tags: [...prev.tags, newTag]
-            }))
-            setNewTag("");
+                tags: [...prev.tags, newTag],
+            }));
+            setNewTag('');
         }
-    }
+    };
 
     const createHandler = async () => {
-        console.log(roadmapData)
+        console.log(roadmapData);
         try {
             let res = await fetch('/roadmaps/create', {
                 method: 'POST',
@@ -78,7 +75,7 @@ const CreateRoadmap = (props) => {
             res = await res.json();
 
             if (!res.error) {
-                props.handleClose()
+                props.handleClose();
                 // history.replace('/');
                 // setErrors('');
             } else {
@@ -88,21 +85,19 @@ const CreateRoadmap = (props) => {
             // setLoader(false);
             // setErrors('Something went wrong');
         }
-    }
+    };
 
     const handleDelete = (i) => {
         console.info('You clicked the delete icon.');
 
         setRoadmapData((prev) => {
-
             let newtags = [...prev.tags];
             newtags.splice(i, 1);
 
             return {
                 ...prev,
-                tags: newtags
+                tags: newtags,
             };
-
         });
     };
 
@@ -114,55 +109,83 @@ const CreateRoadmap = (props) => {
             <TextField
                 onChange={changeHandler}
                 required
-                style={{ margin: "10px 0" }}
-                id="standard-basic"
+                style={{ width: '100%', margin: '20px auto' }}
+                id="outlined"
                 label="Roadmap Title/Goal"
                 name="title"
-                value={roadmapData.title || ""}
-                variant="outlined" />
+                value={roadmapData.title || ''}
+                variant="outlined"
+            />
             <TextField
-                style={{ margin: "10px 0" }}
+                style={{ width: '100%', margin: '20px auto' }}
                 id="outlined-multiline-static"
                 label="Description"
                 name="description"
                 multiline
                 rows={4}
                 onChange={changeHandler}
-                value={roadmapData.description || ""}
+                value={roadmapData.description || ''}
             />
             <div className={classes.tags}>
-                <TextField onKeyPress={addtags} size="small" onChange={(e) => setNewTag(e.target.value == "" ? null : e.target.value)} value={newTag || ""} style={{ margin: "10px 0" }} id="standard-basic" label="Tags" name="tags" variant="outlined" />
-                <IconButton onClick={addtags} style={{ margin: "10px 0" }} size="small" color="primary" aria-label="add">
-                    <AddBoxIcon />
+                <TextField
+                    onKeyPress={addtags}
+                    size="small"
+                    onChange={(e) =>
+                        setNewTag(e.target.value == '' ? null : e.target.value)
+                    }
+                    value={newTag || ''}
+                    style={{ margin: '10px 0' }}
+                    id="standard-basic"
+                    label="Tags"
+                    name="tags"
+                    variant="outlined"
+                />
+                <IconButton
+                    onClick={addtags}
+                    style={{ margin: '10px 0' }}
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                >
+                    <AddBoxIcon style={{ margin: '5px 10px' }} />
                 </IconButton>
                 <div className={classes.box}>
-                    {roadmapData.tags.length ? roadmapData.tags.map((t, index) => (
-                        <Chip
-                            style={{ margin: '0 5px' }}
-                            key={index}
-                            label={t}
-                            variant="outlined"
-                            onDelete={() => handleDelete(index)}
-                        />
-                    )) : null}
+                    {roadmapData.tags.length
+                        ? roadmapData.tags.map((t, index) => (
+                              <Chip
+                                  style={{ margin: '0 5px' }}
+                                  key={index}
+                                  label={t}
+                                  variant="outlined"
+                                  onDelete={() => handleDelete(index)}
+                              />
+                          ))
+                        : null}
                 </div>
-
             </div>
             <FormControlLabel
                 control={
                     <Switch
                         checked={roadmapData.private}
                         onChange={changeHandler}
-                    />}
+                    />
+                }
                 label="I want this to be private"
             />
 
-            <Button onClick={createHandler} disabled={!roadmapData.title} variant="contained" size="small">Create</Button>
-
+            <Button
+                onClick={createHandler}
+                disabled={!roadmapData.title}
+                variant="contained"
+                color="success"
+                size="medium"
+                style={{ margin: '20px auto' }}
+            >
+                Create
+            </Button>
         </div>
         ////------------create modals component------------
+    );
+};
 
-    )
-}
-
-export default CreateRoadmap
+export default CreateRoadmap;

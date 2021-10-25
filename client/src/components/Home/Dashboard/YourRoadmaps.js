@@ -70,8 +70,11 @@ const YourRoadmaps = (props) => {
                     }}
                     variant="contained"
                     style={buttonStyle}
+                    color="secondary"
                 >
-                    <Icon style={{ color: 'white' }}>add</Icon>
+                    <Icon style={{ color: 'white', marginRight: '10px' }}>
+                        add
+                    </Icon>
                     <Typography style={{ color: 'white' }}>CREATE</Typography>
                 </Button>
             ) : null}
