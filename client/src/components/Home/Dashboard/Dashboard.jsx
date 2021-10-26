@@ -340,6 +340,7 @@ const Panel = (props) => {
                                                             : e.target.value
                                                     );
                                                 }}
+                                                placeholder='Goal'
                                                 type="text"
                                                 value={newGoal || ''}
                                             />
