@@ -12,8 +12,8 @@ const buttonStyle = {
 
 const YourRoadmaps = (props) => {
     const [roadmaps, setRoadmaps] = React.useState([]);
-    const [toggle, setToggle] = useState(false);
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -32,6 +32,7 @@ const YourRoadmaps = (props) => {
         };
         fetchUser().then((res) => {
             if (res && !res.error) setRoadmaps(res);
+            setLoading(false);
         });
     }, [props.user]);
 
@@ -43,6 +44,7 @@ const YourRoadmaps = (props) => {
             handleOpen={handleOpen}
             handleClose={handleClose}
             open={open}
+            loading={loading}
         >
             <Collapse in={open}>
                 <Alert

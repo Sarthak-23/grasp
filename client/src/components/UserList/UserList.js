@@ -6,6 +6,7 @@ import {
     ListItemIcon,
     ListItemText,
     Avatar,
+    LinearProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
@@ -44,6 +45,7 @@ const UserList = (props) => {
                     {`${props.title} (${props.users.length})`}
                 </Typography>
                 <hr />
+                {props.loading ? <LinearProgress color="success" /> : null}
                 <Demo>
                     <List>{props.children}</List>
                 </Demo>

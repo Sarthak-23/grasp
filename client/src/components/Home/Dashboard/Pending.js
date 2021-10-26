@@ -14,6 +14,7 @@ const container = {
 
 const Pending = (props) => {
     const [sent, setSent] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const fetchSent = async () => {
         let res = await fetch(`/profile/pending`);
@@ -24,12 +25,13 @@ const Pending = (props) => {
     useEffect(() => {
         fetchSent().then((res) => {
             if (res.profiles) setSent(res.profiles);
+            setLoading(false);
         });
     }, []);
 
     return (
         <Box>
-            <UserList users={sent} title="Users">
+            <UserList users={sent} title="Users" loading={loading}>
                 {sent.length > 0 ? (
                     sent.map((user, index) => {
                         return (

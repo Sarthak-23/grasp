@@ -7,6 +7,7 @@ import NewConnection from './NewConnection';
 
 const Connections = (props) => {
     const [connections, setConnections] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const fetchConnections = async () => {
         let res = await fetch(`/profile/connections`);
@@ -17,12 +18,13 @@ const Connections = (props) => {
     useEffect(() => {
         fetchConnections().then((res) => {
             if (res.profiles) setConnections(res.profiles);
+            setLoading(false);
         });
     }, []);
 
     return (
         <Box>
-            <UserList users={connections} title="Users">
+            <UserList users={connections} title="Users" loading={loading}>
                 {connections.length > 0 ? (
                     connections.map((user, index) => {
                         return (

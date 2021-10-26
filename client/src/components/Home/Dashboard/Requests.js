@@ -9,6 +9,8 @@ const Requests = (props) => {
     const { user, setUser } = props;
     const [received, setReceived] = useState([]);
     const [toggle, setToggle] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const fetchReceived = async () => {
         let res = await fetch(`/profile/received`);
         res = await res.json();
@@ -65,12 +67,13 @@ const Requests = (props) => {
     useEffect(() => {
         fetchReceived().then((res) => {
             if (res.profiles) setReceived(res.profiles);
+            setLoading(false);
         });
     }, [toggle]);
 
     return (
         <Box>
-            <UserList users={received} title="Users">
+            <UserList users={received} title="Users" loading={loading}>
                 {received.length > 0 ? (
                     received.map((user, index) => {
                         return (

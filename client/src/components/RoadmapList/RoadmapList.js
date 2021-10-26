@@ -9,6 +9,7 @@ import {
     Button,
     Tooltip,
     IconButton,
+    LinearProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
@@ -73,6 +74,7 @@ const RoadmapList = (props) => {
                     {`${props.title} (${props.roadmaps.length})`}
                 </Typography>
                 <hr />
+                {props.loading ? <LinearProgress color="success" /> : null}
                 {props.children}
                 <Demo>
                     <List>

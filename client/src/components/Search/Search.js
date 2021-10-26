@@ -228,24 +228,25 @@ const Search = () => {
                     />
                 </Grid>
                 <Grid item>
-                    {loading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Button
-                            variant="contained"
-                            color="success"
-                            onClick={handleSearch}
-                        >
-                            <Icon style={{ color: 'white' }}>search</Icon>
-                        </Button>
-                    )}
+                    <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleSearch}
+                        disabled={loading}
+                    >
+                        <Icon style={{ color: 'white' }}>search</Icon>
+                    </Button>
                 </Grid>
             </Grid>
             <Typography className={classes.boxer} style={{ color: 'red' }}>
                 {errors}
             </Typography>
             {result && resultType === categoryOptions[0] ? (
-                <UserList title="Search Result" users={result}>
+                <UserList
+                    title="Search Result"
+                    users={result}
+                    loading={loading}
+                >
                     {result.length > 0 ? (
                         result.map((user, index) => {
                             return (
@@ -268,6 +269,7 @@ const Search = () => {
                     title="Search Result"
                     roadmaps={result}
                     emptyText={'Try a valid search'}
+                    loading={loading}
                 />
             )}
         </Box>
