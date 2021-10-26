@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const Roadmap = require('../models/Roadmap');
+const upload = require('../config/storageConfig');
+const multer = require('multer');
 
 // Get a profile
 exports.getProfile = async (req, res) => {
@@ -208,6 +210,38 @@ exports.updateProfile = async (req, res) => {
         }
         res.json({ success: 'Profile updated successfully' });
     } catch (e) {
+        res.json(501).json({ error: e });
+    }
+};
+
+// Upload avatar
+exports.uploadAvatar = (req, res) => {
+    try {
+        upload(req, res, async (err) => {
+            if (err) {
+                console.log(err);
+                throw err;
+            }
+            let ext;
+            try {
+                ext = req.file.mimetype.split('/')[1];
+            } catch (e) {
+                ext = 'jpeg';
+            }
+            const user = await User.findOneAndUpdate(
+                {
+                    username: req.user.username,
+                },
+                {
+                    avatar: `/public/uploads/avatars/${req.user.username}.${ext}`,
+                }
+            );
+            if (!user) throw 'User not found';
+            res.json({
+                link: user.avatar,
+            });
+        });
+    } catch {
         res.json(501).json({ error: e });
     }
 };

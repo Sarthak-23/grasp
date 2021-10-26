@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const passport = require('passport');
 const authController = require('../controller/AuthController');
 const userController = require('../controller/UserController');
 const Roadmap = require('../models/Roadmap');
@@ -7,6 +6,13 @@ const User = require('../models/User');
 
 // Search a profile
 router.get('/api/search', userController.searchProfile);
+
+// Upload avatar
+router.post(
+    '/upload',
+    authController.isAuthenticated,
+    userController.uploadAvatar
+);
 
 // Update profile
 router.patch(

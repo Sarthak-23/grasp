@@ -16,7 +16,7 @@ const UserConnectionRequestItem = (props) => {
                 to={`/profile/${user.username}`}
             >
                 <ListItemIcon>
-                    <Avatar style={{ marginTop: '8px' }} />
+                    <Avatar src={user.avatar} style={{ marginTop: '8px' }} />
                     <ListItemText
                         primary={user.username}
                         secondary={user.name}

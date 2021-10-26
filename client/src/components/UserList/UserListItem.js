@@ -17,7 +17,7 @@ const UserListItem = (props) => {
         >
             <ListItem>
                 <ListItemIcon>
-                    <Avatar />
+                    <Avatar src={user.avatar} />
                 </ListItemIcon>
                 <ListItemText primary={user.username} secondary={user.name} />
                 {type

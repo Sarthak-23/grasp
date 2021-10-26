@@ -31,7 +31,7 @@ const YourRoadmaps = (props) => {
             }
         };
         fetchUser().then((res) => {
-            if (!res.error) setRoadmaps(res);
+            if (res && !res.error) setRoadmaps(res);
         });
     }, [props.user]);
 
