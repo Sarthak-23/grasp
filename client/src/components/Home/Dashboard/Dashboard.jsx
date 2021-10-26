@@ -26,6 +26,7 @@ import {
     Avatar,
     Chip,
     CircularProgress,
+    Dialog,
     FormControl,
     FormGroup,
     Grid,
@@ -46,20 +47,7 @@ import Requests from './Requests';
 import NewConnection from './NewConnection';
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '5px',
-    maxWidth: 400,
-    width: '100%',
-    bgcolor: 'white',
-    boxShadow: 24,
     p: 4,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
 };
 
 const inputs = {
@@ -297,11 +285,12 @@ const Panel = (props) => {
                                     <Edit />
                                 </IconButton>
                             </Tooltip>
-                            <Modal
+                            <Dialog
                                 open={open}
                                 onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
+                                scroll='paper'
+                                aria-labelledby="scroll-dialog-title"
+                                aria-describedby="scroll-dialog-description"
                             >
                                 <Box sx={style}>
                                     <Typography
@@ -329,40 +318,6 @@ const Panel = (props) => {
                                         style={{ width: '100%' }}
                                         sx={inputs}
                                     />
-                                    <Grid>
-                                        {editGoals.map((g, index) => (
-                                            <Chip
-                                                key={index}
-                                                label={g}
-                                                variant="outlined"
-                                                style={{ margin: '0.2em' }}
-                                                size="small"
-                                                onDelete={() =>
-                                                    handleDelete(index)
-                                                }
-                                            />
-                                        ))}
-                                    </Grid>
-                                    <div className={classes.addGoals}>
-                                        <input
-                                            onChange={(e) => {
-                                                setNewGoal(
-                                                    e.target.value === ''
-                                                        ? null
-                                                        : e.target.value
-                                                );
-                                            }}
-                                            type="text"
-                                            value={newGoal || ''}
-                                        />
-                                        <IconButton
-                                            onClick={addGoalHandlerNew}
-                                            aria-label="delete"
-                                            color="primary"
-                                        >
-                                            <AddIcon />
-                                        </IconButton>
-                                    </div>
                                     <TextField
                                         id="outlined"
                                         label="About"
@@ -375,6 +330,41 @@ const Panel = (props) => {
                                         style={{ width: '100%' }}
                                         sx={inputs}
                                     />
+                                    <Grid>
+                                        <Box className={classes.addGoals}>
+                                            <input
+                                                onChange={(e) => {
+                                                    setNewGoal(
+                                                        e.target.value === ''
+                                                            ? null
+                                                            : e.target.value
+                                                    );
+                                                }}
+                                                type="text"
+                                                value={newGoal || ''}
+                                            />
+                                            <IconButton
+                                                onClick={addGoalHandlerNew}
+                                                aria-label="delete"
+                                                color="primary"
+                                            >
+                                                <AddIcon />
+                                            </IconButton>
+                                        </Box>
+                                        {editGoals.map((g, index) => (
+                                            <Chip
+                                                key={index}
+                                                label={g}
+                                                variant="outlined"
+                                                style={{ margin: '1em' }}
+                                                size="small"
+                                                onDelete={() =>
+                                                    handleDelete(index)
+                                                }
+                                            />
+                                        ))}
+                                    </Grid>
+
                                     <Typography color="error">
                                         {error}
                                     </Typography>
@@ -406,7 +396,7 @@ const Panel = (props) => {
                                         )}
                                     </Box>
                                 </Box>
-                            </Modal>
+                            </Dialog>
                         </Grid>
                     ) : (
                         <NewConnection
