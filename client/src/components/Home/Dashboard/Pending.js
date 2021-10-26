@@ -27,7 +27,7 @@ const Pending = (props) => {
             if (res.profiles) setSent(res.profiles);
             setLoading(false);
         });
-    }, []);
+    }, [props.user]);
 
     return (
         <Box>

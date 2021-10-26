@@ -20,7 +20,7 @@ const Connections = (props) => {
             if (res.profiles) setConnections(res.profiles);
             setLoading(false);
         });
-    }, []);
+    }, [props.user]);
 
     return (
         <Box>

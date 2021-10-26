@@ -243,7 +243,7 @@ const Panel = (props) => {
                             cursor: `${isEditable ? 'pointer' : 'default'}`
                         }} />
                         {
-                            isEditable ? <input ref={imageInputRef} name='avatar' onChange={handleFileChange} type='file' accept='image/png, image/jpg, image/jpeg' style={{ position: 'absolute', visibility: 'hidden' }} />
+                            isEditable ? <input ref={imageInputRef} name='avatar' onChange={handleFileChange} type='file' accept='image/jpeg' style={{ position: 'absolute', visibility: 'hidden' }} />
                                 : null
                         }
                     </Grid>

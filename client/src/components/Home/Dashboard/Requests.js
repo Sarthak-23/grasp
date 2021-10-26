@@ -69,7 +69,7 @@ const Requests = (props) => {
             if (res.profiles) setReceived(res.profiles);
             setLoading(false);
         });
-    }, [toggle]);
+    }, [toggle, props.user]);
 
     return (
         <Box>
