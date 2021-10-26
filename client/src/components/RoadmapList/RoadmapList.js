@@ -10,6 +10,7 @@ import {
     Tooltip,
     IconButton,
     LinearProgress,
+    Divider,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
@@ -18,6 +19,7 @@ import { Link } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
+import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -87,11 +89,13 @@ const RoadmapList = (props) => {
                                     ? road.updatedAt.split('T')
                                     : '';
                                 return (
-                                    <ListItem key={index}>
+                                    <ListItem key={index} divider>
                                         <Link
                                             style={{
                                                 textDecoration: 'none',
                                                 flexGrow: 1,
+                                                display: 'flex',
+                                                alignItems: 'center',
                                             }}
                                             to={`/roadmap/${road._id}`}
                                         >
@@ -127,10 +131,8 @@ const RoadmapList = (props) => {
                                             </Grid>
                                             <ListItemText
                                                 className={classes.Date_Class}
-                                                primary={updatedate[0]}
                                                 secondary={createdate[0]}
                                             />
-                                            <hr />
                                         </Link>
                                         {user && road.user !== user._id ? (
                                             <Tooltip title="Clone">

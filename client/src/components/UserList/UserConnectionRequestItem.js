@@ -9,7 +9,7 @@ const UserConnectionRequestItem = (props) => {
     const { index, user, type, handleAccept, handleDecline } = props;
 
     return (
-        <ListItem style={{ width: '100%', borderBottom: '1px solid grey' }}>
+        <ListItem divider>
             <Link
                 key={index}
                 style={{ textDecoration: 'none', flexGrow: 1 }}

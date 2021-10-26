@@ -10,12 +10,16 @@ import { Link } from 'react-router-dom';
 const UserListItem = (props) => {
     const { index, user, type } = props;
     return (
-        <Link
-            key={index}
-            style={{ textDecoration: 'none' }}
-            to={`/profile/${user.username}`}
-        >
-            <ListItem>
+        <ListItem key={index} divider>
+            <Link
+                to={`/profile/${user.username}`}
+                style={{
+                    textDecoration: 'none',
+                    flexGrow: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
                 <ListItemIcon>
                     <Avatar src={user.avatar} />
                 </ListItemIcon>
@@ -35,9 +39,8 @@ const UserListItem = (props) => {
                           );
                       })
                     : null}
-            </ListItem>
-            <hr />
-        </Link>
+            </Link>
+        </ListItem>
     );
 };
 
