@@ -117,7 +117,7 @@ exports.searchRoadmap = async (req, res) => {
 // Fork a roadmap
 exports.forkRoadmap = async (req, res) => {
     try {
-        const roadmap = await Roadmap.findOne({
+        let roadmap = await Roadmap.findOne({
             _id: req.params.id,
             private: false,
         });
@@ -127,20 +127,25 @@ exports.forkRoadmap = async (req, res) => {
         if (roadmap.user.equals(req.user._id)) {
             return res.status(401).json({ error: 'Invalid operation' });
         }
-        // roadmap.parent = roadmap._id;
-        // roadmap.user = req.user._id;
-        // delete roadmap._id;
-        // delete roadmap.start;
-        // delete roadmap.createdAt;
-        // delete roadmap.updatedAt;
+        let checkRoad = await Roadmap.findOne({
+            user: req.user._id,
+            parent: roadmap._id,
+        });
+        if (checkRoad) {
+            return res.status(401).json({ error: 'Invalid operation' });
+        }
         const newroadmap = new Roadmap({
             title: roadmap.title,
             description: roadmap.description,
             user: req.user._id,
             path: roadmap.path,
             tags: roadmap.tags,
+            parent: roadmap._id,
         });
         await newroadmap.save();
+        roadmap = await Roadmap.findByIdAndUpdate(roadmap._id, {
+            $push: { children: newroadmap._id },
+        });
         res.json({ success: 'Forked successfully' });
     } catch (e) {
         res.status(501).json({ error: e });

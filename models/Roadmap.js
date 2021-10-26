@@ -11,6 +11,12 @@ const RoadmapSchema = mongoose.Schema(
             ref: 'User',
         },
         parent: { type: mongoose.Schema.Types.ObjectId, default: null }, // if cloned from other roadmap
+        children: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Roadmap',
+            },
+        ],
         path: [
             {
                 index: { type: Number, require: true }, //  sort order
@@ -23,6 +29,12 @@ const RoadmapSchema = mongoose.Schema(
                         materials: [String],
                     },
                 ],
+            },
+        ],
+        stars: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
             },
         ],
         tags: [String],
