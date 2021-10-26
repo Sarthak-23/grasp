@@ -1,10 +1,11 @@
 import { Button, Chip, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 const NewConnection = (props) => {
     const { currentuser, profile } = props;
-    const [loading, setLoading] = useState('');
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
@@ -28,11 +29,11 @@ const NewConnection = (props) => {
                 setError('');
                 setSuccess(true);
             }
-            setLoading(false);
         } catch (e) {
             console.log(e);
             setError('Something went wrong');
         }
+        setLoading(false);
     };
 
     if (currentuser._id && profile.connections.includes(currentuser._id))
@@ -47,13 +48,14 @@ const NewConnection = (props) => {
             <Box>
                 {!success ? (
                     <Box>
-                        <Button
+                        <LoadingButton
                             disabled={loading ? true : false}
                             variant="contained"
                             onClick={handleConnect}
+                            loading={loading}
                         >
                             Connect
-                        </Button>
+                        </LoadingButton>
                         <Typography color="error">{error}</Typography>
                         <Typography color="success">{success}</Typography>
                     </Box>

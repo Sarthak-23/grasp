@@ -5,12 +5,9 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Icon,
     Button,
     Tooltip,
-    IconButton,
     LinearProgress,
-    Divider,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import EditRoadIcon from '@mui/icons-material/EditRoad';
@@ -19,7 +16,8 @@ import { Link } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
-import { Box } from '@mui/system';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import RoadListItem from './RoadListItem';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -52,7 +50,7 @@ const RoadmapList = (props) => {
     const [user, setUser] = useContext(UserContext);
     const handleCloning = async (id) => {
         if (!id) {
-            return;
+            return { error: 'Invalid operation' };
         }
         try {
             let res = await fetch(`/roadmaps/fork/${id}`, {
@@ -65,8 +63,10 @@ const RoadmapList = (props) => {
             setTimeout(() => {
                 if (props.open) props.handleClose();
             }, 3000);
+            return res;
         } catch (e) {
             console.log(e);
+            return { error: e };
         }
     };
     return (
@@ -82,77 +82,13 @@ const RoadmapList = (props) => {
                     <List>
                         {props.roadmaps && props.roadmaps.length > 0 ? (
                             props.roadmaps.map((road, index) => {
-                                var createdate = road.createdAt
-                                    ? road.createdAt.split('T')
-                                    : '';
-                                var updatedate = road.updatedAt
-                                    ? road.updatedAt.split('T')
-                                    : '';
                                 return (
-                                    <ListItem key={index} divider>
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                flexGrow: 1,
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                            }}
-                                            to={`/roadmap/${road._id}`}
-                                        >
-                                            <ListItemIcon>
-                                                <EditRoadIcon />
-                                            </ListItemIcon>
-                                            <ListItemText
-                                                primary={road.title}
-                                                secondary={road.description}
-                                            />
-                                            <Grid>
-                                                {road.tags &&
-                                                    road.tags.map(
-                                                        (t, index) => {
-                                                            return (
-                                                                <Chip
-                                                                    key={index}
-                                                                    label={t.toLowerCase()}
-                                                                    className={
-                                                                        classes.chip
-                                                                    }
-                                                                    size="small"
-                                                                    style={{
-                                                                        backgroundColor:
-                                                                            'orange',
-                                                                        color: 'white',
-                                                                    }}
-                                                                    // color="warning"
-                                                                />
-                                                            );
-                                                        }
-                                                    )}
-                                            </Grid>
-                                            <ListItemText
-                                                className={classes.Date_Class}
-                                                secondary={createdate[0]}
-                                            />
-                                        </Link>
-                                        {user && road.user !== user._id ? (
-                                            <Tooltip title="Clone">
-                                                <Button
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        handleCloning(road._id);
-                                                    }}
-                                                >
-                                                    <Icon
-                                                        style={{
-                                                            color: 'white',
-                                                        }}
-                                                    >
-                                                        file_copy
-                                                    </Icon>
-                                                </Button>
-                                            </Tooltip>
-                                        ) : null}
-                                    </ListItem>
+                                    <RoadListItem
+                                        user={user}
+                                        road={road}
+                                        key={index}
+                                        handleCloning={handleCloning}
+                                    />
                                 );
                             })
                         ) : (

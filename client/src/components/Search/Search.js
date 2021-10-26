@@ -16,10 +16,19 @@ import UserListItem from '../UserList/UserListItem';
 import classes from './Search.css';
 import Navbar from '../Navbar/Navbar';
 import { Box } from '@mui/system';
-import { Button, CircularProgress, Icon } from '@mui/material';
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    Collapse,
+    Icon,
+    IconButton,
+    Snackbar,
+} from '@mui/material';
 import RoadmapList from '../RoadmapList/RoadmapList';
 import UserList from '../UserList/UserList';
 import { NavLink } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 
 // function generate(element) {
 //     return [0, 1, 2].map((value) =>
@@ -71,6 +80,11 @@ const Search = () => {
     const [result, setResult] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [errors, setErrors] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const fetchUserByProfile = async () => {
         try {
             const res = await fetch(
@@ -269,8 +283,25 @@ const Search = () => {
                     title="Search Result"
                     roadmaps={result}
                     emptyText={'Try a valid search'}
+                    handleOpen={handleOpen}
+                    handleClose={handleClose}
+                    open={open}
                     loading={loading}
-                />
+                >
+                    <Snackbar
+                        open={open}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                    >
+                        <Alert
+                            onClose={handleClose}
+                            severity="success"
+                            sx={{ width: '100%' }}
+                        >
+                            Cloned Successfully!
+                        </Alert>
+                    </Snackbar>
+                </RoadmapList>
             )}
         </Box>
     );

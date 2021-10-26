@@ -1,5 +1,12 @@
 import Add from '@mui/icons-material/Add';
-import { Button, Icon, Typography, IconButton, Collapse } from '@mui/material';
+import {
+    Button,
+    Icon,
+    Typography,
+    IconButton,
+    Collapse,
+    Snackbar,
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import RoadmapList from '../../RoadmapList/RoadmapList';
 
@@ -46,25 +53,15 @@ const YourRoadmaps = (props) => {
             open={open}
             loading={loading}
         >
-            <Collapse in={open}>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: '100%' }}
                 >
                     Cloned Successfully!
                 </Alert>
-            </Collapse>
+            </Snackbar>
             {props.isEditable ? (
                 <Button
                     onClick={() => {
