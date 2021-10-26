@@ -54,6 +54,7 @@
     border-radius: 50px;
     border: 1px solid grey;
     padding: 0 10px;
+    margin-bottom: 1em;
 }
 .addGoals input {
     width: 100px;

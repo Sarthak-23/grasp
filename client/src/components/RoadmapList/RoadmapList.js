@@ -48,6 +48,7 @@ const Demo = styled('div')(({ theme }) => ({
 const RoadmapList = (props) => {
     const classes = useStyles();
     const [user, setUser] = useContext(UserContext);
+
     const handleCloning = async (id) => {
         if (!id) {
             return { error: 'Invalid operation' };
@@ -59,16 +60,41 @@ const RoadmapList = (props) => {
             res = await res.json();
             console.log(res);
             if (res.error) throw res.error;
-            props.handleOpen();
+            props.handleOpen('Cloned successfully', 'success');
             setTimeout(() => {
                 if (props.open) props.handleClose();
             }, 3000);
             return res;
         } catch (e) {
+            props.handleOpen('Could not clone', 'error');
             console.log(e);
             return { error: e };
         }
     };
+
+    const handleStars = async (id) => {
+        if (!id) {
+            return { error: 'Invalid operation' };
+        }
+        try {
+            let res = await fetch(`/roadmaps/star/${id}`, {
+                method: 'POST',
+            });
+            res = await res.json();
+            console.log(res);
+            if (res.error) throw res.error;
+            props.handleOpen('Starred successfully');
+            setTimeout(() => {
+                if (props.open) props.handleClose();
+            }, 3000);
+            return res;
+        } catch (e) {
+            props.handleOpen(e || 'Could not star', 'error');
+            console.log(e);
+            return { error: e };
+        }
+    };
+
     return (
         <Grid container className={classes.container}>
             <Grid item xs={12} md={9}>
@@ -88,6 +114,7 @@ const RoadmapList = (props) => {
                                         road={road}
                                         key={index}
                                         handleCloning={handleCloning}
+                                        handleStars={handleStars}
                                     />
                                 );
                             })

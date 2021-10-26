@@ -152,6 +152,28 @@ exports.forkRoadmap = async (req, res) => {
     }
 };
 
+// Star a roadmap
+exports.starRoadmap = async (req, res) => {
+    try {
+        let roadmap = await Roadmap.findOne({
+            _id: req.params.id,
+            private: false,
+        });
+        if (!roadmap) {
+            return res.status(400).json({ error: 'Roadmap unavailable' });
+        }
+        if (roadmap.stars.includes(req.user._id)) {
+            return res.status(400).json({ error: 'Invalid Operation' });
+        }
+        roadmap = await Roadmap.findByIdAndUpdate(roadmap._id, {
+            $push: { stars: req.user._id },
+        });
+        res.json({ success: 'Starred successfully' });
+    } catch (e) {
+        res.status(501).json({ error: e });
+    }
+};
+
 // Create note for a roadmap by roadmapID
 exports.createNote = async (req, res) => {
     try {

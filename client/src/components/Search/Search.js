@@ -81,8 +81,14 @@ const Search = () => {
     const [loading, setLoading] = React.useState(false);
     const [errors, setErrors] = React.useState('');
     const [open, setOpen] = React.useState(false);
+    const [alertext, setAlerttext] = React.useState('');
+    const [alerttype, setAlertType] = React.useState('success');
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = (text, type) => {
+        setOpen(true);
+        setAlerttext(text);
+        setAlertType(type);
+    };
     const handleClose = () => setOpen(false);
 
     const fetchUserByProfile = async () => {
@@ -295,10 +301,10 @@ const Search = () => {
                     >
                         <Alert
                             onClose={handleClose}
-                            severity="success"
+                            severity={alerttype}
                             sx={{ width: '100%' }}
                         >
-                            Cloned Successfully!
+                            {alertext}
                         </Alert>
                     </Snackbar>
                 </RoadmapList>

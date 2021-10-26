@@ -20,9 +20,15 @@ const buttonStyle = {
 const YourRoadmaps = (props) => {
     const [roadmaps, setRoadmaps] = React.useState([]);
     const [open, setOpen] = useState(false);
+    const [alerttext, setAlertText] = useState('');
+    const [alerttype, setAlertType] = useState('success');
     const [loading, setLoading] = useState(true);
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = (text, type) => {
+        setOpen(true);
+        setAlertText(text);
+        setAlertType(type);
+    };
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
@@ -45,7 +51,7 @@ const YourRoadmaps = (props) => {
 
     return (
         <RoadmapList
-            title="Your Roadmaps"
+            title={props.isEditable ? 'Your Roadmaps' : 'Roadmaps'}
             roadmaps={roadmaps}
             emptyText={'No roadmaps created yet.'}
             handleOpen={handleOpen}
@@ -56,10 +62,10 @@ const YourRoadmaps = (props) => {
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert
                     onClose={handleClose}
-                    severity="success"
+                    severity={alerttype}
                     sx={{ width: '100%' }}
                 >
-                    Cloned Successfully!
+                    {alerttext}
                 </Alert>
             </Snackbar>
             {props.isEditable ? (

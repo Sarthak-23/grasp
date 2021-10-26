@@ -36,6 +36,13 @@ router.post(
     roadmapController.forkRoadmap
 );
 
+// Star a roadmap
+router.post(
+    '/star/:id',
+    authController.isAuthenticated,
+    roadmapController.starRoadmap
+);
+
 // Get a single roadmap // id of roadmap
 router.get('/:id', roadmapController.getRoadmap);
 
