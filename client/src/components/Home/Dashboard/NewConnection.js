@@ -1,7 +1,9 @@
-import { Button, Chip, TextField, Typography } from '@mui/material';
+import { Button, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
+import ChatIcon from '@mui/icons-material/Chat';
+import { Link } from 'react-router-dom';
 
 const NewConnection = (props) => {
     const { currentuser, profile } = props;
@@ -37,7 +39,22 @@ const NewConnection = (props) => {
     };
 
     if (currentuser._id && profile.connections.includes(currentuser._id))
-        return <Chip color="success" label="Connected" />;
+        return (
+            <Link
+                style={{ textDecoration: 'none' }}
+                to={`/chat/${profile.username}`}
+            >
+                <Tooltip title="Message">
+                    <Button
+                        variant="contained"
+                        color="success"
+                        endIcon={<ChatIcon />}
+                    >
+                        Message
+                    </Button>
+                </Tooltip>
+            </Link>
+        );
     if (currentuser._id && profile.received.includes(currentuser._id))
         return <Chip color="warning" label="Pending" />;
     if (currentuser._id && profile.sent.includes(currentuser._id))

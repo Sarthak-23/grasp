@@ -2,6 +2,7 @@ import {
     Avatar,
     Button,
     Chip,
+    Grid,
     IconButton,
     ListItem,
     ListItemIcon,
@@ -51,11 +52,21 @@ const UserListItem = (props) => {
                     : null} */}
             </Link>
             {user && curuser.connections.includes(user._id) ? (
-                <Tooltip title="Message">
-                    <IconButton color="success">
-                        <ChatIcon />
-                    </IconButton>
-                </Tooltip>
+                <Link
+                    style={{ textDecoration: 'none' }}
+                    to={`/chat/{user.username}`}
+                >
+                    <Tooltip title="Message">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            endIcon={<ChatIcon />}
+                            size="small"
+                        >
+                            Message
+                        </Button>
+                    </Tooltip>
+                </Link>
             ) : null}
         </ListItem>
     );
