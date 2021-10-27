@@ -1,18 +1,25 @@
 import {
     Avatar,
+    Button,
     Chip,
+    IconButton,
     ListItem,
     ListItemIcon,
     ListItemText,
+    Tooltip,
 } from '@mui/material';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const UserListItem = (props) => {
-    const { index, user, type } = props;
+    const { index, curuser, type } = props;
+    const [user, setUser] = useContext(UserContext);
     return (
         <ListItem key={index} divider>
             <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${curuser.username}`}
                 style={{
                     textDecoration: 'none',
                     flexGrow: 1,
@@ -21,10 +28,13 @@ const UserListItem = (props) => {
                 }}
             >
                 <ListItemIcon>
-                    <Avatar src={user.avatar} />
+                    <Avatar src={curuser.avatar} />
                 </ListItemIcon>
-                <ListItemText primary={user.username} secondary={user.name} />
-                {type
+                <ListItemText
+                    primary={curuser.username}
+                    secondary={curuser.name}
+                />
+                {/* {type
                     ? user.goals.map((g, index) => {
                           return (
                               <Chip
@@ -38,8 +48,15 @@ const UserListItem = (props) => {
                               />
                           );
                       })
-                    : null}
+                    : null} */}
             </Link>
+            {user && curuser.connections.includes(user._id) ? (
+                <Tooltip title="Message">
+                    <IconButton color="success">
+                        <ChatIcon />
+                    </IconButton>
+                </Tooltip>
+            ) : null}
         </ListItem>
     );
 };

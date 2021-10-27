@@ -272,7 +272,7 @@ const Search = () => {
                             return (
                                 <UserListItem
                                     key={index}
-                                    user={user}
+                                    curuser={user}
                                     index={index}
                                     type="Connection"
                                 />

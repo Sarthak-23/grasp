@@ -37,7 +37,7 @@ const Pending = (props) => {
                         return (
                             <UserConnectionRequestItem
                                 key={index}
-                                user={user}
+                                curuser={user}
                                 index={index}
                                 type="Pending"
                             />

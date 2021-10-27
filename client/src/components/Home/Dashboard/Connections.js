@@ -3,7 +3,6 @@ import UserListItem from '../../UserList/UserListItem';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/system';
-import NewConnection from './NewConnection';
 
 const Connections = (props) => {
     const [connections, setConnections] = useState([]);
@@ -30,7 +29,7 @@ const Connections = (props) => {
                         return (
                             <UserListItem
                                 key={index}
-                                user={user}
+                                curuser={user}
                                 index={index}
                             />
                         );

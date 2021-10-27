@@ -79,7 +79,7 @@ const Requests = (props) => {
                         return (
                             <UserConnectionRequestItem
                                 key={index}
-                                user={user}
+                                curuser={user}
                                 index={index}
                                 handleAccept={handleAccept}
                                 handleDecline={handleDecline}

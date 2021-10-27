@@ -6,20 +6,20 @@ import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 
 const UserConnectionRequestItem = (props) => {
-    const { index, user, type, handleAccept, handleDecline } = props;
+    const { index, curuser, type, handleAccept, handleDecline } = props;
 
     return (
         <ListItem divider>
             <Link
                 key={index}
                 style={{ textDecoration: 'none', flexGrow: 1 }}
-                to={`/profile/${user.username}`}
+                to={`/profile/${curuser.username}`}
             >
                 <ListItemIcon>
-                    <Avatar src={user.avatar} style={{ marginTop: '8px' }} />
+                    <Avatar src={curuser.avatar} style={{ marginTop: '8px' }} />
                     <ListItemText
-                        primary={user.username}
-                        secondary={user.name}
+                        primary={curuser.username}
+                        secondary={curuser.name}
                         style={{ paddingLeft: '20px' }}
                     />
                 </ListItemIcon>
@@ -44,7 +44,7 @@ const UserConnectionRequestItem = (props) => {
                                 cursor: 'pointer',
                             }}
                             onClick={(e) => {
-                                handleDecline(e, user);
+                                handleDecline(e, curuser);
                             }}
                         >
                             highlight_off
@@ -58,7 +58,7 @@ const UserConnectionRequestItem = (props) => {
                                 cursor: 'pointer',
                             }}
                             onClick={(e) => {
-                                handleAccept(e, user);
+                                handleAccept(e, curuser);
                             }}
                         >
                             check_circle
