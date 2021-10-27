@@ -87,6 +87,39 @@ const JWT = require('./JWTController');
 //     else res.status(401).json({ error: 'Unauthorized User' });
 // };
 
+// Socket middleware
+exports.isSocketAuthenticated = async (socket, next) => {
+    var cookies = cookie.parse(socket.handshake.headers.cookie);
+    const token = cookies.access;
+    const refreshToken = cookies.refresh;
+    if (!token && !refreshToken) {
+        // res.json({ error: 'Unverified user.' });
+        return next(new Error('Unverified User'));
+    }
+    let user = JWT.verifyToken(token);
+    if (!user) {
+        return next(new Error('Invalid auth. Login again.'));
+        // const access = await JWT.regenerateAccessToken(refreshToken);
+        // if (!access) {
+        //     // res.json({ error: 'Invalid Token' });
+        //     return next(new Error('Invalid token'));
+        // }
+        // user = JWT.verifyToken(access);
+        // res.cookie('access', access, {
+        //     httpOnly: true,
+        //     maxAge: JWT.accessExpiry * 1000,
+        //     // secure: true,
+        // });
+        // res.cookie('user', JSON.stringify(user), {
+        //     httpOnly: false,
+        //     maxAge: JWT.accessExpiry * 1000,
+        //     // secure: true,
+        // });
+    }
+    socket.user = user._doc;
+    next();
+};
+
 // Middlewares for authorization and authentication checks
 exports.isAuthenticated = async (req, res, next) => {
     const token = req.cookies.access;
