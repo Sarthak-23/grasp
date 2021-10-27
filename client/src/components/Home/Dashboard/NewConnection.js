@@ -40,10 +40,7 @@ const NewConnection = (props) => {
 
     if (currentuser._id && profile.connections.includes(currentuser._id))
         return (
-            <Link
-                style={{ textDecoration: 'none' }}
-                to={`/chat/${profile.username}`}
-            >
+            <Link style={{ textDecoration: 'none' }} to={`/chat`}>
                 <Tooltip title="Message">
                     <Button
                         variant="contained"

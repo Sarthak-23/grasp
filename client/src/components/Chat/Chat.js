@@ -1,18 +1,39 @@
-import { Box } from '@mui/material';
-import { useEffect } from 'react';
-import { useParams } from 'react-router';
-import socket from './Socket';
-import classes from './Chat.css';
+import { Box } from '@mui/system';
+import { useEffect, useState } from 'react';
+import Message from './Message';
 
-const Chat = () => {
-    const { username } = useParams();
+const Chat = (props) => {
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        socket.auth = { username };
-        socket.connect();
+        setMessages((prev) => {
+            prev = [];
+            for (let i = 0; i < 15; i++) {
+                prev = [
+                    ...prev,
+                    {
+                        content: 'Some random long message',
+                        sender: 'Divyansh Falodiya',
+                    },
+                ];
+            }
+            return prev;
+        });
     }, []);
 
-    return <Box></Box>;
+    return (
+        <Box style={{ display: 'flex', flexDirection: 'column' }}>
+            {messages.map((m, index) => {
+                return (
+                    <Message
+                        content={m.content}
+                        sender={m.sender}
+                        key={index}
+                    />
+                );
+            })}
+        </Box>
+    );
 };
 
 export default Chat;

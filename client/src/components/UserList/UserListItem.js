@@ -52,10 +52,7 @@ const UserListItem = (props) => {
                     : null} */}
             </Link>
             {user && curuser.connections.includes(user._id) ? (
-                <Link
-                    style={{ textDecoration: 'none' }}
-                    to={`/chat/${curuser.username}`}
-                >
+                <Link style={{ textDecoration: 'none' }} to={`/chat`}>
                     <Tooltip title="Message">
                         <Button
                             variant="contained"

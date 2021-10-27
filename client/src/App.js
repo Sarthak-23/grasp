@@ -10,7 +10,7 @@ import { UserContext, UserProvider } from './context/UserContext';
 //classes
 import classes from './App.css';
 import Profile from './components/Profile/Profile';
-import Chat from './components/Chat/Chat';
+import ChatContainer from './components/Chat/ChatContainer';
 
 function Routes() {
     const [user, setUser] = React.useContext(UserContext);
@@ -52,8 +52,8 @@ function Routes() {
             <Route exact path="/profile/:username">
                 <Profile />
             </Route>
-            <Route exact path="/chat/:username">
-                <Chat />
+            <Route exact path="/chat">
+                <ChatContainer />
             </Route>
             <Route exact path="/">
                 {!user || !user._id ? (

@@ -4,7 +4,7 @@ const express = require('express');
 const passport = require('passport');
 const cors = require('cors');
 const path = require('path');
-const server = require('http').Server(app);
+const http = require('http');
 const cookieParser = require('cookie-parser');
 
 // Routers
@@ -17,6 +17,7 @@ const Chat = require('./models/Chat');
 
 // Important constants
 const app = express();
+const server = http.Server(app);
 const io = require('socket.io')(server);
 const PORT = process.env.PORT || 5000;
 
@@ -46,13 +47,13 @@ if (process.env.NODE_ENV === 'production') {
 // Socket IO
 io.of('/chat').use(authController.isSocketAuthenticated);
 io.of('/chat').use(async (socket, next) => {
-    const username = socket.handshake.auth.username;
-    const otherUser = await User.findOne({
-        username: username,
-        connections: socket.user._id,
-    });
-    if (!otherUser) return next(new Error('Invalid user'));
-    socket.otheruser = otherUser;
+    // const username = socket.handshake.auth.username;
+    // const otherUser = await User.findOne({
+    //     username: username,
+    //     connections: socket.user._id,
+    // });
+    // if (!otherUser) return next(new Error('Invalid user'));
+    // socket.otheruser = otherUser;
     next();
 });
 io.of('/chat').on('connect', async (socket) => {
