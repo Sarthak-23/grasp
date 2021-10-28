@@ -1,16 +1,27 @@
-import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import {
+    Avatar,
+    Card,
+    CardContent,
+    CardHeader,
+    Grid,
+    Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 
 const Message = (props) => {
     return (
-        <Card variant="outlined">
-            <CardContent>
-                <Typography gutterBottom variant="p">
-                    {props.sender}
-                </Typography>
-                <Typography variant="h6">{props.content}</Typography>
-            </CardContent>
-        </Card>
+        <Box style={{ display: 'flex', alignItems: 'flex-start' }}>
+            {props.other && (
+                <Avatar
+                    style={{ width: '20px', height: '20px', margin: '5px' }}
+                ></Avatar>
+            )}
+            <Card sx={{ bgcolor: 'primary.main', color: 'white' }}>
+                <CardContent>
+                    <Typography variant="p">{props.content}</Typography>
+                </CardContent>
+            </Card>
+        </Box>
     );
 };
 

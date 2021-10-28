@@ -73,9 +73,11 @@ const Navbar = (props) => {
     // console.log(user.id);
     const pathname = useLocation().pathname;
     const hist = useHistory();
-    const [showSearch, setShowSearch] = React.useState(false);
+    const [showSearch, setShowSearch] = React.useState(
+        props.search ? props.search : false
+    );
     React.useEffect(() => {
-        if (pathname !== '/search') {
+        if (props.search === undefined && pathname !== '/search') {
             setShowSearch(true);
         }
     }, []);
@@ -95,21 +97,14 @@ const Navbar = (props) => {
 
     return (
         <Container>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        sx={{ mr: 2 }}
-                    ></IconButton>
+            <AppBar position="static" color="transparent">
+                <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
                     <Link style={{ textDecoration: 'none' }} to="/">
                         <Typography
                             variant="h6"
                             noWrap
                             component="div"
-                            color="white"
+                            color="primary"
                             sx={{
                                 // flexGrow: 1,
                                 display: { xs: 'none', sm: 'block' },
@@ -123,9 +118,7 @@ const Navbar = (props) => {
                         <Link style={{ margin: 'auto 2rem' }} to="/search">
                             <Tooltip title="Search">
                                 <IconButton>
-                                    <Icon style={{ color: 'white' }}>
-                                        search
-                                    </Icon>
+                                    <Icon>search</Icon>
                                 </IconButton>
                             </Tooltip>
                         </Link>
@@ -134,7 +127,7 @@ const Navbar = (props) => {
                     {user._id ? (
                         <Tooltip title="Logout">
                             <IconButton onClick={handleLogout}>
-                                <Icon style={{ color: 'white' }}>logout</Icon>
+                                <Icon style={{ color: 'red' }}>logout</Icon>
                             </IconButton>
                         </Tooltip>
                     ) : null}

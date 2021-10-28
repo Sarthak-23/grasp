@@ -1,4 +1,13 @@
-import { Box, Grid, Typography } from '@mui/material';
+import {
+    Box,
+    Divider,
+    Grid,
+    LinearProgress,
+    Paper,
+    TextField,
+    Toolbar,
+    Typography,
+} from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Navbar from '../Navbar/Navbar';
@@ -13,7 +22,10 @@ import Chat from './Chat.js';
 
 const ChatContainer = () => {
     const [user, setUser] = useContext(UserContext);
+    const [selectedUser, setSelectedUser] = useState({});
     const [connections, setConnections] = useState([]);
+    const [list, setList] = useState([]);
+    const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
 
     const fetchConnections = async () => {
@@ -22,22 +34,31 @@ const ChatContainer = () => {
         return res;
     };
 
+    const handleSearchChange = (e) => {
+        if (e.target.value === '\n') {
+            handleSearch();
+        }
+        setSearch(e.target.value);
+    };
+
+    const handleSearch = () => {
+        if (search === '') {
+            setList(connections);
+            return;
+        }
+        setList(() => {
+            return connections.filter((u) => u.name.search(search) !== -1);
+        });
+    };
+
     useEffect(() => {
         fetchConnections()
             .then((res) => {
-                // if (res.profiles) setConnections(res.profiles);
-                setConnections((prev) => {
-                    for (let i = 0; i < 15; i++)
-                        prev = [
-                            ...prev,
-                            {
-                                _id: 'something',
-                                username: 'something',
-                                name: 'something',
-                            },
-                        ];
-                    return prev;
-                });
+                if (res.profiles)
+                    setConnections(() => {
+                        setList(res.profiles);
+                        return res.profiles;
+                    });
                 setLoading(false);
             })
             .then(() => {
@@ -47,58 +68,70 @@ const ChatContainer = () => {
 
     // if (user)
     return (
-        <Box style={{ height: '100vh' }}>
-            <Navbar />
-            <Grid container style={{ height: '100%', overflow: 'hidden' }}>
-                <Grid
-                    item
-                    md={3}
-                    style={{
-                        borderRight: '1px solid grey',
-                        borderBottom: '1px solid grey',
-                        height: '100vh',
-                        overflow: 'scroll',
-                    }}
+        <Grid container style={{ height: '100vh' }}>
+            <Grid
+                item
+                xs={12}
+                sm={4}
+                style={{
+                    height: '100%',
+                    overflow: 'hidden',
+                    borderRight: '1px solid #ccc',
+                }}
+            >
+                <Navbar />
+                {loading ? <LinearProgress color="success" /> : null}
+                <Paper>
+                    <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
+                        <TextField
+                            placeholder="Search connections"
+                            size="small"
+                            style={{ width: '100%' }}
+                            value={search}
+                            onChange={handleSearchChange}
+                            onKeyPress={(e) =>
+                                e.key === 'Enter' && handleSearch()
+                            }
+                        />
+                    </Toolbar>
+                </Paper>
+                <UserListChat
+                    users={list}
+                    loading={loading}
+                    title="Connections"
                 >
-                    <UserListChat
-                        users={connections}
-                        loading={loading}
-                        title="Connections"
-                    >
-                        {connections.length > 0 ? (
-                            connections.map((user, index) => {
-                                return (
-                                    <UserListChatItem
-                                        key={index}
-                                        curuser={user}
-                                        index={index}
-                                    />
-                                );
-                            })
-                        ) : (
-                            <Typography
-                                style={{
-                                    textAlign: 'center',
-                                    marginTop: '1rem',
-                                }}
-                            >
-                                No connections yet.
-                            </Typography>
-                        )}
-                    </UserListChat>
-                </Grid>
-                <Grid
-                    item
-                    md={9}
-                    style={{
-                        height: '100vh',
-                        overflow: 'scroll',
-                    }}
-                >
-                    <Chat />
-                </Grid>
+                    {list.length > 0 ? (
+                        list.map((user, index) => {
+                            return (
+                                <UserListChatItem
+                                    key={index}
+                                    curuser={user}
+                                    index={index}
+                                    setSelectedUser={setSelectedUser}
+                                />
+                            );
+                        })
+                    ) : (
+                        <Typography
+                            style={{
+                                textAlign: 'center',
+                                marginTop: '1rem',
+                            }}
+                        >
+                            {loading ? 'Loading...' : 'No connections yet.'}
+                        </Typography>
+                    )}
+                </UserListChat>
             </Grid>
-        </Box>
+            <Grid
+                item
+                xs={12}
+                sm={8}
+                style={{ height: '100vh', overflow: 'hidden' }}
+            >
+                <Chat user={selectedUser} />
+            </Grid>
+        </Grid>
     );
     // else return <Box></Box>;
 };
