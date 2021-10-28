@@ -6,35 +6,38 @@ import {
     TextField,
     Toolbar,
     Typography,
+    IconButton,
+    Icon,
+    Button,
+    Fab,
 } from '@mui/material';
 import { Box } from '@mui/system';
+import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from 'react';
 import Message from './Message';
 
 const Chat = (props) => {
     const { user } = props;
     const listRef = useRef(null);
+    const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const fetchPreviousMessages = async () => {};
+    const sendMessage = () => {
+        console.log(message);
+    };
 
     useEffect(() => {
-        setMessages((prev) => {
-            prev = [];
-            for (let i = 0; i < 10; i++) {
-                prev = [
-                    ...prev,
-                    {
-                        content: 'Some random long message',
-                        sender: 'Divyansh Falodiya',
-                    },
-                    {
-                        content: 'Some other random long message',
-                        sender: 'other',
-                    },
-                ];
+        const fetchPreviousMessages = async () => {
+            try {
+                let res = await fetch(`/profile/api/messages/${user.username}`);
+                res = await res.json();
+                return res;
+            } catch (e) {
+                console.log(e);
             }
-            return prev;
+        };
+        fetchPreviousMessages().then((res) => {
+            if (!res.error) setMessages(res);
         });
     }, [props]);
 
@@ -63,6 +66,16 @@ const Chat = (props) => {
                         marginTop: '5px',
                     }}
                 >
+                    {messages.length === 0 && (
+                        <Typography
+                            align="center"
+                            style={{
+                                padding: '1rem',
+                            }}
+                        >
+                            Start your conversation with {user.name} here.
+                        </Typography>
+                    )}
                     {messages.map((m, index) => {
                         return (
                             <ListItem
@@ -96,8 +109,20 @@ const Chat = (props) => {
                         <TextField
                             variant="standard"
                             placeholder="Message"
+                            multiline
+                            maxRows={1}
                             style={{ width: '100%' }}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.ctrlKey && e.key === 'Enter') {
+                                    sendMessage();
+                                }
+                            }}
                         />
+                        <IconButton color="primary">
+                            <SendIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </Box>

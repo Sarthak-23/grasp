@@ -1,11 +1,19 @@
 const router = require('express').Router();
 const authController = require('../controller/AuthController');
 const userController = require('../controller/UserController');
+const chatController = require('../controller/ChatController');
 const Roadmap = require('../models/Roadmap');
 const User = require('../models/User');
 
 // Search a profile
 router.get('/api/search', userController.searchProfile);
+
+// Get all messages
+router.get(
+    '/api/messages/:username',
+    authController.isAuthenticated,
+    chatController.getMessages
+);
 
 // Upload avatar
 router.post(
