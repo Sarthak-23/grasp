@@ -8,10 +8,10 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
+import { io } from 'socket.io-client';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Navbar from '../Navbar/Navbar';
-import socket from './Socket';
 import UserList from '../UserList/UserList';
 import classes from './Chat.css';
 import { UserContext } from '../../context/UserContext';
@@ -20,7 +20,10 @@ import UserListChatItem from '../UserList/UserListChatItem';
 import UserListChat from '../UserList/UserListChat';
 import Chat from './Chat.js';
 
+const socket = io('/', { autoConnect: false });
+
 const ChatContainer = () => {
+    const params = useParams();
     const [user, setUser] = useContext(UserContext);
     const [selectedUser, setSelectedUser] = useState({});
     const [connections, setConnections] = useState([]);
@@ -35,23 +38,34 @@ const ChatContainer = () => {
     };
 
     const handleSearchChange = (e) => {
-        if (e.target.value === '\n') {
-            handleSearch();
-        }
         setSearch(e.target.value);
-    };
-
-    const handleSearch = () => {
-        if (search === '') {
+        if (e.target.value === '') {
             setList(connections);
             return;
         }
         setList(() => {
-            return connections.filter((u) => u.name.search(search) !== -1);
+            socket.connect();
+            return connections.filter(
+                (u) =>
+                    // u.name.search(e.target.value) !== -1 ||
+                    u.username.search(e.target.value) !== -1
+            );
+        });
+    };
+
+    // Define the socket events here
+    const configSocket = () => {
+        socket.onAny((event, ...args) => {
+            console.log(event, args);
+        });
+
+        socket.on('connect_error', (err) => {
+            console.log(err);
         });
     };
 
     useEffect(() => {
+        configSocket();
         fetchConnections()
             .then((res) => {
                 if (res.profiles)
@@ -79,7 +93,7 @@ const ChatContainer = () => {
                     borderRight: '1px solid #ccc',
                 }}
             >
-                <Navbar />
+                <Navbar message={false} />
                 {loading ? <LinearProgress color="success" /> : null}
                 <Paper>
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
@@ -89,9 +103,6 @@ const ChatContainer = () => {
                             style={{ width: '100%' }}
                             value={search}
                             onChange={handleSearchChange}
-                            onKeyPress={(e) =>
-                                e.key === 'Enter' && handleSearch()
-                            }
                         />
                     </Toolbar>
                 </Paper>

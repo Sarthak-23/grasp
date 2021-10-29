@@ -23,7 +23,9 @@ const Chat = (props) => {
     const [messages, setMessages] = useState([]);
 
     const sendMessage = () => {
+        if (message === '') return;
         console.log(message);
+        setMessage('');
     };
 
     useEffect(() => {
@@ -69,8 +71,9 @@ const Chat = (props) => {
                     {messages.length === 0 && (
                         <Typography
                             align="center"
-                            style={{
+                            sx={{
                                 padding: '1rem',
+                                color: 'text.disabled',
                             }}
                         >
                             Start your conversation with {user.name} here.
@@ -120,7 +123,7 @@ const Chat = (props) => {
                                 }
                             }}
                         />
-                        <IconButton color="primary">
+                        <IconButton color="primary" onClick={sendMessage}>
                             <SendIcon />
                         </IconButton>
                     </Toolbar>
@@ -145,7 +148,7 @@ const Chat = (props) => {
                     sx={{ color: 'text.disabled', width: '100%' }}
                     align="center"
                 >
-                    Select a connection to star messaging.
+                    Select a connection to start messaging.
                 </Typography>
             </Box>
         </Box>

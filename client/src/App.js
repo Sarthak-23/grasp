@@ -52,9 +52,11 @@ function Routes() {
             <Route exact path="/profile/:username">
                 <Profile />
             </Route>
-            <Route exact path="/chat">
-                <ChatContainer />
-            </Route>
+            {user && user._id && (
+                <Route exact path="/chat">
+                    <ChatContainer />
+                </Route>
+            )}
             <Route exact path="/">
                 {!user || !user._id ? (
                     <Redirect to="/login" />

@@ -107,7 +107,7 @@ const Navbar = (props) => {
                             color="primary"
                             sx={{
                                 // flexGrow: 1,
-                                display: { xs: 'none', sm: 'block' },
+                                display: { sm: 'block' },
                             }}
                         >
                             Grasp
@@ -115,7 +115,7 @@ const Navbar = (props) => {
                     </Link>
                     <EmptySpace />
                     {showSearch ? (
-                        <Link style={{ margin: 'auto 2rem' }} to="/search">
+                        <Link style={{ marginRight: '1rem ' }} to="/search">
                             <Tooltip title="Search">
                                 <IconButton>
                                     <Icon>search</Icon>
@@ -124,13 +124,23 @@ const Navbar = (props) => {
                         </Link>
                     ) : null}
                     {/* <EmptySpace /> */}
-                    {user._id ? (
+                    {user._id &&
+                        (props.message === undefined || props.message) && (
+                            <Link style={{ marginRight: '1rem' }} to="/chat">
+                                <Tooltip title="Message">
+                                    <IconButton>
+                                        <Icon color="primary">chat</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                            </Link>
+                        )}
+                    {user._id && (
                         <Tooltip title="Logout">
                             <IconButton onClick={handleLogout}>
                                 <Icon style={{ color: 'red' }}>logout</Icon>
                             </IconButton>
                         </Tooltip>
-                    ) : null}
+                    )}
                 </Toolbar>
             </AppBar>
         </Container>
