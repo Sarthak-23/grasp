@@ -11,13 +11,22 @@ import {
     Button,
     Fab,
 } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, styled, useTheme } from '@mui/system';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from 'react';
 import Message from './Message';
 
+const IconButtonCustom = styled(IconButton)(({ theme }) => ({
+    marginRight: '1em',
+    [theme.breakpoints.up('sm')]: {
+        display: 'none',
+    },
+}));
+
 const Chat = (props) => {
-    const { user } = props;
+    const { user, setSelectedUser, setOpen } = props;
+    const theme = useTheme();
     const listRef = useRef(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -38,9 +47,15 @@ const Chat = (props) => {
                 console.log(e);
             }
         };
-        fetchPreviousMessages().then((res) => {
-            if (!res.error) setMessages(res);
-        });
+        if (user._id) {
+            fetchPreviousMessages()
+                .then((res) => {
+                    if (!res.error) setMessages(res);
+                })
+                .then(() => {
+                    setOpen(true);
+                });
+        }
     }, [props]);
 
     useEffect(() => {
@@ -57,6 +72,12 @@ const Chat = (props) => {
             <Box style={{ position: 'relative', height: '100%' }}>
                 <AppBar position="static" color="transparent">
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
+                        <IconButtonCustom
+                            theme={theme}
+                            onClick={() => setSelectedUser({})}
+                        >
+                            <ArrowBackIcon />
+                        </IconButtonCustom>
                         <Typography>{user.name}</Typography>
                     </Toolbar>
                 </AppBar>

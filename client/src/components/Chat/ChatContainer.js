@@ -8,6 +8,7 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/system';
 import { io } from 'socket.io-client';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
@@ -20,9 +21,27 @@ import UserListChatItem from '../UserList/UserListChatItem';
 import UserListChat from '../UserList/UserListChat';
 import Chat from './Chat.js';
 
+const ChatGridContainer = styled(Grid)(({ theme, open }) => ({
+    height: '100vh',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+        position: 'absolute',
+        width: '100vw',
+        right: `${open ? '0' : '-100%'}`,
+        top: 0,
+        zIndex: '1500',
+        backgroundColor: 'white',
+        transition: '0.5s ease',
+    },
+    [theme.breakpoints.up('sm')]: {
+        // backgroundColor: 'green',
+    },
+}));
+
 const socket = io('/', { autoConnect: false });
 
 const ChatContainer = () => {
+    const theme = useTheme();
     const params = useParams();
     const [user, setUser] = useContext(UserContext);
     const [selectedUser, setSelectedUser] = useState({});
@@ -82,7 +101,13 @@ const ChatContainer = () => {
 
     // if (user)
     return (
-        <Grid container style={{ height: '100vh' }}>
+        <Grid
+            container
+            style={{
+                height: '100vh',
+                position: 'relative',
+            }}
+        >
             <Grid
                 item
                 xs={12}
@@ -134,14 +159,15 @@ const ChatContainer = () => {
                     )}
                 </UserListChat>
             </Grid>
-            <Grid
+            <ChatGridContainer
                 item
                 xs={12}
                 sm={8}
-                style={{ height: '100vh', overflow: 'hidden' }}
+                theme={theme}
+                open={selectedUser._id ? true : false}
             >
-                <Chat user={selectedUser} />
-            </Grid>
+                <Chat user={selectedUser} setSelectedUser={setSelectedUser} />
+            </ChatGridContainer>
         </Grid>
     );
     // else return <Box></Box>;
