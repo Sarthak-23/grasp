@@ -17,6 +17,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from 'react';
 import Message from './Message';
 
+
 const IconButtonCustom = styled(IconButton)(({ theme }) => ({
     marginRight: '1em',
     [theme.breakpoints.up('sm')]: {
@@ -25,17 +26,56 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
 }));
 
 const Chat = (props) => {
-    const { user, setSelectedUser, setOpen } = props;
+    const { user, setSelectedUser, socket, room, sender} = props;
     const theme = useTheme();
     const listRef = useRef(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
+
     const sendMessage = () => {
-        if (message === '') return;
-        console.log(message);
+        if (message === '' || socket === "") return;
+        
+        //send message to server
+        console.log({
+            room: room,
+            message: {
+                sender: sender,
+                content: message
+            }
+        })
+        
+        console.log(socket)
+        socket.emit("messageToEnd", {
+            room: room,
+            message: {
+                sender: sender,
+                content: message
+            }
+        }, (data) => {
+            console.log("Message sent!");
+        })
+
         setMessage('');
     };
+
+    
+    useEffect(() => {
+        if (socket) {
+            
+            // incomming messages
+            socket.on("MessagefromEnd", (message) => {
+                setMessages(prev => {
+                    return [...prev, {
+                        sender: sender,
+                        content: message,
+                    }]
+                })
+            })
+           
+        }
+ 
+    }, [socket])
 
     useEffect(() => {
         const fetchPreviousMessages = async () => {
@@ -53,7 +93,7 @@ const Chat = (props) => {
                     if (!res.error) setMessages(res);
                 })
                 .then(() => {
-                    setOpen(true);
+                    // setOpen(true);
                 });
         }
     }, [props]);
@@ -61,9 +101,9 @@ const Chat = (props) => {
     useEffect(() => {
         try {
             listRef.current.scrollTop = listRef.current.scrollHeight;
-            console.log(listRef.current.style);
+            // console.log(listRef.current.style);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     }, [props, messages]);
 
@@ -108,7 +148,7 @@ const Chat = (props) => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: `${
-                                        m.sender === 'other'
+                                        m.sender === 'other' //other
                                             ? 'flex-start'
                                             : 'flex-end'
                                     }`,
@@ -139,7 +179,7 @@ const Chat = (props) => {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
-                                if (e.ctrlKey && e.key === 'Enter') {
+                                if (e.code === 'Enter' || e.code === 'NumpadEnter') {
                                     sendMessage();
                                 }
                             }}

@@ -11,7 +11,7 @@ router.get('/api/search', userController.searchProfile);
 // Get all messages
 router.get(
     '/api/messages/:username',
-    authController.isAuthenticated,
+    authController.isAuthenticated ,
     chatController.getMessages
 );
 

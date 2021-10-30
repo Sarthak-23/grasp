@@ -38,8 +38,6 @@ const ChatGridContainer = styled(Grid)(({ theme, open }) => ({
     },
 }));
 
-const socket = io('/', { autoConnect: false });
-
 const ChatContainer = () => {
     const theme = useTheme();
     const params = useParams();
@@ -50,54 +48,106 @@ const ChatContainer = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
 
+    const [socket, setSocket] = useState(null);
+    const [onlineUser, setOnlineUser] = useState([]) ;
+    const [room, setRoom] = useState('')
+
+    useEffect(() => {
+        setSocket(io("http://localhost:5000/chat"))
+        
+        return (() => {
+            
+            if( socket )
+            socket.emit("forceDis")
+        
+        })
+            
+    }, [])
+
+    useEffect(() => {
+        if ( socket ) {
+
+            socket.on("connect", () => {
+                console.log("Client is connected to Server via socket.")
+                
+                // telling that i am online 
+                socket.emit("iamOnline", { user: user });
+               
+                //getting online users from server for this perticular socket client
+                socket.on("userOnlineUpdate", (data) => {
+                    console.log(data)
+                })
+            })
+
+        }
+
+    }, [socket, connections])
+
     const fetchConnections = async () => {
         let res = await fetch(`/profile/connections`);
         res = await res.json();
         return res;
     };
 
+        
+    useEffect(() => {
+
+        // fetching all users in connection (online & offline)
+        fetchConnections()
+            .then((res) => {
+                if (res.profiles)
+                    setConnections((prev) => {
+                        setList(res.profiles);
+                        return res.profiles;
+                    });
+                setLoading(false);
+            })
+            
+    }, []);
+
     const handleSearchChange = (e) => {
+        
         setSearch(e.target.value);
+       
         if (e.target.value === '') {
             setList(connections);
             return;
         }
+        
         setList(() => {
-            socket.connect();
             return connections.filter(
                 (u) =>
                     // u.name.search(e.target.value) !== -1 ||
                     u.username.search(e.target.value) !== -1
             );
         });
+
     };
 
-    // Define the socket events here
-    const configSocket = () => {
-        socket.onAny((event, ...args) => {
-            console.log(event, args);
-        });
+    const setSelectedUserHandler = (con_user) => {
+        console.log(con_user, user)
 
-        socket.on('connect_error', (err) => {
-            console.log(err);
-        });
-    };
-
-    useEffect(() => {
-        configSocket();
-        fetchConnections()
-            .then((res) => {
-                if (res.profiles)
-                    setConnections(() => {
-                        setList(res.profiles);
-                        return res.profiles;
-                    });
-                setLoading(false);
+        if (room) {
+            socket.emit("leaveAndJoin", {
+                toLeave: room,
+                toJoin: [con_user._id, user._id].sort().join("")
+            }, (data) => {
+                // setRoom()
+                setSelectedUser(con_user)
+                setRoom([con_user._id, user._id].sort().join(""))
+                console.log("Joined Room", data)
             })
-            .then(() => {
-                socket.connect();
-            });
-    }, []);
+        } else {
+            socket.emit("joinRoom", {
+                room: [con_user._id, user._id].sort().join("")
+            }, (data) => {
+                
+                setSelectedUser(con_user)
+                setRoom([con_user._id, user._id].sort().join(""))
+                console.log("Joined Room", data)
+            })
+        }
+    }
 
     // if (user)
     return (
@@ -143,7 +193,7 @@ const ChatContainer = () => {
                                     key={index}
                                     curuser={user}
                                     index={index}
-                                    setSelectedUser={setSelectedUser}
+                                    setSelectedUser={setSelectedUserHandler}
                                 />
                             );
                         })
@@ -166,10 +216,11 @@ const ChatContainer = () => {
                 theme={theme}
                 open={selectedUser._id ? true : false}
             >
-                <Chat user={selectedUser} setSelectedUser={setSelectedUser} />
+                <Chat sender={user._id} room={room} socket={socket || ""} user={selectedUser} setSelectedUser={setSelectedUserHandler} />
             </ChatGridContainer>
         </Grid>
     );
+
     // else return <Box></Box>;
 };
 

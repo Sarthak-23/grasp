@@ -8,17 +8,25 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 
 // Routers
-const authController = require('./controller/AuthController');
 const authRoutes = require('./routes/auth');
 const roadRoutes = require('./routes/roadmaps');
 const profileRoutes = require('./routes/profile');
 const User = require('./models/User');
-const Chat = require('./models/Chat');
+const Chat = require('./models/Chat'); 
+const authController = require('./controller/AuthController');
+
+//online users
+let onlineUsers = [];
 
 // Important constants
 const app = express();
 const server = http.Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "*"
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 
 // Middle wares
@@ -45,38 +53,86 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Socket IO
-io.of('/chat').use(authController.isSocketAuthenticated);
-io.of('/chat').use(async (socket, next) => {
-    // const username = socket.handshake.auth.username;
-    // const otherUser = await User.findOne({
-    //     username: username,
-    //     connections: socket.user._id,
-    // });
-    // if (!otherUser) return next(new Error('Invalid user'));
-    // socket.otheruser = otherUser;
-    next();
-});
+// io.of('/chat').use(authController.isSocketAuthenticated);
+
 io.of('/chat').on('connect', async (socket) => {
-    console.log('User connected');
+    // console.log("Socket connected", socket.id)
 
-    let chat = await Chat.findOne({
-        people: { $all: [socket.user.username, socket.otherUser.username] },
-    });
-    if (!chat) {
-        chat = new Chat({
-            people: [socket.user.username, socket.otherUser.username],
+    //online status 
+    socket.on("iamOnline", (data) => {
+        onlineUsers.push({ 
+            uid: data.user._id,
+            socketId: socket.id
         });
-        await chat.save();
-    }
+        io.of("/chat").emit("userOnlineUpdate", onlineUsers)
+        
+        console.log(onlineUsers)
+    })
 
-    socket.on('message', (message) => {
-        console.log(message);
+    //join to room
+    socket.on("joinRoom", (data, joined_ack) => {
+        // socket.join(data.room)
+        console.log("Joined to room", data.room)
+
+        //getting socket client know, they are connected to the room
+        joined_ack(true);
+    })
+
+    //leave and join
+    socket.on("leaveAndJoin", (data, lj_ack) => {
+        // socket leave the room 
+        // socket.leave(data.toLeave)
+        
+        // socket join the new room 
+        // socket.join(data.toJoin)
+        console.log("Joined to room", data.toJoin)
+
+
+        lj_ack(1);
+    })
+
+    //leave room
+    socket.on("leaveRoom", (data, leave_ack) => {
+        // socket.leave(data.room)
+        console.log("Room Left", data.room)
+
+        leave_ack(1);
+    })
+
+
+    //message recived
+    socket.on("messageToEnd", (data, ack) => {
+        console.log(data)
+        
+
+        //emit message
+        
+
+        //ack
+        ack(1);
+    })
+
+    //removing offline user from array of online user
+    socket.on("disconnect", () => {
+        onlineUsers = onlineUsers.filter((onUser) => {
+            if (onUser.socketId == socket.id) return 0;
+            else return 1;
+        })
+        console.log(onlineUsers, "userDisconnected")
+        io.of("/chat").emit("userOnlineUpdate", {message: "online_user_list_is_been_updated"})
+    })
+    //disconnecting from client request
+    socket.on('forceDis', function(){
+        socket.disconnect();
+        onlineUsers = onlineUsers.filter((onUser) => {
+            if (onUser.socketId == socket.id) return 0;
+            else return 1;
+        })
+        console.log(onlineUsers, "userDisconnected")
+        io.of("/chat").emit("userOnlineUpdate", {message: "online_user_list_is_been_updated"})
     });
 
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
-});
+})
 
 // Listen at PORT
 server.listen(PORT, () => {
