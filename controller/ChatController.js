@@ -19,7 +19,7 @@ exports.getMessages = async (req, res) => {
         }
         const messages = await Message.find({
             _id: { $in: chat.messages },
-        }).sort({ createdAt: -1 });
+        }).sort({ createdAt: 1 });
         res.json(messages);
     } catch (e) {
         res.status(501).json({ error: e });
