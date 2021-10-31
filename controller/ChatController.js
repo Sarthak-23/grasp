@@ -7,9 +7,11 @@ exports.getMessages = async (req, res) => {
         const user = await User.findOne({ username: req.params.username });
         if (!user) return res.json({ error: 'Invalid user' });
         const messages = await Chat.find({
-            people: { $all: [req.user._id, user._id] },
+            people: { $all: [req.user._id, user._id].sort() },
         });
-        res.json(messages);
+        const finalMessageData = await messages.find({_id: {$in : messages}}).sort({createdAt: -1})
+        // console.log(messages.messages)
+        res.json(finalMessageData);
     } catch (e) {
         res.status(501).json({ error: e });
     }
@@ -37,11 +39,15 @@ exports.sendMessage = async (people, content, sender) => {
                 people: { $all: people },
             },
             {
-                messages: { $push: message },
+                $push: {
+                    messages: message
+                }
             }
         );
         return message;
     } catch (e) {
+        
+        console.log(e)
         return null;
     }
 };

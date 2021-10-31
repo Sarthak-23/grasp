@@ -12,8 +12,11 @@ const authRoutes = require('./routes/auth');
 const roadRoutes = require('./routes/roadmaps');
 const profileRoutes = require('./routes/profile');
 const User = require('./models/User');
-const Chat = require('./models/Chat'); 
+const Chat = require('./models/Chat');
+
+//controller
 const authController = require('./controller/AuthController');
+const chatController = require('./controller/ChatController');
 
 //online users
 let onlineUsers = [];
@@ -71,7 +74,7 @@ io.of('/chat').on('connect', async (socket) => {
 
     //join to room
     socket.on("joinRoom", (data, joined_ack) => {
-        // socket.join(data.room)
+        socket.join(data.room)
         console.log("Joined to room", data.room)
 
         //getting socket client know, they are connected to the room
@@ -81,10 +84,10 @@ io.of('/chat').on('connect', async (socket) => {
     //leave and join
     socket.on("leaveAndJoin", (data, lj_ack) => {
         // socket leave the room 
-        // socket.leave(data.toLeave)
+        socket.leave(data.toLeave)
         
         // socket join the new room 
-        // socket.join(data.toJoin)
+        socket.join(data.toJoin)
         console.log("Joined to room", data.toJoin)
 
 
@@ -101,16 +104,29 @@ io.of('/chat').on('connect', async (socket) => {
 
 
     //message recived
-    socket.on("messageToEnd", (data, ack) => {
+    socket.on("messageToEnd", async (data, ack) => {
         console.log(data)
         
+        //set message to database
+        try {
+            let res = await chatController.sendMessage(data.people, data.message.content, data.message.sender)
+            console.log(res)
+            
+            if (res) {
+                console.log("hello")
+                io.of("/chat").to(data.people.join("")).emit("MessagefromEnd", data.message)
+                ack(1);
+            } else {
+                ack(0);
+            }
 
-        //emit message
-        
-
-        //ack
-        ack(1);
+        } catch (e) {
+            console.log(e);
+            ack(0);
+        }
+           
     })
+
 
     //removing offline user from array of online user
     socket.on("disconnect", () => {

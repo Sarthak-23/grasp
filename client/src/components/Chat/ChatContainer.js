@@ -50,7 +50,7 @@ const ChatContainer = () => {
 
     const [socket, setSocket] = useState(null);
     const [onlineUser, setOnlineUser] = useState([]) ;
-    const [room, setRoom] = useState('')
+    const [people, setPeople] = useState('')
 
     useEffect(() => {
         setSocket(io("http://localhost:5000/chat"))
@@ -127,14 +127,14 @@ const ChatContainer = () => {
     const setSelectedUserHandler = (con_user) => {
         console.log(con_user, user)
 
-        if (room) {
+        if (people) {
             socket.emit("leaveAndJoin", {
-                toLeave: room,
+                toLeave: people.join(""),
                 toJoin: [con_user._id, user._id].sort().join("")
             }, (data) => {
                 // setRoom()
                 setSelectedUser(con_user)
-                setRoom([con_user._id, user._id].sort().join(""))
+                setPeople([con_user._id, user._id].sort())
                 console.log("Joined Room", data)
             })
         } else {
@@ -143,7 +143,7 @@ const ChatContainer = () => {
             }, (data) => {
                 
                 setSelectedUser(con_user)
-                setRoom([con_user._id, user._id].sort().join(""))
+                setPeople([con_user._id, user._id].sort())
                 console.log("Joined Room", data)
             })
         }
@@ -216,7 +216,7 @@ const ChatContainer = () => {
                 theme={theme}
                 open={selectedUser._id ? true : false}
             >
-                <Chat sender={user._id} room={room} socket={socket || ""} user={selectedUser} setSelectedUser={setSelectedUserHandler} />
+                <Chat sender={user._id} people={people} socket={socket || ""} user={selectedUser} setSelectedUser={setSelectedUserHandler} />
             </ChatGridContainer>
         </Grid>
     );

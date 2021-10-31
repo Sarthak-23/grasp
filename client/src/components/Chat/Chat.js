@@ -26,7 +26,7 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
 }));
 
 const Chat = (props) => {
-    const { user, setSelectedUser, socket, room, sender} = props;
+    const { user, setSelectedUser, socket, people, sender} = props; // user is selected user //sender is self uid
     const theme = useTheme();
     const listRef = useRef(null);
     const [message, setMessage] = useState('');
@@ -38,7 +38,7 @@ const Chat = (props) => {
         
         //send message to server
         console.log({
-            room: room,
+            people: people,
             message: {
                 sender: sender,
                 content: message
@@ -47,7 +47,7 @@ const Chat = (props) => {
         
         console.log(socket)
         socket.emit("messageToEnd", {
-            room: room,
+            people: people,
             message: {
                 sender: sender,
                 content: message
@@ -65,10 +65,10 @@ const Chat = (props) => {
             
             // incomming messages
             socket.on("MessagefromEnd", (message) => {
+                console.log(message)
                 setMessages(prev => {
                     return [...prev, {
-                        sender: sender,
-                        content: message,
+                        ...message
                     }]
                 })
             })
@@ -82,6 +82,7 @@ const Chat = (props) => {
             try {
                 let res = await fetch(`/profile/api/messages/${user.username}`);
                 res = await res.json();
+                console.log(res)
                 return res;
             } catch (e) {
                 console.log(e);
@@ -141,6 +142,7 @@ const Chat = (props) => {
                         </Typography>
                     )}
                     {messages.map((m, index) => {
+                        console.log(m.sender, sender)
                         return (
                             <ListItem
                                 key={index}
@@ -148,14 +150,14 @@ const Chat = (props) => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: `${
-                                        m.sender === 'other' //other
+                                        m.sender !== sender //other
                                             ? 'flex-start'
                                             : 'flex-end'
                                     }`,
                                 }}
                             >
                                 <Message
-                                    other={m.sender === 'other'}
+                                    other={m.sender !== sender}
                                     content={m.content}
                                     sender={m.sender}
                                 />
