@@ -2,16 +2,25 @@ const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
+// username => req.params.username
+// Only authenticated users should access this
 exports.getMessages = async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username });
         if (!user) return res.json({ error: 'Invalid user' });
-        const messages = await Chat.find({
-            people: { $all: [req.user._id, user._id].sort() },
+        let chat = await Chat.findOne({
+            people: { $all: [req.user._id, user._id] },
         });
-        const finalMessageData = await messages.find({_id: {$in : messages}}).sort({createdAt: -1})
-        // console.log(messages.messages)
-        res.json(finalMessageData);
+        if (!chat) {
+            chat = new Chat({
+                people: [req.user._id, user._id],
+            });
+            await chat.save();
+        }
+        const messages = await Message.find({
+            _id: { $in: chat.messages },
+        }).sort({ createdAt: -1 });
+        res.json(messages);
     } catch (e) {
         res.status(501).json({ error: e });
     }
@@ -40,14 +49,13 @@ exports.sendMessage = async (people, content, sender) => {
             },
             {
                 $push: {
-                    messages: message
-                }
+                    messages: message,
+                },
             }
         );
         return message;
     } catch (e) {
-        
-        console.log(e)
+        console.log(e);
         return null;
     }
 };
