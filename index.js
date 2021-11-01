@@ -68,10 +68,7 @@ io.of('/chat').on('connect', async (socket) => {
             socketId: socket.id,
         });
         console.log(socket.user);
-        emitOnlineUser = onlineUsers.filter((user) => {
-            return socket.user.connections.includes(user.uid);
-        });
-        io.of('/chat').emit('userOnlineUpdate', emitOnlineUser);
+        io.of('/chat').emit('userOnlineUpdate', onlineUsers);
     });
 
     //join to room
@@ -138,10 +135,7 @@ io.of('/chat').on('connect', async (socket) => {
             else return 1;
         });
         console.log(onlineUsers, 'userDisconnected');
-        io.of('/chat').emit(
-            'userOnlineUpdate',
-            onlineUsers.filter((u) => socket.user.connections.includes(u.uid))
-        );
+        io.of('/chat').emit('userOnlineUpdate', onlineUsers);
     });
 
     //disconnecting from client request

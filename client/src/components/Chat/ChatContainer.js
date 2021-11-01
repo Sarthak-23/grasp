@@ -70,7 +70,10 @@ const ChatContainer = () => {
 
                 //getting online users from server for this perticular socket client
                 socket.on('userOnlineUpdate', (data) => {
-                    setOnlineUser(data);
+                    let emitOnlineUser = data.filter((user) => {
+                        return connections.includes(user.uid);
+                    });
+                    setOnlineUser(emitOnlineUser);
                 });
             });
         }
