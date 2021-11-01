@@ -26,8 +26,8 @@ const app = express();
 const server = http.Server(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "*"
-    }
+        origin: '*',
+    },
 });
 
 const PORT = process.env.PORT || 5000;
@@ -61,92 +61,92 @@ io.of('/chat').use(authController.isSocketAuthenticated);
 io.of('/chat').on('connect', async (socket) => {
     // console.log("Socket connected", socket.id)
 
-    //online status 
-    socket.on("iamOnline", (data) => {
-        onlineUsers.push({ 
+    //online status
+    socket.on('iamOnline', (data) => {
+        onlineUsers.push({
             uid: data.user._id,
-            socketId: socket.id
+            socketId: socket.id,
         });
         emitOnlineUser = onlineUsers.filter((user) => {
-            return socket.user.connetions.includes(user.uid)
-        })
-        io.of("/chat").emit("userOnlineUpdate", emitOnlineUser)
-        
-        console.log(onlineUsers)
-    })
+            return socket.user.connetions.includes(user.uid);
+        });
+        io.of('/chat').emit('userOnlineUpdate', emitOnlineUser);
+    });
 
     //join to room
-    socket.on("joinRoom", (data, joined_ack) => {
-        socket.join(data.room)
-        console.log("Joined to room", data.room)
+    socket.on('joinRoom', (data, joined_ack) => {
+        socket.join(data.room);
+        console.log('Joined to room', data.room);
 
         //getting socket client know, they are connected to the room
         joined_ack(true);
-    })
+    });
 
     //leave and join
-    socket.on("leaveAndJoin", (data, lj_ack) => {
-        // socket leave the room 
-        socket.leave(data.toLeave)
-        
-        // socket join the new room 
-        socket.join(data.toJoin)
-        console.log("Joined to room", data.toJoin)
+    socket.on('leaveAndJoin', (data, lj_ack) => {
+        // socket leave the room
+        socket.leave(data.toLeave);
 
+        // socket join the new room
+        socket.join(data.toJoin);
+        console.log('Joined to room', data.toJoin);
 
         lj_ack(1);
-    })
+    });
 
     //leave room
-    socket.on("leaveRoom", (data, leave_ack) => {
+    socket.on('leaveRoom', (data, leave_ack) => {
         // socket.leave(data.room)
-        console.log("Room Left", data.room)
+        console.log('Room Left', data.room);
 
         leave_ack(1);
-    })
-
+    });
 
     //message recived
-    socket.on("messageToEnd", async (data, ack) => {
-        console.log(data)
-        
+    socket.on('messageToEnd', async (data, ack) => {
+        console.log(data);
+
         //set message to database
         try {
-            let res = await chatController.sendMessage(data.people, data.message.content, data.message.sender)
-            console.log(res)
-            
+            let res = await chatController.sendMessage(
+                data.people,
+                data.message.content,
+                data.message.sender
+            );
+            console.log(res);
+
             if (res) {
-                console.log("hello")
-                io.of("/chat").to(data.people.join("")).emit("MessagefromEnd", res)
+                console.log('hello');
+                io.of('/chat')
+                    .to(data.people.join(''))
+                    .emit('MessagefromEnd', res);
                 ack(1);
             } else {
                 ack(0);
             }
-
         } catch (e) {
             console.log(e);
             ack(0);
         }
-           
-    })
-
+    });
 
     //removing offline user from array of online user
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
         onlineUsers = onlineUsers.filter((onUser) => {
             if (onUser.socketId == socket.id) return 0;
             else return 1;
-        })
-        console.log(onlineUsers, "userDisconnected")
-        io.of("/chat").emit("userOnlineUpdate", {message: "online_user_list_is_been_updated"})
-    })
-    
-    //disconnecting from client request
-    socket.on('forceDis', function(){
-        socket.disconnect();
+        });
+        console.log(onlineUsers, 'userDisconnected');
+        io.of('/chat').emit('userOnlineUpdate', {
+            message: 'online_user_list_is_been_updated',
+        });
     });
 
-})
+    //disconnecting from client request
+    socket.on('forceDis', function () {
+        socket.disconnect();
+    });
+});
 
 // Listen at PORT
 server.listen(PORT, () => {
