@@ -70,7 +70,7 @@ io.of('/chat').on('connect', async (socket) => {
         let getOnlineUser = onlineUsers.map((user) => {
             return socket.user.connections.includes(user.uid);
         });
-        io.of('/chat').emit('userOnlineUpdate', onlineUsers) ;
+        io.of('/chat').emit('userOnlineUpdate', getOnlineUser);
 
         console.log(onlineUsers);
     });
