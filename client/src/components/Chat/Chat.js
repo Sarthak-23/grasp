@@ -161,13 +161,13 @@ const Chat = (props) => {
                     {!loading &&
                         messages.map((m, index) => {
                             let datecard = false;
-                            // if (index === 0) datecard = true;
-                            // else {
-                            //         let t1 = m.createdAt.split('T')[0];
-                            //         let t2 =
-                            //             messages[index - 1].createdAt.split('T')[0];
-                            //         if (t1 !== t2) datecard = true;
-                            //     }
+                            if (index === 0) datecard = true;
+                            else {
+                                let t1 = m.createdAt.split('T')[0];
+                                let t2 =
+                                    messages[index - 1].createdAt.split('T')[0];
+                                if (t1 !== t2) datecard = true;
+                            }
                             console.log(m.sender, sender);
                             return (
                                 <ListItem
@@ -181,12 +181,17 @@ const Chat = (props) => {
                                         <Box
                                             style={{
                                                 alignSelf: 'center',
-                                                borderRadius: '10px',
+                                                borderRadius: '5px',
                                                 backgroundColor: '#ddd',
-                                                padding: '0.8em',
+                                                padding: '0.5em',
                                             }}
                                         >
-                                            <Typography variant="p">
+                                            <Typography
+                                                variant="p"
+                                                style={{
+                                                    fontSize: '0.8rem',
+                                                }}
+                                            >
                                                 {m.createdAt.split('T')[0]}
                                             </Typography>
                                         </Box>
@@ -195,7 +200,8 @@ const Chat = (props) => {
                                         other={m.sender !== sender}
                                         content={m.content}
                                         sender={m.sender}
-                                        // timestamp={m.createdAt.split('T')[1]}
+                                        timestamp={m.createdAt.split('T')[1]}
+                                        avatar={user.avatar}
                                     />
                                 </ListItem>
                             );

@@ -1,5 +1,6 @@
 import {
     Avatar,
+    Badge,
     Button,
     Chip,
     Grid,
@@ -16,7 +17,7 @@ import { UserContext } from '../../context/UserContext';
 import ChatIcon from '@mui/icons-material/Chat';
 
 const UserListChatItem = (props) => {
-    const { index, curuser, setSelectedUser } = props;
+    const { index, curuser, setSelectedUser, online } = props;
     const [user, setUser] = useContext(UserContext);
     return (
         <ListItemButton
@@ -27,7 +28,9 @@ const UserListChatItem = (props) => {
             }}
         >
             <ListItemIcon>
-                <Avatar src={curuser.avatar} />
+                <Badge color="success" variant={online ? 'dot' : ''}>
+                    <Avatar src={curuser.avatar} />
+                </Badge>
             </ListItemIcon>
             <ListItemText primary={curuser.username} secondary={curuser.name} />
         </ListItemButton>

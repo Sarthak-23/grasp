@@ -137,9 +137,10 @@ io.of('/chat').on('connect', async (socket) => {
             else return 1;
         });
         console.log(onlineUsers, 'userDisconnected');
-        io.of('/chat').emit('userOnlineUpdate', {
-            message: 'online_user_list_is_been_updated',
-        });
+        io.of('/chat').emit(
+            'userOnlineUpdate',
+            onlineUsers.filter((u) => socket.user.connections.includes(u.uid))
+        );
     });
 
     //disconnecting from client request
