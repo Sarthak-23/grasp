@@ -54,7 +54,7 @@ const Chat = (props) => {
                 people: people,
                 message: {
                     sender: sender,
-                    content: message,
+                    content: message.trim(),
                 },
             },
             (data) => {
@@ -221,7 +221,7 @@ const Chat = (props) => {
                             maxRows={1}
                             style={{ width: '100%' }}
                             value={message}
-                            onChange={(e) => setMessage(e.target.value.trim())}
+                            onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
                                 if (
                                     e.code === 'Enter' ||
