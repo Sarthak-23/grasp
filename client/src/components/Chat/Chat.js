@@ -10,13 +10,15 @@ import {
     Icon,
     Button,
     Fab,
+    LinearProgress,
+    Card,
+    CardContent,
 } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/system';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from 'react';
 import Message from './Message';
-
 
 const IconButtonCustom = styled(IconButton)(({ theme }) => ({
     marginRight: '1em',
@@ -26,63 +28,70 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
 }));
 
 const Chat = (props) => {
-    const { user, setSelectedUser, socket, people, sender} = props; // user is selected user //sender is self uid
+    const { user, setSelectedUser, socket, people, sender } = props; // user is selected user //sender is self uid
     const theme = useTheme();
     const listRef = useRef(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
     const sendMessage = () => {
-        if (message === '' || socket === "") return;
-        
+        if (message === '' || socket === '') return;
+
         //send message to server
         console.log({
             people: people,
             message: {
                 sender: sender,
-                content: message
+                content: message,
+            },
+        });
+
+        console.log(socket);
+        socket.emit(
+            'messageToEnd',
+            {
+                people: people,
+                message: {
+                    sender: sender,
+                    content: message,
+                },
+            },
+            (data) => {
+                console.log(data);
+                console.log('Message sent!');
             }
-        })
-        
-        console.log(socket)
-        socket.emit("messageToEnd", {
-            people: people,
-            message: {
-                sender: sender,
-                content: message
-            }
-        }, (data) => {
-            console.log("Message sent!");
-        })
+        );
 
         setMessage('');
     };
 
-    
     useEffect(() => {
         if (socket) {
-            
             // incomming messages
-            socket.on("MessagefromEnd", (message) => {
-                console.log(message)
-                setMessages(prev => {
-                    return [...prev, {
-                        ...message
-                    }]
-                })
-            })
-           
+            socket.on('MessagefromEnd', (message) => {
+                console.log('message from end');
+                console.log(message);
+                setMessages((prev) => {
+                    return [
+                        ...prev,
+                        {
+                            ...message,
+                        },
+                    ];
+                });
+            });
         }
- 
-    }, [socket])
+    }, [socket]);
 
     useEffect(() => {
+        setLoading(true);
+        setMessages([]);
         const fetchPreviousMessages = async () => {
             try {
                 let res = await fetch(`/profile/api/messages/${user.username}`);
                 res = await res.json();
-                console.log(res)
+                console.log(res);
                 return res;
             } catch (e) {
                 console.log(e);
@@ -92,12 +101,20 @@ const Chat = (props) => {
             fetchPreviousMessages()
                 .then((res) => {
                     if (!res.error) setMessages(res);
+                    setLoading(false);
                 })
                 .then(() => {
+                    // setTimeout(() => {
+                    // }, 5000);
+                    listRef.current.scrollTop = listRef.current.scrollHeight;
                     // setOpen(true);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setLoading(false);
                 });
         }
-    }, [props]);
+    }, [user]);
 
     useEffect(() => {
         try {
@@ -122,15 +139,15 @@ const Chat = (props) => {
                         <Typography>{user.name}</Typography>
                     </Toolbar>
                 </AppBar>
+                {loading ? <LinearProgress color="success" /> : null}
                 <List
                     ref={listRef}
                     style={{
                         height: '80vh',
                         overflow: 'auto',
-                        marginTop: '5px',
                     }}
                 >
-                    {messages.length === 0 && (
+                    {!loading && messages.length === 0 && (
                         <Typography
                             align="center"
                             sx={{
@@ -141,29 +158,48 @@ const Chat = (props) => {
                             Start your conversation with {user.name} here.
                         </Typography>
                     )}
-                    {messages.map((m, index) => {
-                        console.log(m.sender, sender)
-                        return (
-                            <ListItem
-                                key={index}
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: `${
-                                        m.sender !== sender //other
-                                            ? 'flex-start'
-                                            : 'flex-end'
-                                    }`,
-                                }}
-                            >
-                                <Message
-                                    other={m.sender !== sender}
-                                    content={m.content}
-                                    sender={m.sender}
-                                />
-                            </ListItem>
-                        );
-                    })}
+                    {!loading &&
+                        messages.map((m, index) => {
+                            let datecard = false;
+                            // if (index === 0) datecard = true;
+                            // else {
+                            //         let t1 = m.createdAt.split('T')[0];
+                            //         let t2 =
+                            //             messages[index - 1].createdAt.split('T')[0];
+                            //         if (t1 !== t2) datecard = true;
+                            //     }
+                            console.log(m.sender, sender);
+                            return (
+                                <ListItem
+                                    key={index}
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}
+                                >
+                                    {datecard && (
+                                        <Box
+                                            style={{
+                                                alignSelf: 'center',
+                                                borderRadius: '10px',
+                                                backgroundColor: '#ddd',
+                                                padding: '0.8em',
+                                            }}
+                                        >
+                                            <Typography variant="p">
+                                                {m.createdAt.split('T')[0]}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                    <Message
+                                        other={m.sender !== sender}
+                                        content={m.content}
+                                        sender={m.sender}
+                                        // timestamp={m.createdAt.split('T')[1]}
+                                    />
+                                </ListItem>
+                            );
+                        })}
                 </List>
                 <Divider />
                 <AppBar
@@ -179,14 +215,21 @@ const Chat = (props) => {
                             maxRows={1}
                             style={{ width: '100%' }}
                             value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            onChange={(e) => setMessage(e.target.value.trim())}
                             onKeyDown={(e) => {
-                                if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+                                if (
+                                    e.code === 'Enter' ||
+                                    e.code === 'NumpadEnter'
+                                ) {
                                     sendMessage();
                                 }
                             }}
                         />
-                        <IconButton color="primary" onClick={sendMessage}>
+                        <IconButton
+                            color="primary"
+                            onClick={sendMessage}
+                            disabled={message.trim().length === 0}
+                        >
                             <SendIcon />
                         </IconButton>
                     </Toolbar>
