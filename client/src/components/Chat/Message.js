@@ -6,6 +6,7 @@ import {
     CardActionArea,
     Grid,
     Typography,
+    Badge,
 } from '@mui/material';
 import { Box } from '@mui/system';
 
@@ -20,6 +21,7 @@ const Message = (props) => {
         >
             {props.other && (
                 <Avatar
+                    src={props.avatar}
                     style={{
                         width: '20px',
                         height: '20px',
@@ -35,14 +37,16 @@ const Message = (props) => {
             </Card>
             <Typography
                 variant="p"
-                color="text.disabled"
                 style={{
                     alignSelf: 'flex-end',
                     fontSize: '0.7rem',
                     position: 'absolute',
+                    right: '5px',
+                    bottom: '5px',
+                    color: '#aaaaaa',
                 }}
             >
-                {/* {props.timestamp.split('.')[0].substr(0, 5)} */}
+                {props.timestamp.split('.')[0].substr(0, 5)}
             </Typography>
         </Box>
     );

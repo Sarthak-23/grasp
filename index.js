@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Socket IO
-// io.of('/chat').use(authController.isSocketAuthenticated);
+io.of('/chat').use(authController.isSocketAuthenticated);
 
 io.of('/chat').on('connect', async (socket) => {
     // console.log("Socket connected", socket.id)
@@ -67,9 +67,10 @@ io.of('/chat').on('connect', async (socket) => {
             uid: data.user._id,
             socketId: socket.id,
         });
-        io.of('/chat').emit('userOnlineUpdate', onlineUsers);
-
-        console.log(onlineUsers);
+        emitOnlineUser = onlineUsers.filter((user) => {
+            return socket.user.connetions.includes(user.uid);
+        });
+        io.of('/chat').emit('userOnlineUpdate', emitOnlineUser);
     });
 
     //join to room
@@ -136,21 +137,15 @@ io.of('/chat').on('connect', async (socket) => {
             else return 1;
         });
         console.log(onlineUsers, 'userDisconnected');
-        io.of('/chat').emit('userOnlineUpdate', {
-            message: 'online_user_list_is_been_updated',
-        });
+        io.of('/chat').emit(
+            'userOnlineUpdate',
+            onlineUsers.filter((u) => socket.user.connections.includes(u.uid))
+        );
     });
+
     //disconnecting from client request
     socket.on('forceDis', function () {
         socket.disconnect();
-        onlineUsers = onlineUsers.filter((onUser) => {
-            if (onUser.socketId == socket.id) return 0;
-            else return 1;
-        });
-        console.log(onlineUsers, 'userDisconnected');
-        io.of('/chat').emit('userOnlineUpdate', {
-            message: 'online_user_list_is_been_updated',
-        });
     });
 });
 
