@@ -117,7 +117,7 @@ io.of('/chat').on('connect', async (socket) => {
             
             if (res) {
                 console.log("hello")
-                io.of("/chat").to(data.people.join("")).emit("MessagefromEnd", data.message)
+                io.of("/chat").to(data.people.join("")).emit("MessagefromEnd", res)
                 ack(1);
             } else {
                 ack(0);
