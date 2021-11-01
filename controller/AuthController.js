@@ -5,6 +5,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
 const saltRounds = 10;
 const JWT = require('./JWTController');
+const cookie = require('cookie');
+
 
 // // Serialize user
 // passport.serializeUser((user, done) => {

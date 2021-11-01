@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Socket IO
-// io.of('/chat').use(authController.isSocketAuthenticated);
+io.of('/chat').use(authController.isSocketAuthenticated);
 
 io.of('/chat').on('connect', async (socket) => {
     // console.log("Socket connected", socket.id)
@@ -70,7 +70,7 @@ io.of('/chat').on('connect', async (socket) => {
         let getOnlineUser = onlineUsers.map((user) => {
             return socket.user.connections.includes(user.uid);
         });
-        io.of('/chat').emit('userOnlineUpdate', onlineUsers);
+        io.of('/chat').emit('userOnlineUpdate', onlineUsers) ;
 
         console.log(onlineUsers);
     });
