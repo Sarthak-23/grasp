@@ -2,7 +2,7 @@ import {
     Box,
     Divider,
     Grid,
-    LinearProgress,
+    LinearProgress ,
     Paper,
     TextField,
     Toolbar,

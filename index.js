@@ -67,15 +67,16 @@ io.of('/chat').on('connect', async (socket) => {
             uid: data.user._id,
             socketId: socket.id,
         });
+        console.log(socket.user);
         emitOnlineUser = onlineUsers.filter((user) => {
-            return socket.user.connetions.includes(user.uid);
+            return socket.user.connections.includes(user.uid);
         });
         io.of('/chat').emit('userOnlineUpdate', emitOnlineUser);
     });
 
     //join to room
     socket.on('joinRoom', (data, joined_ack) => {
-        // socket.join(data.room);
+        socket.join(data.room);
         console.log('Joined to room', data.room);
 
         //getting socket client know, they are connected to the room
