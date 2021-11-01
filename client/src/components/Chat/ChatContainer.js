@@ -49,16 +49,16 @@ const ChatContainer = () => {
     const [loading, setLoading] = useState(true);
 
     const [socket, setSocket] = useState(null);
-    const [onlineUser, setOnlineUser] = useState([]) ;
+    const [onlineUser, setOnlineUser] = useState([]);
     const [people, setPeople] = useState('')
 
     useEffect(() => {
-        setSocket(io("http://localhost:5000/chat"))
+        setSocket(io("/chat"))
         
         return (() => {
             
             if( socket )
-            socket.emit("forceDis")
+                socket.emit("forceDis")
         
         })
             
