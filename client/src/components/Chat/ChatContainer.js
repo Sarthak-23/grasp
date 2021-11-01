@@ -2,7 +2,7 @@ import {
     Box,
     Divider,
     Grid,
-    LinearProgress,
+    LinearProgress ,
     Paper,
     TextField,
     Toolbar,
@@ -71,6 +71,7 @@ const ChatContainer = () => {
                 //getting online users from server for this perticular socket client
                 socket.on('userOnlineUpdate', (data) => {
                     console.log(data);
+                    setOnlineUser(data);
                 });
             });
         }
