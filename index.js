@@ -59,10 +59,10 @@ if (process.env.NODE_ENV === 'production') {
 io.of('/chat').use(authController.isSocketAuthenticated);
 
 io.of('/chat').on('connect', async (socket) => {
-    // console.log("Socket connected", socket.id)
+    console.log("Socket connected", socket.id)
 
     //online status
-    socket.on('iamOnline', (data) => {
+    socket.on('iamOnline', (data) => { 
         onlineUsers.push({
             uid: data.user._id,
             socketId: socket.id,
@@ -75,7 +75,7 @@ io.of('/chat').on('connect', async (socket) => {
 
     //join to room
     socket.on('joinRoom', (data, joined_ack) => {
-        socket.join(data.room);
+        // socket.join(data.room);
         console.log('Joined to room', data.room);
 
         //getting socket client know, they are connected to the room
@@ -96,7 +96,7 @@ io.of('/chat').on('connect', async (socket) => {
 
     //leave room
     socket.on('leaveRoom', (data, leave_ack) => {
-        // socket.leave(data.room)
+        socket.leave(data.room)
         console.log('Room Left', data.room);
 
         leave_ack(1);

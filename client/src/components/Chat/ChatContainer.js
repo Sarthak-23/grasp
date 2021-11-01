@@ -50,7 +50,7 @@ const ChatContainer = () => {
 
     const [socket, setSocket] = useState(null);
     const [onlineUser, setOnlineUser] = useState([]);
-    const [people, setPeople] = useState('');
+    const [people, setPeople] = useState(null);
 
     useEffect(() => {
         setSocket(io('/chat'));
@@ -116,7 +116,7 @@ const ChatContainer = () => {
 
         if (people) {
             socket.emit(
-                'leaveAndJoin',
+                'leaveAndJoin', 
                 {
                     toLeave: people.join(''),
                     toJoin: [con_user._id, user._id].sort().join(''),
