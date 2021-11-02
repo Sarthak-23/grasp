@@ -2,7 +2,7 @@ import {
     Box,
     Divider,
     Grid,
-    LinearProgress ,
+    LinearProgress,
     Paper,
     TextField,
     Toolbar,
@@ -71,8 +71,11 @@ const ChatContainer = () => {
                 //getting online users from server for this perticular socket client
                 socket.on('userOnlineUpdate', (data) => {
                     let emitOnlineUser = data.filter((user) => {
-                        return connections.includes(user.uid);
+                        return connections.map((u) => u._id).includes(user.uid);
                     });
+                    console.log(data);
+                    console.log(connections);
+                    console.log(emitOnlineUser);
                     setOnlineUser(emitOnlineUser);
                 });
             });
@@ -119,7 +122,7 @@ const ChatContainer = () => {
 
         if (people) {
             socket.emit(
-                'leaveAndJoin', 
+                'leaveAndJoin',
                 {
                     toLeave: people.join(''),
                     toJoin: [con_user._id, user._id].sort().join(''),
