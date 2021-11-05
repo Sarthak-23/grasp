@@ -2,6 +2,9 @@ const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
+//Encryption Function
+const { encrypt, decrypt } = require('../Encryptions');
+
 // username => req.params.username
 // Only authenticated users should access this
 exports.getMessages = async (req, res) => {
@@ -20,6 +23,11 @@ exports.getMessages = async (req, res) => {
         const messages = await Message.find({
             _id: { $in: chat.messages },
         }).sort({ createdAt: 1 });
+        console.log(messages);
+        messages.forEach((msg) => {
+            msg.content = decrypt(msg.content, 4);
+        });
+        console.log(messages);
         res.json(messages);
     } catch (e) {
         res.status(501).json({ error: e });
@@ -38,9 +46,10 @@ exports.sendMessage = async (people, content, sender) => {
             });
             await chat.save();
         }
+        let encryptedmessage = encrypt(content, 4);
         const message = new Message({
             sender: sender,
-            content: content,
+            content: encryptedmessage,
         });
         await message.save();
         chat = await Chat.findOneAndUpdate(
@@ -53,7 +62,15 @@ exports.sendMessage = async (people, content, sender) => {
                 },
             }
         );
-        return message;
+        console.log('line number 66' + message.content);
+        let sendmessage = {
+            sender: message.sender,
+            content: decrypt(message.content, 4),
+            _id: message._id,
+            createdAt: message.createdAt,
+            updatedAt: message.updatedAt,
+        };
+        return sendmessage;
     } catch (e) {
         console.log(e);
         return null;
