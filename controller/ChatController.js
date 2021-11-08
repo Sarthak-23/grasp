@@ -2,8 +2,12 @@ const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
+//Node Rsa Imports
+const NodeRSA = require('node-rsa');
+const key = new NodeRSA({ b: 1024 });
+
 //Encryption Function
-const { encrypt, decrypt } = require('../Encryptions');
+// const { encrypt, decrypt } = require('../Encryptions');
 
 // username => req.params.username
 // Only authenticated users should access this
@@ -25,7 +29,8 @@ exports.getMessages = async (req, res) => {
         }).sort({ createdAt: 1 });
         console.log(messages);
         messages.forEach((msg) => {
-            msg.content = decrypt(msg.content, 4);
+            msg.content = key.decrypt(msg.content, 'utf8');
+            // msg.content = decrypt(msg.content, 4);
         });
         console.log(messages);
         res.json(messages);
@@ -46,10 +51,11 @@ exports.sendMessage = async (people, content, sender) => {
             });
             await chat.save();
         }
-        let encryptedmessage = encrypt(content, 4);
+        // let encryptedmessage = encrypt(content, 4);
+        let encryptedmsg = key.encrypt(content, 'base64');
         const message = new Message({
             sender: sender,
-            content: encryptedmessage,
+            content: encryptedmsg,
         });
         await message.save();
         chat = await Chat.findOneAndUpdate(
@@ -63,9 +69,10 @@ exports.sendMessage = async (people, content, sender) => {
             }
         );
         console.log('line number 66' + message.content);
+        // content: decrypt(message.content, 4),
         let sendmessage = {
             sender: message.sender,
-            content: decrypt(message.content, 4),
+            content: key.decrypt(message.content, 'utf8'),
             _id: message._id,
             createdAt: message.createdAt,
             updatedAt: message.updatedAt,
