@@ -59,10 +59,10 @@ if (process.env.NODE_ENV === 'production') {
 io.of('/chat').use(authController.isSocketAuthenticated);
 
 io.of('/chat').on('connect', async (socket) => {
-    console.log("Socket connected", socket.id)
+    console.log('Socket connected', socket.id);
 
     //online status
-    socket.on('iamOnline', (data) => { 
+    socket.on('iamOnline', (data) => {
         onlineUsers.push({
             uid: data.user._id,
             socketId: socket.id,
@@ -94,7 +94,7 @@ io.of('/chat').on('connect', async (socket) => {
 
     //leave room
     socket.on('leaveRoom', (data, leave_ack) => {
-        socket.leave(data.room)
+        socket.leave(data.room);
         console.log('Room Left', data.room);
 
         leave_ack(1);
@@ -103,7 +103,6 @@ io.of('/chat').on('connect', async (socket) => {
     //message recived
     socket.on('messageToEnd', async (data, ack) => {
         console.log(data);
-
         //set message to database
         try {
             let res = await chatController.sendMessage(
