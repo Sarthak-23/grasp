@@ -125,6 +125,24 @@ const Chat = (props) => {
         }
     }, [props, messages]);
 
+    const formatDate = (date) => {
+        const d = new Date(date).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        });
+
+        return d;
+    };
+
+    const getFormattedTime = (time) => {
+        const start = formatDate(time);
+
+        return `${start}`;
+    };
+
+    const getFormattedDate = (time) => new Date(time).toDateString();
+
     if (user._id)
         return (
             <Box style={{ position: 'relative', height: '100%' }}>
@@ -168,7 +186,6 @@ const Chat = (props) => {
                                     messages[index - 1].createdAt.split('T')[0];
                                 if (t1 !== t2) datecard = true;
                             }
-                            console.log(m.sender, sender);
                             return (
                                 <ListItem
                                     key={index}
@@ -192,7 +209,7 @@ const Chat = (props) => {
                                                     fontSize: '0.8rem',
                                                 }}
                                             >
-                                                {m.createdAt.split('T')[0]}
+                                                {getFormattedDate(m.createdAt)}
                                             </Typography>
                                         </Box>
                                     )}
@@ -200,7 +217,9 @@ const Chat = (props) => {
                                         other={m.sender !== sender}
                                         content={m.content}
                                         sender={m.sender}
-                                        timestamp={m.createdAt.split('T')[1]}
+                                        timestamp={getFormattedTime(
+                                            m.createdAt
+                                        )}
                                         avatar={user.avatar}
                                     />
                                 </ListItem>
