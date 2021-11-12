@@ -19,7 +19,7 @@ const Message = (props) => {
                 maxWidth: '70%',
             }}
         >
-            {props.other && (
+            {/* {props.other && (
                 <Avatar
                     src={props.avatar}
                     style={{
@@ -29,7 +29,7 @@ const Message = (props) => {
                         alignSelf: 'flex-start',
                     }}
                 ></Avatar>
-            )}
+            )} */}
             <Card
                 sx={{
                     bgcolor: 'primary.main',

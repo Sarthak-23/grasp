@@ -168,6 +168,7 @@ const ChatContainer = () => {
                     borderRight: '1px solid #ccc',
                 }}
             >
+                {/* main nav bar */}
                 <Navbar message={false} />
                 {loading ? <LinearProgress color="success" /> : null}
                 <Paper>
@@ -225,6 +226,9 @@ const ChatContainer = () => {
                     socket={socket || ''}
                     user={selectedUser}
                     setSelectedUser={setSelectedUserHandler}
+                    online={onlineUser
+                        .map((u) => u.uid)
+                        .includes(selectedUser._id)}
                 />
             </ChatGridContainer>
         </Grid>
