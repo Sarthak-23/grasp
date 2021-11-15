@@ -2,8 +2,11 @@ const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
+// AES Encryption
+const CryptoJS = require('crypto-js');
+
 // DES Encryption
-const { des } = require('../DesEncryption');
+// const { des } = require('../DesEncryption');
 
 //Node Rsa Imports
 // const NodeRSA = require('node-rsa');
@@ -32,7 +35,12 @@ exports.getMessages = async (req, res) => {
         }).sort({ createdAt: 1 });
         console.log(messages);
         messages.forEach((msg) => {
-            msg.content = des(process.env.DES_KEY, msg.content, 0, 0);
+            const bytes = CryptoJS.AES.decrypt(
+                msg.content,
+                process.env.AES_KEY
+            );
+            msg.content = bytes.toString(CryptoJS.enc.Utf8);
+            // msg.content = des(process.env.DES_KEY, msg.content, 0, 0);
             // msg.content = key.decrypt(msg.content, 'utf8');
             // msg.content = decrypt(msg.content, 4);
         });
@@ -57,7 +65,11 @@ exports.sendMessage = async (people, content, sender) => {
         }
         // let encryptedmessage = encrypt(content, 4);
         // let encryptedmsg = key.encrypt(content, 'base64');
-        let encryptedmsg = des(process.env.DES_KEY, content, 1, 0);
+        // let encryptedmsg = des(process.env.DES_KEY, content, 1, 0);
+        let encryptedmsg = CryptoJS.AES.encrypt(
+            content,
+            process.env.AES_KEY
+        ).toString();
         const message = new Message({
             sender: sender,
             content: encryptedmsg,
@@ -73,12 +85,15 @@ exports.sendMessage = async (people, content, sender) => {
                 },
             }
         );
-        console.log('line number 66' + message.content);
+        console.log('line number 66');
+        console.log(message.content);
         // content: decrypt(message.content, 4),
         // content: key.decrypt(message.content, 'utf8'),
+        const bytes = CryptoJS.AES.decrypt(msg.content, process.env.AES_KEY);
+        const decryptedmsg = bytes.toString(CryptoJS.enc.Utf8);
         let sendmessage = {
             sender: message.sender,
-            content: des(process.env.DES_KEY, message.content, 0, 0),
+            content: decryptedmsg,
             _id: message._id,
             createdAt: message.createdAt,
             updatedAt: message.updatedAt,
