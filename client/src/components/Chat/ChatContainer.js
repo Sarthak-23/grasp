@@ -11,7 +11,7 @@ import {
 import { styled, useTheme } from '@mui/system';
 import { io } from 'socket.io-client';
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import Navbar from '../Navbar/Navbar';
 import UserList from '../UserList/UserList';
 import classes from './Chat.css';
@@ -41,8 +41,10 @@ const ChatGridContainer = styled(Grid)(({ theme, open }) => ({
 const ChatContainer = () => {
     const theme = useTheme();
     const params = useParams();
+    const location = useLocation();
+    const { chatUser } = location.state;
     const [user, setUser] = useContext(UserContext);
-    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedUser, setSelectedUser] = useState(chatUser || {});
     const [connections, setConnections] = useState([]);
     const [list, setList] = useState([]);
     const [search, setSearch] = useState('');
@@ -195,6 +197,7 @@ const ChatContainer = () => {
                                     curuser={user}
                                     index={index}
                                     setSelectedUser={setSelectedUserHandler}
+                                    selectedUser={selectedUser}
                                     online={onlineUser
                                         .map((u) => u.uid)
                                         .includes(user._id)}

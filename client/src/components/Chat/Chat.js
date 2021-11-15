@@ -28,6 +28,17 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
     },
 }));
 
+const MessageField = styled(TextField)(({ theme }) => ({
+    width: '100%',
+    backgroundColor: 'transparent',
+    '& .MuiInputBase-root': {
+        color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: 'white',
+    },
+}));
+
 const Chat = (props) => {
     const { user, setSelectedUser, socket, people, sender, online } = props; // user is selected user //sender is self uid
     const theme = useTheme();
@@ -162,7 +173,7 @@ const Chat = (props) => {
                         <Avatar style={{ margin: '1rem' }} src={user.avatar} />
                         <Box>
                             <Typography color="#DBD8E3">{user.name}</Typography>
-                            <Typography variant="caption" color="#5C5470">
+                            <Typography variant="caption" color="green">
                                 {online ? 'Online' : ''}
                             </Typography>
                         </Box>
@@ -249,19 +260,13 @@ const Chat = (props) => {
                     }}
                 >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
-                        <TextField
+                        <MessageField
+                            theme={theme}
                             variant="standard"
                             placeholder="Message"
-                            multiline
-                            color="primary"
-                            backgroundColor="#f6f6f6"
-                            maxRows={1}
-                            style={{
-                                width: '100%',
-                                color: '#f6f6f6',
-
-                                backgroundColor: 'transparent',
-                            }}
+                            // multiline
+                            // maxRows={1}
+                            type="text"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
@@ -274,11 +279,13 @@ const Chat = (props) => {
                             }}
                         />
                         <IconButton
-                            color="primary"
                             onClick={sendMessage}
                             disabled={message.trim().length === 0}
+                            sx={{
+                                color: 'white',
+                            }}
                         >
-                            <SendIcon backgroundcolor="white" />
+                            <SendIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>

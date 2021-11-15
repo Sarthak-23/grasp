@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import ChatIcon from '@mui/icons-material/Chat';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
 import { Avatar, Button, Tooltip } from '@mui/material';
@@ -95,14 +96,17 @@ const Navbar = (props) => {
         }
     };
 
+    const handleChat = () => {
+        hist.push('/chat', { chatUser: null });
+    };
+
     return (
         <Container>
-            <AppBar position="static" color="transparent">
+            <AppBar position="static" color="primary">
                 <Toolbar
                     style={{
                         minHeight: '10vh',
                         height: '10vh',
-                        background: '#2A2438',
                     }}
                 >
                     <Link style={{ textDecoration: 'none' }} to="/">
@@ -129,7 +133,9 @@ const Navbar = (props) => {
                         >
                             <Tooltip title="Search">
                                 <IconButton>
-                                    <Icon>search</Icon>
+                                    <Icon style={{ color: 'white' }}>
+                                        search
+                                    </Icon>
                                 </IconButton>
                             </Tooltip>
                         </Link>
@@ -137,13 +143,14 @@ const Navbar = (props) => {
                     {/* <EmptySpace /> */}
                     {user._id &&
                         (props.message === undefined || props.message) && (
-                            <Link style={{ marginRight: '1rem' }} to="/chat">
-                                <Tooltip title="Message">
-                                    <IconButton>
-                                        <Icon color="#f6f6f6">chat</Icon>
-                                    </IconButton>
-                                </Tooltip>
-                            </Link>
+                            <Tooltip
+                                title="Message"
+                                style={{ marginRight: '1rem' }}
+                            >
+                                <IconButton onClick={handleChat}>
+                                    <Icon style={{ color: 'white' }}>chat</Icon>
+                                </IconButton>
+                            </Tooltip>
                         )}
                     {user._id && (
                         <Tooltip title="Logout">
