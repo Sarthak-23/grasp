@@ -98,13 +98,19 @@ const Navbar = (props) => {
     return (
         <Container>
             <AppBar position="static" color="transparent">
-                <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
+                <Toolbar
+                    style={{
+                        minHeight: '10vh',
+                        height: '10vh',
+                        background: '#2A2438',
+                    }}
+                >
                     <Link style={{ textDecoration: 'none' }} to="/">
                         <Typography
                             variant="h6"
                             noWrap
                             component="div"
-                            color="primary"
+                            color="#DBD8E3"
                             sx={{
                                 // flexGrow: 1,
                                 display: { sm: 'block' },
@@ -115,7 +121,12 @@ const Navbar = (props) => {
                     </Link>
                     <EmptySpace />
                     {showSearch ? (
-                        <Link style={{ marginRight: '1rem ' }} to="/search">
+                        <Link
+                            style={{
+                                marginRight: '1rem ',
+                            }}
+                            to="/search"
+                        >
                             <Tooltip title="Search">
                                 <IconButton>
                                     <Icon>search</Icon>
@@ -129,7 +140,7 @@ const Navbar = (props) => {
                             <Link style={{ marginRight: '1rem' }} to="/chat">
                                 <Tooltip title="Message">
                                     <IconButton>
-                                        <Icon color="primary">chat</Icon>
+                                        <Icon color="#f6f6f6">chat</Icon>
                                     </IconButton>
                                 </Tooltip>
                             </Link>

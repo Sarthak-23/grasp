@@ -147,7 +147,11 @@ const Chat = (props) => {
     if (user._id)
         return (
             <Box style={{ position: 'relative', height: '100%' }}>
-                <AppBar position="static" color="transparent">
+                <AppBar
+                    position="static"
+                    color="transparent"
+                    style={{ background: '#2A2438' }}
+                >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
                         <IconButtonCustom
                             theme={theme}
@@ -157,8 +161,8 @@ const Chat = (props) => {
                         </IconButtonCustom>
                         <Avatar style={{ margin: '1rem' }} src={user.avatar} />
                         <Box>
-                            <Typography>{user.name}</Typography>
-                            <Typography variant="caption" color="green">
+                            <Typography color="#DBD8E3">{user.name}</Typography>
+                            <Typography variant="caption" color="#5C5470">
                                 {online ? 'Online' : ''}
                             </Typography>
                         </Box>
@@ -237,15 +241,27 @@ const Chat = (props) => {
                 <AppBar
                     position="absolute"
                     color="transparent"
-                    style={{ bottom: 0, top: 'auto', backgroundColor: '#ddd' }}
+                    style={{
+                        bottom: 0,
+                        top: 'auto',
+
+                        backgroundColor: '#2A2438',
+                    }}
                 >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
                         <TextField
                             variant="standard"
                             placeholder="Message"
                             multiline
+                            color="primary"
+                            backgroundColor="#f6f6f6"
                             maxRows={1}
-                            style={{ width: '100%' }}
+                            style={{
+                                width: '100%',
+                                color: '#f6f6f6',
+
+                                backgroundColor: 'transparent',
+                            }}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
@@ -262,7 +278,7 @@ const Chat = (props) => {
                             onClick={sendMessage}
                             disabled={message.trim().length === 0}
                         >
-                            <SendIcon />
+                            <SendIcon backgroundcolor="white" />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
