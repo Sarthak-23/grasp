@@ -89,7 +89,10 @@ exports.sendMessage = async (people, content, sender) => {
         console.log(message.content);
         // content: decrypt(message.content, 4),
         // content: key.decrypt(message.content, 'utf8'),
-        const bytes = CryptoJS.AES.decrypt(msg.content, process.env.AES_KEY);
+        const bytes = CryptoJS.AES.decrypt(
+            message.content,
+            process.env.AES_KEY
+        );
         const decryptedmsg = bytes.toString(CryptoJS.enc.Utf8);
         let sendmessage = {
             sender: message.sender,
