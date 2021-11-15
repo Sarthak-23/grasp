@@ -13,6 +13,7 @@ import {
     LinearProgress,
     Card,
     CardContent,
+    Avatar,
 } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/system';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -27,14 +28,25 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
     },
 }));
 
+const MessageField = styled(TextField)(({ theme }) => ({
+    width: '100%',
+    backgroundColor: 'transparent',
+    '& .MuiInputBase-root': {
+        color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: 'white',
+    },
+}));
+
 const Chat = (props) => {
-    const { user, setSelectedUser, socket, people, sender } = props; // user is selected user //sender is self uid
+    const { user, setSelectedUser, socket, people, sender, online } = props; // user is selected user //sender is self uid
     const theme = useTheme();
     const listRef = useRef(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    console.log(online);
     const sendMessage = () => {
         if (message === '' || socket === '') return;
 
@@ -146,7 +158,11 @@ const Chat = (props) => {
     if (user._id)
         return (
             <Box style={{ position: 'relative', height: '100%' }}>
-                <AppBar position="static" color="transparent">
+                <AppBar
+                    position="static"
+                    color="transparent"
+                    style={{ background: '#2A2438' }}
+                >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
                         <IconButtonCustom
                             theme={theme}
@@ -154,7 +170,13 @@ const Chat = (props) => {
                         >
                             <ArrowBackIcon />
                         </IconButtonCustom>
-                        <Typography>{user.name}</Typography>
+                        <Avatar style={{ margin: '1rem' }} src={user.avatar} />
+                        <Box>
+                            <Typography color="#DBD8E3">{user.name}</Typography>
+                            <Typography variant="caption" color="green">
+                                {online ? 'Online' : ''}
+                            </Typography>
+                        </Box>
                     </Toolbar>
                 </AppBar>
                 {loading ? <LinearProgress color="success" /> : null}
@@ -230,15 +252,21 @@ const Chat = (props) => {
                 <AppBar
                     position="absolute"
                     color="transparent"
-                    style={{ bottom: 0, top: 'auto', backgroundColor: '#ddd' }}
+                    style={{
+                        bottom: 0,
+                        top: 'auto',
+
+                        backgroundColor: '#2A2438',
+                    }}
                 >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
-                        <TextField
+                        <MessageField
+                            theme={theme}
                             variant="standard"
                             placeholder="Message"
-                            multiline
-                            maxRows={1}
-                            style={{ width: '100%' }}
+                            // multiline
+                            // maxRows={1}
+                            type="text"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
@@ -251,9 +279,11 @@ const Chat = (props) => {
                             }}
                         />
                         <IconButton
-                            color="primary"
                             onClick={sendMessage}
                             disabled={message.trim().length === 0}
+                            sx={{
+                                color: 'white',
+                            }}
                         >
                             <SendIcon />
                         </IconButton>

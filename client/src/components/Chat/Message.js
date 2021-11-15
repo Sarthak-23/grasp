@@ -30,12 +30,14 @@ const Message = (props) => {
                     }}
                 ></Avatar>
             )}
+
             <Card
                 sx={{
                     bgcolor: 'primary.main',
                     color: 'white',
                     position: 'relative',
                     minWidth: '5rem',
+                    backgroundColor: '#5C5470',
                 }}
             >
                 <CardContent>

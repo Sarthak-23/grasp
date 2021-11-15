@@ -11,6 +11,7 @@ import { UserContext, UserProvider } from './context/UserContext';
 import classes from './App.css';
 import Profile from './components/Profile/Profile';
 import ChatContainer from './components/Chat/ChatContainer';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Routes() {
     const [user, setUser] = React.useContext(UserContext);
@@ -69,10 +70,19 @@ function Routes() {
 }
 
 function App() {
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#2A2438',
+            },
+        },
+    });
     return (
-        <UserProvider>
-            <Routes />
-        </UserProvider>
+        <ThemeProvider theme={theme}>
+            <UserProvider>
+                <Routes />
+            </UserProvider>
+        </ThemeProvider>
     );
 }
 
