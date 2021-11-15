@@ -62,6 +62,14 @@ const CreateRoadmap = (props) => {
         }
     };
 
+    const addtagsbutton = (e) => {
+        setRoadmapData((prev) => ({
+            ...prev,
+            tags: [...prev.tags, newTag],
+        }));
+        setNewTag('');
+    };
+
     const createHandler = async () => {
         console.log(roadmapData);
         try {
@@ -141,7 +149,7 @@ const CreateRoadmap = (props) => {
                     variant="outlined"
                 />
                 <IconButton
-                    onClick={addtags}
+                    onClick={addtagsbutton}
                     style={{ margin: '10px 0' }}
                     size="small"
                     color="primary"

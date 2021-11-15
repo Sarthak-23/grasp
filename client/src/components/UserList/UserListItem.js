@@ -10,13 +10,19 @@ import {
     Tooltip,
 } from '@mui/material';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import ChatIcon from '@mui/icons-material/Chat';
 
 const UserListItem = (props) => {
     const { index, curuser, type } = props;
+    const history = useHistory();
     const [user, setUser] = useContext(UserContext);
+
+    const handleClick = (e) => {
+        history.push('/chat', { chatUser: curuser });
+    };
+
     return (
         <ListItem key={index} divider>
             <Link
@@ -52,19 +58,19 @@ const UserListItem = (props) => {
                     : null} */}
             </Link>
             {user && curuser.connections.includes(user._id) ? (
-                <Link style={{ textDecoration: 'none' }} to={`/chat`}>
-                    <Tooltip title="Message">
-                        <Button
-                            variant="contained"
-                            color="success"
-                            endIcon={<ChatIcon />}
-                            size="small"
-                        >
-                            Message
-                        </Button>
-                    </Tooltip>
-                </Link>
-            ) : null}
+                // <Link style={{ textDecoration: 'none' }} to={`/chat`}>
+                <Tooltip title="Message">
+                    <IconButton
+                        onClick={handleClick}
+                        variant="contained"
+                        color="success"
+                        size="small"
+                    >
+                        <ChatIcon />
+                    </IconButton>
+                </Tooltip>
+            ) : // </Link>
+            null}
         </ListItem>
     );
 };

@@ -17,14 +17,23 @@ import { UserContext } from '../../context/UserContext';
 import ChatIcon from '@mui/icons-material/Chat';
 
 const UserListChatItem = (props) => {
-    const { index, curuser, setSelectedUser, online } = props;
+    const { index, curuser, setSelectedUser, selectedUser, online } = props;
     const [user, setUser] = useContext(UserContext);
     return (
         <ListItemButton
             key={index}
             divider
+            selected={curuser._id === selectedUser._id}
             onClick={(e) => {
                 setSelectedUser(curuser);
+            }}
+            sx={{
+                '&.Mui-selected': {
+                    backgroundColor: 'rgba(	42, 36, 56, 0.2)',
+                },
+                '&:hover': {
+                    backgroundColor: 'rgba(	42, 36, 56, 0.2)',
+                },
             }}
         >
             <ListItemIcon>
