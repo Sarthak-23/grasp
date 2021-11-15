@@ -28,6 +28,17 @@ const IconButtonCustom = styled(IconButton)(({ theme }) => ({
     },
 }));
 
+const MessageField = styled(TextField)(({ theme }) => ({
+    width: '100%',
+    backgroundColor: 'transparent',
+    '& .MuiInputBase-root': {
+        color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: 'white',
+    },
+}));
+
 const Chat = (props) => {
     const { user, setSelectedUser, socket, people, sender, online } = props; // user is selected user //sender is self uid
     const theme = useTheme();
@@ -147,7 +158,11 @@ const Chat = (props) => {
     if (user._id)
         return (
             <Box style={{ position: 'relative', height: '100%' }}>
-                <AppBar position="static" color="transparent">
+                <AppBar
+                    position="static"
+                    color="transparent"
+                    style={{ background: '#2A2438' }}
+                >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
                         <IconButtonCustom
                             theme={theme}
@@ -157,7 +172,7 @@ const Chat = (props) => {
                         </IconButtonCustom>
                         <Avatar style={{ margin: '1rem' }} src={user.avatar} />
                         <Box>
-                            <Typography>{user.name}</Typography>
+                            <Typography color="#DBD8E3">{user.name}</Typography>
                             <Typography variant="caption" color="green">
                                 {online ? 'Online' : ''}
                             </Typography>
@@ -237,15 +252,21 @@ const Chat = (props) => {
                 <AppBar
                     position="absolute"
                     color="transparent"
-                    style={{ bottom: 0, top: 'auto', backgroundColor: '#ddd' }}
+                    style={{
+                        bottom: 0,
+                        top: 'auto',
+
+                        backgroundColor: '#2A2438',
+                    }}
                 >
                     <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
-                        <TextField
+                        <MessageField
+                            theme={theme}
                             variant="standard"
                             placeholder="Message"
-                            multiline
-                            maxRows={1}
-                            style={{ width: '100%' }}
+                            // multiline
+                            // maxRows={1}
+                            type="text"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={(e) => {
@@ -258,9 +279,11 @@ const Chat = (props) => {
                             }}
                         />
                         <IconButton
-                            color="primary"
                             onClick={sendMessage}
                             disabled={message.trim().length === 0}
+                            sx={{
+                                color: 'white',
+                            }}
                         >
                             <SendIcon />
                         </IconButton>

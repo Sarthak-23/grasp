@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import ChatIcon from '@mui/icons-material/Chat';
 import Icon from '@mui/material/Icon';
 import classes from './Navbar.css';
 import { Avatar, Button, Tooltip } from '@mui/material';
@@ -95,16 +96,25 @@ const Navbar = (props) => {
         }
     };
 
+    const handleChat = () => {
+        hist.push('/chat', { chatUser: null });
+    };
+
     return (
         <Container>
-            <AppBar position="static" color="transparent">
-                <Toolbar style={{ minHeight: '10vh', height: '10vh' }}>
+            <AppBar position="static" color="primary">
+                <Toolbar
+                    style={{
+                        minHeight: '10vh',
+                        height: '10vh',
+                    }}
+                >
                     <Link style={{ textDecoration: 'none' }} to="/">
                         <Typography
                             variant="h6"
                             noWrap
                             component="div"
-                            color="primary"
+                            color="#DBD8E3"
                             sx={{
                                 // flexGrow: 1,
                                 display: { sm: 'block' },
@@ -115,10 +125,17 @@ const Navbar = (props) => {
                     </Link>
                     <EmptySpace />
                     {showSearch ? (
-                        <Link style={{ marginRight: '1rem ' }} to="/search">
+                        <Link
+                            style={{
+                                marginRight: '1rem ',
+                            }}
+                            to="/search"
+                        >
                             <Tooltip title="Search">
                                 <IconButton>
-                                    <Icon>search</Icon>
+                                    <Icon style={{ color: 'white' }}>
+                                        search
+                                    </Icon>
                                 </IconButton>
                             </Tooltip>
                         </Link>
@@ -126,13 +143,14 @@ const Navbar = (props) => {
                     {/* <EmptySpace /> */}
                     {user._id &&
                         (props.message === undefined || props.message) && (
-                            <Link style={{ marginRight: '1rem' }} to="/chat">
-                                <Tooltip title="Message">
-                                    <IconButton>
-                                        <Icon color="primary">chat</Icon>
-                                    </IconButton>
-                                </Tooltip>
-                            </Link>
+                            <Tooltip
+                                title="Message"
+                                style={{ marginRight: '1rem' }}
+                            >
+                                <IconButton onClick={handleChat}>
+                                    <Icon style={{ color: 'white' }}>chat</Icon>
+                                </IconButton>
+                            </Tooltip>
                         )}
                     {user._id && (
                         <Tooltip title="Logout">
