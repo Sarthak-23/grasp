@@ -1,7 +1,7 @@
 # Grasp (Web)
 
 ## Description
-An Web Application that helps you create roadmaps for your goals.
+A Web Application that helps you create roadmaps for your goals.
 
 ## Features
 - User Authentication.
@@ -19,6 +19,7 @@ An Web Application that helps you create roadmaps for your goals.
 - [NodeJS](https://nodejs.org/en/)
 - [ExpressJS](https://expressjs.com/)
 - [MongoDB](https://mongodb.com/)
+- [Socket IO](https://socket.io)
 
 ## Build From Source
 
