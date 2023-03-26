@@ -7,7 +7,6 @@ const saltRounds = 10;
 const JWT = require('./JWTController');
 const cookie = require('cookie');
 
-
 // // Serialize user
 // passport.serializeUser((user, done) => {
 //     done(null, user._id);
@@ -202,6 +201,7 @@ exports.signin = async (req, res) => {
         isUser.password = '';
         res.json(isUser);
     } catch (e) {
+        console.log(e);
         res.json({ error: e || 'Something went wrong!' });
     }
 };

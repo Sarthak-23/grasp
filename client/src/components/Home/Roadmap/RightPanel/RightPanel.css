@@ -1,12 +1,8 @@
 .Container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    max-width: 100%;
-    padding: 15px;
-    box-shadow: 0 0 8px #3e3e3e;
-    background-color: #e4e4e4;
+    position: sticky;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     border-radius: 5px;
     height: 100%;
     z-index: 1;
@@ -76,13 +72,13 @@
     outline: none;
     background-color: rgb(204, 204, 204);
 }
-.boxbox{
+.boxbox {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     margin-top: 10px;
 }
-.box{
+.box {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -90,7 +86,7 @@
     width: 100%;
     margin-top: 10px;
 }
-.parent{
+.parent {
     padding: 10px;
     border-radius: 5px;
     background-color: white;

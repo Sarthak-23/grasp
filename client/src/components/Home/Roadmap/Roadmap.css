@@ -1,73 +1,67 @@
-.Roadmap{
-    background-color: #E4E4E4;
+.Roadmap {
     border-radius: 5px;
-    display: flex;
     width: 90%;
-    margin: auto;
+    padding: 30px;
     height: 100%;
 }
-.Info{
-    display: flex;
-    flex-direction: column;
-    width: 400px;
+.Info {
     padding: 30px;
 }
-.Info h3{
+.Info h3 {
     font-size: 2rem;
 }
-.Sec{
+.Sec {
     margin: 10px 0;
 }
-.Sec label{
+.Sec label {
     font-size: 0.7rem;
-    color: #A7A7A7;
+    color: #a7a7a7;
 }
-.Sec p{
+.Sec p {
     color: #404040;
 }
-.Sec ul{
+.Sec ul {
     display: flex;
     list-style: none;
 }
-.Sec ul li{
+.Sec ul li {
     margin-right: 5px;
     background-color: white;
     padding: 5px;
     border-radius: 2px;
 }
-.Main{
-    height: 100%;
+.Main {
     padding: 30px;
     border-radius: 5px;
     background: #9ccca5;
     overflow-y: scroll;
     transition: 0.3s;
 }
-.Topics{
+.Topics {
     padding: 10px;
     border-radius: 5px;
     background-color: white;
 }
-.StartDiv{
+.StartDiv {
     background-color: white;
     border-radius: 5px;
     padding: 20px;
 }
-.path{
+.path {
     width: 4px;
     height: 100px;
-    background-color: black;
+    background-color: white;
     margin-left: 40px;
 }
-.Topics .title{
+.Topics .title {
     margin: 10px 0;
 }
-.Box{
+.Box {
     border-top: 1px solid #c1c1c1;
     padding-top: 20px;
     overflow-x: scroll;
 }
-.Notes{
+.Notes {
     max-height: 300px;
     background-color: white;
     overflow-y: scroll;
@@ -75,12 +69,12 @@
     box-shadow: 0 0 5px #c4c4c4;
     text-align: center;
 }
-.Notes p{
+.Notes p {
     font-size: 0.8rem;
 }
 
 /* // ----------Create Modal----------  */
-.Modal{
+.Modal {
     height: 100%;
     width: 100%;
     position: absolute;
@@ -93,13 +87,13 @@
     display: flex;
     position: fixed;
 }
-.Backdrop{
+.Backdrop {
     height: 100%;
     width: 100%;
     position: absolute;
     z-index: -1;
 }
-.CreateModal{
+.CreateModal {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 3px grey;
@@ -107,19 +101,19 @@
     flex-direction: column;
     padding: 20px;
 }
-.CreateModal .head label{
+.CreateModal .head label {
     color: #b4b4b4;
 }
-.CreateModal .head p{
+.CreateModal .head p {
     color: black;
 }
-.box{
+.box {
     display: flex;
     flex-direction: column;
     list-style: none;
     align-items: center;
 }
-.box li{
+.box li {
     padding: 4px;
     border-radius: 5px;
     color: #5c5cd7;
@@ -128,12 +122,12 @@
     width: 100%;
     margin: 2px 0;
 }
-.box li:hover{
+.box li:hover {
     background-color: #5c5cd74b;
 }
 
 /* // ----------Notes Modal----------  */
-.NotesModal{
+.NotesModal {
     display: flex;
     flex-flow: column;
     background-color: white;
@@ -142,15 +136,15 @@
     border-radius: 5px;
     box-shadow: 0 0 5px #424242;
 }
-.head{
+.head {
     font-size: 1.5rem;
 }
-.content{
+.content {
     padding: 20px 0;
     border-top: 1px solid grey;
 }
 
-.CreateNoteModal{
+.CreateNoteModal {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 3px grey;
@@ -159,6 +153,6 @@
     flex-direction: column;
     padding: 20px;
 }
-.CreateNoteModal .head label{
+.CreateNoteModal .head label {
     color: #b4b4b4;
 }

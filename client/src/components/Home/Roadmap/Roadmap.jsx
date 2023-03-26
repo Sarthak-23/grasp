@@ -19,12 +19,15 @@ import { UserContext } from '../../../context/UserContext';
 
 //classes
 import classes from "./Roadmap.css";
-import RightPanel from '../RightPanel/RightPanel';
+import RightPanel from './RightPanel/RightPanel';
+import Navbar from '../../Navbar/Navbar';
+import { Backdrop, Chip, CircularProgress, Grid, Typography, useTheme } from '@mui/material';
+import { Box } from '@mui/system';
 
 const date = new Date()
 
 const Roadmap = (props) => {
-
+  const theme = useTheme();
   const params = useParams();
   const [user, setUser] = useContext(UserContext) // {id, username, name, goals, connnections, pending, recieve}
 
@@ -42,15 +45,35 @@ const Roadmap = (props) => {
 
   const [selectedTopic, setSelectedTopic] = useState(null)
 
-  useEffect(async () => {
+  const fetchNotes = async () => {
+    let res = await fetch(`/roadmaps/${params.id}/notes/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      throw new Error('Something went wrong!');
+    }
+    return res;
+  }
 
-    try {
-      let res = await fetch(`/roadmaps/${params.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+  const fetchRoadmap = async () => {
+    let res = await fetch(`/roadmaps/${params.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      throw new Error('Something went wrong!');
+    }
+    return res;
+  }
+
+  useEffect(() => {
+    fetchRoadmap().then(async res => {
+
       res = await res.json();
 
       if (res._id) {
@@ -64,30 +87,23 @@ const Roadmap = (props) => {
       } else {
         setErrors(res || res.error);
       }
-    } catch (e) {
+    }).catch(e => {
       setLoader(false);
       setErrors('Something went wrong');
-    }
+    })
 
     // Setting notes from database;
-    try {
-      let res = await fetch(`/roadmaps/${params.id}/notes/all`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    fetchNotes().then(async res => {
       res = await res.json();
       if (res.length) {
         setNotes(res)
       }
-
-    } catch (e) {
+    }).catch(e => {
       setLoader(false);
       setErrors('Something went wrong');
-    }
+    })
 
-  }, [showCreateModal, selectedTopic])
+  }, [showCreateModal, selectedTopic]);
 
 
   const getNoteData = async (note_id) => {
@@ -269,8 +285,16 @@ const Roadmap = (props) => {
     }
   }
 
+  const handleSelectTopic = (sub, index, ind) => {
+    if (!user || user._id !== roadmap.user) return;
+    if (selectedTopic && selectedTopic.index === index && selectedTopic.ind === ind) setSelectedTopic(null);
+    else setSelectedTopic({ sub, index, ind });
+  }
+
+
   return (
-    <div className={classes.Roadmap}>
+    <div className={classes.Home}>
+      <Navbar />
       {(createPath.showModal || noteData || showCreateModal) &&
         <div className={classes.Modal}>
           <div className={classes.Backdrop} onClick={() => closeModal(notes.showCreateModal ? 0 : 1)} />
@@ -279,113 +303,120 @@ const Roadmap = (props) => {
           {showCreateModal && <CreateNotes create={createNote} />}
         </div>
       }
-      <div className={classes.Info}>
 
-        <h3>{roadmap.title}</h3>
-        <div className={classes.Sec}>
-          <label>description</label>
-          <p>{roadmap.description}</p>
-        </div>
-        <div className={classes.Sec}>
-          <label>Create on</label>
-          <p>{roadmap.createdAt}</p>
-        </div>
-        <div className={classes.Sec}>
-          <label>Last Update</label>
-          <p>{roadmap.updatedAt}</p>
-        </div>
-        <div className={classes.Sec}>
-          <label>Tags</label>
-          <ul>
-            {roadmap.tags ? roadmap.tags.map((tag, index) => {
-              return <li key={index}>{tag}</li>
-            })
-              : <li>No tags</li>}
-          </ul>
-        </div>
+      <Grid container className={classes.Roadmap}>
+        <Grid item xs={12} md={3} className={classes.Info}>
 
-        <div className={classes.Sec}>
-          <label>Notes</label>
-          <div className={classes.Notes}>
-            <List component="nav" aria-label="secondary mailbox folder">
-              {notes && notes.map((note, ind) => {
-                return <ListItemButton key={ind} onClick={() => getNoteData(note._id)} style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
-                  <p className="cont">{note.title}</p> <p className="cont">{convertDate(note.updatedAt)}</p>
-                </ListItemButton>
-              })}
-
-            </List>
+          <h3>{roadmap.title}</h3>
+          <div className={classes.Sec}>
+            <p>{roadmap.description}</p>
+          </div>
+          {roadmap.tags && <div className={classes.Sec}>
+            {roadmap.tags.map((tag, index) => {
+              return <Chip key={index} label={tag} />
+            })}
+          </div>}
+          <div className={classes.Sec}>
+            <label>Created on</label>
+            <p>{roadmap.createdAt}</p>
+          </div>
+          <div className={classes.Sec}>
+            <label>Last Edit</label>
+            <p>{roadmap.updatedAt}</p>
           </div>
 
-        </div>
-        <Button onClick={() => setShowCreateModal(true)} variant="contained" startIcon={<AddBoxIcon color="white" />}>
-          Create
-        </Button>
+          {user && user._id === roadmap.user &&
+            <>
+              <div className={classes.Sec}>
+                <label>Notes</label>
+                {/* <div className={classes.Notes}> */}
+                {notes && notes.length > 0 ? <List component="nav" aria-label="secondary mailbox folder">
+                  {notes.map((note, ind) => {
+                    return <ListItemButton key={ind} onClick={() => getNoteData(note._id)} style={{ width: '100%', display: "flex", justifyContent: "space-between" }} selected={1} >
+                      <p className="cont">{note.title}</p>
+                    </ListItemButton>
+                  })}
 
-
-      </div>
-
-      <div className={classes.Main}>
-
-        <div className={classes.StartDiv}>
-          Starting {roadmap && roadmap.title}
-        </div>
-        {roadmap.path &&
-          roadmap.path.map((path, index) => {
-            return <>
-              <div className={classes.path} />
-              <div className={classes.Topics}>
-
-                <p className={classes.title}>{path.topic}</p>
-
-                <div className={classes.Box}>
-
-                  <Stepper activeStep={1} alternativeLabel>
-                    {path.subpath.map((sub, ind) => {
-                      return <Step onClick={() => setSelectedTopic({ sub: sub, index: index, ind: ind })} key={ind}>
-                        <StepLabel style={{ cursor: "pointer" }}>{sub.topic}</StepLabel>
-                      </Step>
-                    })}
-                  </Stepper>
-
-                </div>
+                </List> : <Typography>Your notes will show up here.</Typography>}
+                {/* </div> */}
 
               </div>
+              <Button onClick={() => setShowCreateModal(true)} variant="contained" startIcon={<AddBoxIcon color="white" />}>
+                Create
+              </Button>
             </>
-          })
-        }
+          }
 
-        {/* adding more paths */}
-        <div className={classes.path} />
-        <div className={classes.Topics}>
+        </Grid>
 
-          <p className={classes.title}>
-            <TextField onChange={(e) => { setCreatePath(prev => ({ ...prev, topic: e.target.value === "" ? null : e.target.value })) }} required size='small' id="standard-basic" label="Topic" variant="standard" value={createPath.topic || ""} />
-          </p>
+        <Grid item xs={12} md={selectedTopic ? 6 : 9} sx={{ py: '30px' }} >
+          <Box className={classes.Main} sx={{ background: theme.palette.primary.main }}>
 
-          <div className={classes.Box}>
-            <Stepper activeStep={0} alternativeLabel>
-              {createPath.data.map((sub, ind) => {
-                return <Step key={ind}>
-                  <StepLabel>{sub.topic}</StepLabel>
-                </Step>
-              })}
-            </Stepper>
-          </div>
-          <IconButton onClick={addHandler} size="large" color="primary" aria-label="add">
-            <AddBoxIcon />
-          </IconButton>
 
-          <Button onClick={createPathHandler} style={{ margin: "0 5px 0 0" }} disabled={(!createPath.topic || !createPath.data.length)} variant="contained" size="small">Create</Button>
-          <Button onClick={removeLast} disabled={!createPath.data.length} variant="contained" size="small">Pop</Button>
+            <div className={classes.StartDiv}>
+              Starting {roadmap && roadmap.title}
+            </div>
+            {roadmap.path &&
+              roadmap.path.map((path, index) => {
+                return <>
+                  <div className={classes.path} />
+                  <div className={classes.Topics}>
 
-        </div>
+                    <p className={classes.title}>{path.topic}</p>
 
-      </div>
+                    <div className={classes.Box}>
 
-      {selectedTopic && <RightPanel updateSubtopic={subtopicUpdateHandler} data={selectedTopic} />}
+                      <Stepper activeStep={1} alternativeLabel>
+                        {path.subpath.map((sub, ind) => {
+                          return <Step onClick={() => handleSelectTopic(sub, index, ind)} key={ind}>
+                            <StepLabel style={{ cursor: "pointer" }}>{sub.topic}</StepLabel>
+                          </Step>
+                        })}
+                      </Stepper>
 
-    </div>
+                    </div>
+
+                  </div>
+                </>
+              })
+            }
+
+            {/* adding more paths */}
+            {user && user._id === roadmap.user &&
+              <>
+                <div className={classes.path} />
+                <div className={classes.Topics}>
+
+                  <p className={classes.title}>
+                    <TextField onChange={(e) => { setCreatePath(prev => ({ ...prev, topic: e.target.value === "" ? null : e.target.value })) }} required size='small' id="standard-basic" label="Topic" variant="standard" value={createPath.topic || ""} />
+                  </p>
+
+                  <div className={classes.Box}>
+                    <Stepper activeStep={0} alternativeLabel>
+                      {createPath.data.map((sub, ind) => {
+                        return <Step key={ind}>
+                          <StepLabel>{sub.topic}</StepLabel>
+                        </Step>
+                      })}
+                    </Stepper>
+                  </div>
+                  <IconButton onClick={addHandler} size="large" color="primary" aria-label="add">
+                    <AddBoxIcon />
+                  </IconButton>
+
+                  <Button onClick={createPathHandler} style={{ margin: "0 5px 0 0" }} disabled={(!createPath.topic || !createPath.data.length)} variant="contained" size="small">Create</Button>
+                  <Button onClick={removeLast} disabled={!createPath.data.length} variant="contained" size="small">Pop</Button>
+
+                </div>
+              </>}
+          </Box>
+
+        </Grid>
+
+        {selectedTopic && <RightPanel updateSubtopic={subtopicUpdateHandler} data={selectedTopic} />}
+
+      </Grid>
+    </div >
   );
 }
 

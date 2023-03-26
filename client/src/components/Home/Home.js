@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 //componene
 import Panel from './Dashboard/Dashboard';
 import Roadmap from './Roadmap/Roadmap';
-import RightPanel from './RightPanel/RightPanel';
 import Navbar from '../Navbar/Navbar';
 
 //classes
