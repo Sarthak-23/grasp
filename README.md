@@ -48,5 +48,5 @@ A Web Application that helps you create roadmaps for your goals.
 - Go to [localhost:8080](http://localhost:8080/).
 
 ## Hosting
-You can view the live project [here](https://cod-grasp.herokuapp.com/)
+You can view the live project [here](https://grasp.onrender.com/)
  
