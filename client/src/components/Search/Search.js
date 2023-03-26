@@ -103,7 +103,6 @@ const Search = () => {
                 }
             );
             const data = await res.json();
-            // console.log(data);
             if (data.error) throw data.error;
             return data;
         } catch (err) {
@@ -157,7 +156,6 @@ const Search = () => {
             fetchUserByProfile().then((res) => {
                 if (res) {
                     setResult(res.profiles);
-                    // console.log(res.profiles);
                 }
                 setLoading(false);
             });

@@ -65,7 +65,6 @@ const ChatContainer = () => {
     useEffect(() => {
         if (socket) {
             socket.on('connect', () => {
-                console.log('Client is connected to Server via socket.');
 
                 // telling that i am online
                 socket.emit('iamOnline', { user: user });
@@ -75,9 +74,6 @@ const ChatContainer = () => {
                     let emitOnlineUser = data.filter((user) => {
                         return connections.map((u) => u._id).includes(user.uid);
                     });
-                    console.log(data);
-                    console.log(connections);
-                    console.log(emitOnlineUser);
                     setOnlineUser(emitOnlineUser);
                 });
             });
@@ -120,7 +116,6 @@ const ChatContainer = () => {
     };
 
     const setSelectedUserHandler = (con_user) => {
-        console.log(con_user, user);
 
         if (people) {
             socket.emit(
@@ -133,7 +128,6 @@ const ChatContainer = () => {
                     // setRoom()
                     setSelectedUser(con_user);
                     setPeople([con_user._id, user._id].sort());
-                    console.log('Joined Room', data);
                 }
             );
         } else {
@@ -145,7 +139,6 @@ const ChatContainer = () => {
                 (data) => {
                     setSelectedUser(con_user);
                     setPeople([con_user._id, user._id].sort());
-                    console.log('Joined Room', data);
                 }
             );
         }

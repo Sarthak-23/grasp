@@ -154,7 +154,6 @@ const Panel = (props) => {
 
     const handleEditChange = (e) => {
         let { name, value } = e.target;
-        console.log(name, value);
         setDetails((prev) => {
             return {
                 ...prev,
@@ -205,7 +204,6 @@ const Panel = (props) => {
             }
             setLoading(false);
         } catch (e) {
-            console.log(e);
             setError('Something went wrong');
         }
     };

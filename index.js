@@ -59,22 +59,18 @@ if (process.env.NODE_ENV === 'production') {
 io.of('/chat').use(authController.isSocketAuthenticated);
 
 io.of('/chat').on('connect', async (socket) => {
-    console.log('Socket connected', socket.id);
-
     //online status
     socket.on('iamOnline', (data) => {
         onlineUsers.push({
             uid: data.user._id,
             socketId: socket.id,
         });
-        console.log(socket.user);
         io.of('/chat').emit('userOnlineUpdate', onlineUsers);
     });
 
     //join to room
     socket.on('joinRoom', (data, joined_ack) => {
         socket.join(data.room);
-        console.log('Joined to room', data.room);
 
         //getting socket client know, they are connected to the room
         joined_ack(true);
@@ -87,7 +83,6 @@ io.of('/chat').on('connect', async (socket) => {
 
         // socket join the new room
         socket.join(data.toJoin);
-        console.log('Joined to room', data.toJoin);
 
         lj_ack(1);
     });
@@ -95,14 +90,12 @@ io.of('/chat').on('connect', async (socket) => {
     //leave room
     socket.on('leaveRoom', (data, leave_ack) => {
         socket.leave(data.room);
-        console.log('Room Left', data.room);
 
         leave_ack(1);
     });
 
     //message recived
     socket.on('messageToEnd', async (data, ack) => {
-        console.log(data);
         //set message to database
         try {
             let res = await chatController.sendMessage(
@@ -110,10 +103,8 @@ io.of('/chat').on('connect', async (socket) => {
                 data.message.content,
                 data.message.sender
             );
-            console.log(res);
 
             if (res) {
-                console.log('hello');
                 io.of('/chat')
                     .to(data.people.join(''))
                     .emit('MessagefromEnd', res);
@@ -122,7 +113,6 @@ io.of('/chat').on('connect', async (socket) => {
                 ack(0);
             }
         } catch (e) {
-            console.log(e);
             ack(0);
         }
     });
@@ -133,7 +123,6 @@ io.of('/chat').on('connect', async (socket) => {
             if (onUser.socketId == socket.id) return 0;
             else return 1;
         });
-        console.log(onlineUsers, 'userDisconnected');
         io.of('/chat').emit('userOnlineUpdate', onlineUsers);
     });
 

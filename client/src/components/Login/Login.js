@@ -71,7 +71,6 @@ const Login = () => {
             } else {
                 setErrors('Something went wrong');
             }
-            console.log(res);
             setLoader(false);
         } catch (e) {
             setLoader(false);

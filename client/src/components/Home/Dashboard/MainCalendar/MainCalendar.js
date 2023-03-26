@@ -53,7 +53,6 @@ const MainCalendar = (props) => {
                 for(let i=0; i<42; i++){
 
                   let searchDateFormat = `${GET_DATE_IN_ARRAY(starting_date)[1]}-${GET_DATE_IN_ARRAY(starting_date)[2]}-${GET_DATE_IN_ARRAY(starting_date)[3]}`
-                  // console.log(props.Event[searchDateFormat] ? true : false, searchDateFormat)
                     dateArray.push({
                         status: [],   //current, selected
                         // date: starting_date,
@@ -160,7 +159,6 @@ const MainCalendar = (props) => {
       else if(DateData.type === "year")
         setDateData((prev) => {
           let Year = prev.middle_year;
-          console.log(prev)
           if (direction === "back") {
               Year = Year-12;
           } else if (direction === "next") {
@@ -207,10 +205,8 @@ const MainCalendar = (props) => {
       if(DateData.type === "date"){
         setSelectedDate(dateArray)
         props.selectDateHandler(dateArray)
-        console.log(dateArray)
       }
       else if(DateData.type === "month"){
-        console.log(dateArray)
         setDateData(prev=>({
             type: "date",
             data: {
@@ -221,7 +217,6 @@ const MainCalendar = (props) => {
         }))
       }
       else if(DateData.type === "year"){
-        console.log(dateArray)
         setDateData(prev=>({
             type: "month",
             data: {
@@ -289,7 +284,6 @@ const MainCalendar = (props) => {
       DateSequence = <div className={classes.yearValue}>
           {previewData &&
             previewData.yearArray.map((data, index) => {
-              console.log(data)
               return (
                 <DayBox
                   key={index}

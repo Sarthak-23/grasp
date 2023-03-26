@@ -46,20 +46,8 @@ const Chat = (props) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(online);
     const sendMessage = () => {
         if (message === '' || socket === '') return;
-
-        //send message to server
-        console.log({
-            people: people,
-            message: {
-                sender: sender,
-                content: message,
-            },
-        });
-
-        console.log(socket);
         socket.emit(
             'messageToEnd',
             {
@@ -70,7 +58,6 @@ const Chat = (props) => {
                 },
             },
             (data) => {
-                console.log(data);
                 console.log('Message sent!');
             }
         );
@@ -82,8 +69,6 @@ const Chat = (props) => {
         if (socket) {
             // incomming messages
             socket.on('MessagefromEnd', (message) => {
-                console.log('message from end');
-                console.log(message);
                 setMessages((prev) => {
                     return [
                         ...prev,
@@ -103,7 +88,6 @@ const Chat = (props) => {
             try {
                 let res = await fetch(`/profile/api/messages/${user.username}`);
                 res = await res.json();
-                console.log(res);
                 return res;
             } catch (e) {
                 console.log(e);
@@ -122,7 +106,6 @@ const Chat = (props) => {
                     // setOpen(true);
                 })
                 .catch((err) => {
-                    console.log(err);
                     setLoading(false);
                 });
         }

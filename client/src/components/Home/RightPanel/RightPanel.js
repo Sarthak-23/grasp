@@ -40,7 +40,6 @@ const RightPanel = (props) => {
     const [isDataChanged, setIsDataChanged] = useState(false)
 
     useEffect(() => {
-        console.log(props)
         setDescription(props.data.sub.description)
         setMaterial(props.data.sub.materials)
 

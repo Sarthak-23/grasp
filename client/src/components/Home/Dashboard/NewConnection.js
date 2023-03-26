@@ -25,14 +25,12 @@ const NewConnection = (props) => {
                 },
             });
             res = await res.json();
-            console.log(res);
             if (res.error) setError(res.error);
             else {
                 setError('');
                 setSuccess(true);
             }
         } catch (e) {
-            console.log(e);
             setError('Something went wrong');
         }
         setLoading(false);

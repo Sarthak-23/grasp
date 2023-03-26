@@ -48,7 +48,6 @@ const Requests = (props) => {
     const handleDecline = async (e, u) => {
         e.stopPropagation();
         try {
-            console.log(u.username);
             let res = await fetch(`/profile/${u.username}/reject`, {
                 method: 'POST',
                 headers: {

@@ -64,7 +64,6 @@ exports.connectProfile = async (req, res) => {
         );
         return res.json({ success: 'Request sent!' });
     } catch (e) {
-        console.log(e);
         res.json(501).json({ error: e });
     }
 };
@@ -219,7 +218,6 @@ exports.uploadAvatar = (req, res) => {
     try {
         upload(req, res, async (err) => {
             if (err) {
-                console.log(err);
                 throw err;
             }
             let ext;

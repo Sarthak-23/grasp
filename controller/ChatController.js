@@ -33,7 +33,6 @@ exports.getMessages = async (req, res) => {
         const messages = await Message.find({
             _id: { $in: chat.messages },
         }).sort({ createdAt: 1 });
-        console.log(messages);
         messages.forEach((msg) => {
             const bytes = CryptoJS.AES.decrypt(
                 msg.content,
@@ -44,7 +43,6 @@ exports.getMessages = async (req, res) => {
             // msg.content = key.decrypt(msg.content, 'utf8');
             // msg.content = decrypt(msg.content, 4);
         });
-        console.log(messages);
         res.json(messages);
     } catch (e) {
         res.status(501).json({ error: e });
@@ -85,8 +83,6 @@ exports.sendMessage = async (people, content, sender) => {
                 },
             }
         );
-        console.log('line number 66');
-        console.log(message.content);
         // content: decrypt(message.content, 4),
         // content: key.decrypt(message.content, 'utf8'),
         const bytes = CryptoJS.AES.decrypt(
@@ -103,7 +99,6 @@ exports.sendMessage = async (people, content, sender) => {
         };
         return sendmessage;
     } catch (e) {
-        console.log(e);
         return null;
     }
 };

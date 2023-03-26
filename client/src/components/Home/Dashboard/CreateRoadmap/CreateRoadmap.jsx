@@ -40,7 +40,6 @@ const CreateRoadmap = (props) => {
 
     const changeHandler = (e) => {
         if (e.target.value == 'on') {
-            console.log(e, roadmapData.private);
             setRoadmapData((prev) => ({
                 ...prev,
                 private: !prev.private,
@@ -71,7 +70,6 @@ const CreateRoadmap = (props) => {
     };
 
     const createHandler = async () => {
-        console.log(roadmapData);
         try {
             let res = await fetch('/roadmaps/create', {
                 method: 'POST',

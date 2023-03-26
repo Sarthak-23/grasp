@@ -58,7 +58,6 @@ const RoadmapList = (props) => {
                 method: 'POST',
             });
             res = await res.json();
-            console.log(res);
             if (res.error) throw res.error;
             props.handleOpen('Cloned successfully', 'success');
             setTimeout(() => {
@@ -67,7 +66,6 @@ const RoadmapList = (props) => {
             return res;
         } catch (e) {
             props.handleOpen('Could not clone', 'error');
-            console.log(e);
             return { error: e };
         }
     };
@@ -81,7 +79,6 @@ const RoadmapList = (props) => {
                 method: 'POST',
             });
             res = await res.json();
-            console.log(res);
             if (res.error) throw res.error;
             props.handleOpen('Starred successfully');
             setTimeout(() => {
@@ -90,7 +87,6 @@ const RoadmapList = (props) => {
             return res;
         } catch (e) {
             props.handleOpen(e || 'Could not star', 'error');
-            console.log(e);
             return { error: e };
         }
     };

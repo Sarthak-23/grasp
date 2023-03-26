@@ -67,7 +67,6 @@ const Register = (props) => {
             });
 
             res = await res.json();
-            console.log(res);
             if (res._id) {
                 setUser(res);
                 setErrors('');
@@ -78,7 +77,6 @@ const Register = (props) => {
             setLoader(false);
         } catch (e) {
             setLoader(false);
-            console.log(e);
             setErrors('Something went wrong');
         }
     };
